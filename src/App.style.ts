@@ -8,3 +8,10 @@ export const MainText = styled.div`
   font-size: 1em;
   font-family: "Roboto", sans-serif;
 `;
+
+export const Subtitle = styled.div`
+  color: white;
+  font-size: 1em;
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+`;

@@ -8,3 +8,10 @@ export const FooterBox = styled.div`
   height: 15vh;
   padding: 0 10%;
 `;
+
+export const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+`;

@@ -13,6 +13,7 @@ import Error from "./pages/Error.tsx";
 import About from "./pages/About.tsx";
 import Communities from "./pages/Communities.tsx";
 import Login from "./pages/Login.tsx";
+import ProblemsList from "./pages/ProblemsList.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
         errorElement={<Error />}
       />
       <Route element={<Login />} path="login" errorElement={<Error />} />
+      <Route element={<ProblemsList />} path="problems_list" errorElement={<Error />} />
     </Route>
   )
 );
