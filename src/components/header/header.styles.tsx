@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Subtitle } from "../../App.style";
+import { Title } from "../../App.style";
 
 export const HeaderBox = styled.div`
   display: flex;
@@ -16,8 +16,9 @@ export const LogoMottoWrapper = styled.div`
   align-items: center;
   gap: 1em;
 `;
-export const Motto = styled(Subtitle)`
+export const Motto = styled(Title)`
   color: white;
+  font-style: italic;
 `;
 export const HeaderLink = styled(Link)`
   color: white;

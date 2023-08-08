@@ -5,13 +5,10 @@ export const MainContentBox = styled.div`
   padding: 0 10%;
 `;
 
-export const MainText = styled.div`
-  color: #2b2d2f;
-  font-family: "Ubuntu", sans-serif;
-  font-size: 1em;
+export const SmallText = styled.div`
+  font-size: .9em;
 `;
 
-export const Subtitle = styled(MainText)`
+export const Title = styled.div`
   font-weight: 700;
-  font-style: italic;
 `;

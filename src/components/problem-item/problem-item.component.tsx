@@ -1,20 +1,22 @@
 import { formatDistanceToNow, fromUnixTime } from "date-fns";
-import { Subtitle } from "../../App.style";
-import { ItemBox } from "./problem-item.styles";
 import { ProblemInstance } from "../../assets/mock_data";
+import { ItemBox, TitleContainer } from "./problem-item.styles";
+import { SmallText } from "../../App.style";
+import { useNavigate } from "react-router-dom";
 interface ProblemItemProps {
   problem: ProblemInstance;
 }
 const ProblemItem = ({ problem }: ProblemItemProps) => {
-  const { author, rating, title, createdAt, currentAward } = problem;
+  const navigate = useNavigate();
+  const { id, author, rating, title, createdAt, currentAward } = problem;
   const creationDate = formatDistanceToNow(fromUnixTime(createdAt));
   return (
-    <ItemBox>
-      <Subtitle>{title}</Subtitle>
-      <div>{`by ${author}`}</div>
-      <div>rating: {rating}</div>
-      <div>created at: {creationDate}</div>
-      <div>award amount: {currentAward}</div>
+    <ItemBox onClick={()=>navigate(`/problem/${id}`)}>
+      <TitleContainer>{title}</TitleContainer>
+      <div>{currentAward}$</div>
+      <SmallText>{`By ${author}`}</SmallText>
+      <SmallText>{creationDate}</SmallText>
+      <div>{rating}</div>
     </ItemBox>
   );
 };

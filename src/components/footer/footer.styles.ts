@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Title } from "../../App.style";
 
 export const FooterBox = styled.div`
   display: flex;
@@ -14,4 +15,11 @@ export const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 1em;
+`;
+
+export const WhiteTitle = styled(Title)`
+  color: white;
+`;
+export const WhiteText = styled.div`
+  color: white;
 `;

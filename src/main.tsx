@@ -14,6 +14,7 @@ import About from "./pages/About/About.tsx";
 import Communities from "./pages/Communities/Communities.tsx";
 import Login from "./pages/Login/Login.tsx";
 import ProblemsList from "./pages/ProblemList/ProblemsList.tsx";
+import Problem from "./pages/Problem/Problem.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,7 +26,8 @@ const router = createBrowserRouter(
         errorElement={<Error />}
       />
       <Route element={<Login />} path="login" errorElement={<Error />} />
-      <Route element={<ProblemsList />} path="problems_list" errorElement={<Error />} />
+      <Route element={<ProblemsList />} index errorElement={<Error />} />
+      <Route element={<Problem/>} path="problem/:id" errorElement={<Error />} />
     </Route>
   )
 );

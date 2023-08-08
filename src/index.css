@@ -1,4 +1,9 @@
-*{
-    margin: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  box-sizing: border-box;
+  
+  color: #2b2d2f;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1em;
+  font-weight: 400;
 }
