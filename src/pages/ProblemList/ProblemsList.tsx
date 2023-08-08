@@ -12,7 +12,7 @@ const ProblemsList = () => {
   return (
     <>
       <Title>ProblemsList</Title>
-      <CustomButton buttonType={ButtonType.INVERTED}>
+      <CustomButton buttonType={ButtonType.BASE}>
         propose a problem
       </CustomButton>
       <ListWrapper>

@@ -1,15 +1,18 @@
-import { StyledPath } from "./svg-logo.styles";
+import { useNavigate } from "react-router-dom";
+import { AnimatedSvg } from "./svg-logo.styles";
 
 interface SvgLogoProps{
     size: string,
 }
 const SvgLogo = ({size='8em'}:SvgLogoProps) => {
+  const navigate = useNavigate();
   return (
-    <svg
+    <AnimatedSvg
       version="1.2"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 114 36"
       width={size}
+      onClick={()=>navigate('/')}
     >
       <defs>
         <clipPath clipPathUnits="userSpaceOnUse" id="cp1">
@@ -30,7 +33,7 @@ const SvgLogo = ({size='8em'}:SvgLogoProps) => {
           className="a"
           d="m3.6 35.5q-0.5-0.1-1.6-0.2-1-0.1-2-0.4l0.6-3.5c0.1-0.6 0.7-1 1.3-0.9q0 0 0 0 0.4 0.1 1.2 0.1 1.3 0 1.9-0.8 0.5-0.8 0.5-2.4v-18.4h4.4c0.8 0 1.4 0.7 1.4 1.4v17.2q0 4-2 5.9-2 1.9-5.7 2zm8.2-31.3q0 1.6-1 2.5-1 0.9-2.4 0.9-1.4 0-2.4-0.9-1.1-0.9-1.1-2.5 0-1.5 1.1-2.5 1-0.9 2.4-0.9 1.4 0 2.4 0.9 1 1 1 2.5z"
         />
-        <StyledPath
+        <path
           className="a"
         //   fill-rule="evenodd"
           d="m22.3 8.5q2.5 0 4.2 0.6 1.7 0.6 2.7 1.6 1.1 1.1 1.5 2.7 0.4 1.5 0.4 3.4v12q-1.2 0.3-3.4 0.6-2.2 0.4-5.4 0.4-1.9 0-3.5-0.4-1.6-0.3-2.8-1.1-1.2-0.8-1.8-2.1-0.6-1.2-0.6-3.1c0-1.2 0.2-2.2 0.7-3q0.7-1.2 1.9-2 1.2-0.7 2.8-1 1.5-0.4 3.2-0.4 1.1 0 2 0.1 0.8 0.1 1.4 0.3v-0.6q0-1.4-0.9-2.3-0.9-0.9-3.1-0.9-1.5 0-2.9 0.2-1.4 0.2-2.5 0.6l-0.5-3.4c-0.1-0.7 0.3-1.4 1-1.6q0 0 0 0 0.8-0.1 1.7-0.3 0.9-0.1 1.9-0.2 1-0.1 2-0.1zm0.4 16.9q0.9 0 1.6-0.1 0.8 0 1.3-0.1v-4.4q-0.4 0-1.1-0.1-0.7-0.1-1.2-0.1-0.9 0-1.6 0.1-0.7 0.1-1.2 0.4-0.6 0.2-0.9 0.7-0.3 0.5-0.3 1.2 0 1.3 0.9 1.8 0.9 0.6 2.5 0.6z"
@@ -76,7 +79,7 @@ const SvgLogo = ({size='8em'}:SvgLogoProps) => {
           d="m72.3 17.5c-0.8 0.8-0.8 2.3 0 3.1l4 3.9c0.7 0.7 2 0.7 2.7 0l8.5-8.7c0.9-0.8 0.8-2.2 0-3-0.8-0.8-2-0.8-2.8 0l-6.6 6.8c-0.3 0.3-0.6 0.3-0.9 0l-2.1-2.1c-0.8-0.8-2-0.8-2.8 0z"
         />
       </g>
-    </svg>
+    </AnimatedSvg>
   );
 };
 

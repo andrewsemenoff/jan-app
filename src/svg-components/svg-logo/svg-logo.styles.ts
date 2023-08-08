@@ -1,22 +1,9 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-const rotateslide = keyframes`   
-  0% {
-    transform: translate(0, 0);
+export const AnimatedSvg = styled.svg`
+  transition: all ease 0.2s;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
   }
- 
-  50% {
-    transform: translate(.2em, .2em);
-  }
-  100% {
-    transform: translate(0, 0);
-  }
-`;
-
-export const StyledPath = styled.path`
-
-&:hover {
-      animation: ${rotateslide} 1s linear infinite;
-  }
-  
 `;
