@@ -9,11 +9,11 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Error from "./pages/Error.tsx";
-import About from "./pages/About.tsx";
-import Communities from "./pages/Communities.tsx";
-import Login from "./pages/Login.tsx";
-import ProblemsList from "./pages/ProblemsList.tsx";
+import Error from "./pages/Error/Error.tsx";
+import About from "./pages/About/About.tsx";
+import Communities from "./pages/Communities/Communities.tsx";
+import Login from "./pages/Login/Login.tsx";
+import ProblemsList from "./pages/ProblemList/ProblemsList.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

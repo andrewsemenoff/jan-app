@@ -2,16 +2,16 @@ import styled from "styled-components";
 
 export const MainContentBox = styled.div`
   min-height: 75vh;
-`;
-export const MainText = styled.div`
-  color: white;
-  font-size: 1em;
-  font-family: "Roboto", sans-serif;
+  padding: 0 10%;
 `;
 
-export const Subtitle = styled.div`
-  color: white;
+export const MainText = styled.div`
+  color: #2b2d2f;
+  font-family: "Ubuntu", sans-serif;
   font-size: 1em;
-  font-family: "Roboto", sans-serif;
-  font-weight: 600;
+`;
+
+export const Subtitle = styled(MainText)`
+  font-weight: 700;
+  font-style: italic;
 `;

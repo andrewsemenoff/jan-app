@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { Subtitle } from "../../App.style";
 
 export const HeaderBox = styled.div`
   display: flex;
@@ -9,22 +10,23 @@ export const HeaderBox = styled.div`
   height: 10vh;
   padding: 0 10%;
 `;
-
-export const Motto = styled.div`
+export const LogoMottoWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+`;
+export const Motto = styled(Subtitle)`
   color: white;
-  font-size: 1em;
-  font-family: "Nunito", sans-serif;
-  font-weight: 600;
-  font-style: italic;
 `;
 export const HeaderLink = styled(Link)`
   color: white;
   font-size: 1em;
-  font-family: "Roboto", sans-serif;
+  font-family: "Ubuntu", sans-serif;
   text-decoration: none;
   cursor: pointer;
-  transition: .3s;
-  &:hover{
+  transition: 0.3s;
+  &:hover {
     color: lightblue;
     transform: scale(1.1);
   }

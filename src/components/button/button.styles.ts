@@ -54,7 +54,7 @@ export const CustomButton = styled.button<BaseButtonProps>`
   padding: 0.7em 1em;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
-  font-family: "Roboto";
+  font-family: "Ubuntu", sans-serif;
   font-size: 1em;
 
   border-radius: 0.5em;
