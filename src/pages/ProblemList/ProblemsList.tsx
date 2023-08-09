@@ -1,9 +1,6 @@
 import { Title } from "../../App.style";
 import { getMockProblems } from "../../assets/mock_data";
-import {
-  ButtonType,
-  CustomButton,
-} from "../../components/button/button.styles";
+import CustomButton, { ButtonType } from "../../components/button/button.component";
 import ProblemItem from "../../components/problem-item/problem-item.component";
 import { ListWrapper } from "./ProblemList.styles";
 
@@ -12,8 +9,8 @@ const ProblemsList = () => {
   return (
     <>
       <Title>ProblemsList</Title>
-      <CustomButton buttonType={ButtonType.BASE}>
-        propose a problem
+      <CustomButton fashion={ButtonType.BASE}>
+        Propose a problem
       </CustomButton>
       <ListWrapper>
         {mockProblems &&
@@ -26,3 +23,4 @@ const ProblemsList = () => {
 };
 
 export default ProblemsList;
+
