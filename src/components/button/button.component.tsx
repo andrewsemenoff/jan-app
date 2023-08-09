@@ -4,6 +4,7 @@ import { BasicButton, InvertedButton } from "./button.styles";
 interface CustomButtonProps {
   fashion: string;
   children: ReactNode;
+  onClick: () => void;
 }
 
 export enum ButtonType {
@@ -11,14 +12,14 @@ export enum ButtonType {
   BASE = "base",
 }
 
-const CustomButton = ({ fashion, children }: CustomButtonProps) => {
+const CustomButton = ({ fashion, children, onClick }: CustomButtonProps) => {
   switch (fashion) {
     case ButtonType.BASE:
-      return <BasicButton>{children}</BasicButton>;
+      return <BasicButton onClick={onClick}>{children}</BasicButton>;
     case ButtonType.INVERTED:
-      return <InvertedButton>{children}</InvertedButton>;
+      return <InvertedButton onClick={onClick}>{children}</InvertedButton>;
     default:
-      return <InvertedButton>{children}</InvertedButton>;
+      return <InvertedButton onClick={onClick}>{children}</InvertedButton>;
   }
 };
 

@@ -1,17 +1,27 @@
-import { Title } from "../../App.style";
+import { useNavigate } from "react-router-dom";
+import { Title, TitleSection } from "../../App.style";
 import { getMockProblems } from "../../assets/mock_data";
-import CustomButton, { ButtonType } from "../../components/button/button.component";
+import CustomButton, {
+  ButtonType,
+} from "../../components/button/button.component";
 import ProblemItem from "../../components/problem-item/problem-item.component";
-import { ListWrapper } from "./ProblemList.styles";
+import { ListWrapper, TitlesWrapper } from "./ProblemList.styles";
 
 const ProblemsList = () => {
   const mockProblems = getMockProblems();
+  const navigate = useNavigate();
   return (
     <>
-      <Title>ProblemsList</Title>
-      <CustomButton fashion={ButtonType.BASE}>
-        Propose a problem
-      </CustomButton>
+      <TitleSection>
+        <TitlesWrapper>
+          <Title>Recent Problems</Title>
+          <Title>Award</Title>
+          <Title>Date</Title>
+          <CustomButton fashion={ButtonType.BASE} onClick={(()=>navigate('problem-proposal'))}>
+            Propose a problem
+          </CustomButton>
+        </TitlesWrapper>
+      </TitleSection>
       <ListWrapper>
         {mockProblems &&
           mockProblems.map((problem, index) => (
@@ -23,4 +33,3 @@ const ProblemsList = () => {
 };
 
 export default ProblemsList;
-
