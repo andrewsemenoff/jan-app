@@ -1,3 +1,11 @@
+import photo_Erdos from "./images/Pal_Erdos.jpg"
+
+export const avatarErdos = {
+  url: photo_Erdos,
+  alt: "Paul Erdos",
+};
+
+
 class Problem {
   id: number;
   title: string;
@@ -24,13 +32,13 @@ class Problem {
 
 export type ProblemInstance = InstanceType<typeof Problem>;
 
-export function getMockProblems(): Array<Problem> {
+export function getMockProblems(numberOfProblems: number): Array<Problem> {
   const mockArray: Problem[] = [];
   const baseTimestamp = 1691437500; // Base timestamp
   const timestampGap = 60 * 60 * 24 * 30 * 3; // Gap of 3 months in seconds
 
-  for (let i = 0; i < 50; i++) {
-    const timestamp = baseTimestamp + i * timestampGap;
+  for (let i = 0; i < numberOfProblems; i++) {
+    const timestamp = baseTimestamp + timestampGap-1;
     const problem = new Problem(
       i + 1,
       `Problem ${i + 1}...`,
@@ -43,3 +51,6 @@ export function getMockProblems(): Array<Problem> {
   }
   return mockArray;
 }
+
+
+

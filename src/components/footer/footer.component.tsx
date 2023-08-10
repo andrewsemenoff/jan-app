@@ -1,4 +1,5 @@
-import { avatarErdos } from "../../utils/mock-data";
+
+import { avatarErdos } from "../../assets/mock_data";
 import Avatar from "../avatar/avatar.component";
 import { FooterBox, WhiteText, WhiteTitle, Wrapper } from "./footer.styles";
 
