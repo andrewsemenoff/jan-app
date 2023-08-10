@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { Title, TitleSection } from "../../App.style";
+import { Title } from "../../App.style";
 import { getMockProblems } from "../../assets/mock_data";
 import CustomButton, {
   ButtonType,
 } from "../../components/button/button.component";
 import Paginator from "../../components/paginator/paginator.component";
 import ProblemItem from "../../components/problem-item/problem-item.component";
-import { ListWrapper, TitlesWrapper } from "./ProblemList.styles";
 import usePagination from "../../hooks/usePagination";
+import { ListWrapper, MainSectionForProblemList, TitleSectionForProblemList } from "./ProblemList.styles";
 
 const ProblemsList = () => {
   const mockProblems = getMockProblems(102);
@@ -20,36 +20,36 @@ const ProblemsList = () => {
     nextPage,
     prevPage,
     setPage,
-  } = usePagination(mockProblems.length, 8);
+  } = usePagination(mockProblems.length, 6);
 
   const problemsOnCurrentPage = mockProblems.slice(firstIndex, lastIndex);
   return (
     <>
-      <TitleSection>
-        <TitlesWrapper>
-          <Title>Recent Problems</Title>
-          <Title>Award</Title>
-          <Title>Date</Title>
-          <CustomButton
-            fashion={ButtonType.BASE}
-            onClick={() => navigate("problem-proposal")}
-          >
-            Propose a problem
-          </CustomButton>
-        </TitlesWrapper>
-      </TitleSection>
-      <ListWrapper>
-        {problemsOnCurrentPage &&
-          problemsOnCurrentPage.map((problem, index) => (
-            <ProblemItem problem={problem} key={index} />
-          ))}
-      </ListWrapper>
-      <Paginator
-        currentPage={currentPage}
-        totalPages={totalPages}
-        handleClickNext={nextPage}
-        handleClickPrev={prevPage}
-      />
+      <TitleSectionForProblemList>
+        <Title>Recent Problems</Title>
+        <Title>Award</Title>
+        <Title>Date</Title>
+        <CustomButton
+          fashion={ButtonType.BASE}
+          onClick={() => navigate("problem-proposal")}
+        >
+          Propose a problem
+        </CustomButton>
+      </TitleSectionForProblemList>
+      <MainSectionForProblemList>
+        <ListWrapper>
+          {problemsOnCurrentPage &&
+            problemsOnCurrentPage.map((problem, index) => (
+              <ProblemItem problem={problem} key={index} />
+            ))}
+        </ListWrapper>
+        <Paginator
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handleClickNext={nextPage}
+          handleClickPrev={prevPage}
+        />
+      </MainSectionForProblemList>
     </>
   );
 };

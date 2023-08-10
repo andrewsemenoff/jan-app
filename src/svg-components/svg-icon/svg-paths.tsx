@@ -16,3 +16,15 @@ export const BELL = {
   ),
   viewBox: "0 0 32 32",
 };
+export const ARROW_BACK = {
+  path: (
+    <path d="M15.422 16.594l-1.406 1.406-6-6 6-6 1.406 1.406-4.594 4.594z"></path>
+  ),
+  viewBox: "0 0 24 24",
+};
+export const ARROW_FORWARD = {
+  path: (
+    <path d="M8.578 16.594l4.594-4.594-4.594-4.594 1.406-1.406 6 6-6 6z"></path>
+  ),
+  viewBox: "0 0 24 24",
+};

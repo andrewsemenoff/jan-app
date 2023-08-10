@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
 export const MainContentBox = styled.div`
-  min-height: 75vh;
+  height: 75vh;
   padding: 0 10%;
+  overflow: auto;
 `;
 export const TitleSection = styled.div`
-  height: 4em;
-  margin-top: 5em;
+  height: 15%;
   border-bottom: 0.05em solid grey;
+  padding-bottom: 0.5em;
+`;
+export const MainSection = styled.div`
+  height: 85%;
 `;
 
 export const SmallText = styled.div`

@@ -1,3 +1,6 @@
+import SvgIcon, { Fashion, SVG_PATH } from "../../svg-components/svg-icon/svg-icon.component";
+import { PaginatorWrapper } from "./paginator.styles";
+
 interface PaginatorProps {
   currentPage: number;
   totalPages: number;
@@ -12,11 +15,11 @@ const Paginator = ({
   handleClickNext,
 }: PaginatorProps) => {
   return (
-    <div>
-      <button onClick={handleClickPrev}>prev</button>
+    <PaginatorWrapper>
+      <SvgIcon handelOnClick={handleClickPrev} svgPath={SVG_PATH.ARROW_BACK} fashion={Fashion.ANIMATED} fillOnHover="orange"/>
       {currentPage} of {totalPages}
-      <button onClick={handleClickNext}>next</button>
-    </div>
+      <SvgIcon handelOnClick={handleClickNext} svgPath={SVG_PATH.ARROW_FORWARD} fashion={Fashion.ANIMATED}/>
+    </PaginatorWrapper>
   );
 };
 
