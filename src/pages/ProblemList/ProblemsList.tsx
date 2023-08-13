@@ -10,7 +10,7 @@ import usePagination from "../../hooks/usePagination";
 import { ListWrapper, MainSectionForProblemList, TitleSectionForProblemList } from "./ProblemList.styles";
 
 const ProblemsList = () => {
-  const mockProblems = getMockProblems(102);
+  const mockProblems = getMockProblems(1002);
   const navigate = useNavigate();
   const {
     totalPages,

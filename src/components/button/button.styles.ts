@@ -1,11 +1,11 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const BaseForButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5em;
-
+height: 2em;
   min-width: fit-content;
   padding: 0.7em 1em;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;

@@ -11,7 +11,7 @@ export const TitleSection = styled.div`
   padding-bottom: 0.5em;
 `;
 export const MainSection = styled.div`
-  height: 85%;
+  height: 75%;
 `;
 
 export const SmallText = styled.div`
