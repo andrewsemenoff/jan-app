@@ -11,7 +11,7 @@ export const ListWrapper = styled.div`
 
 export const TitleSectionForProblemList = styled(TitleSection)`
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr 2fr;
+  grid-template-columns: 8fr 1fr 2fr 3fr 3fr;
   align-items: end;
 `;
 

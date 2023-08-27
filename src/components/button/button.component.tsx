@@ -1,25 +1,31 @@
-import { ReactNode } from "react";
-import { BasicButton, InvertedButton } from "./button.styles";
+import { ReactNode, CSSProperties } from "react";
+import { BasicButton, InvertedButton, RoundButton } from "./button.styles";
 
 interface CustomButtonProps {
-  fashion: string;
+  buttonType: ButtonType;
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
+  style?: CSSProperties;
+  size?: string;
+  disabled?: boolean
 }
 
 export enum ButtonType {
-  INVERTED = "inverted",
-  BASE = "base",
+  INVERTED,
+  BASE,
+  ROUND_BUTTON,
 }
 
-const CustomButton = ({ fashion, children, onClick }: CustomButtonProps) => {
-  switch (fashion) {
+const CustomButton = ({ buttonType, children, onClick, style, size, disabled }: CustomButtonProps) => {
+  switch (buttonType) {
     case ButtonType.BASE:
-      return <BasicButton onClick={onClick}>{children}</BasicButton>;
+      return <BasicButton $disabled={disabled} onClick={onClick} style={style}>{children}</BasicButton>;
     case ButtonType.INVERTED:
-      return <InvertedButton onClick={onClick}>{children}</InvertedButton>;
+      return <InvertedButton $disabled={disabled} onClick={onClick} style={style}>{children}</InvertedButton>;
+    case ButtonType.ROUND_BUTTON:
+      return <RoundButton $disabled={disabled} onClick={onClick} style={style} size={size}>{children}</RoundButton>;
     default:
-      return <InvertedButton onClick={onClick}>{children}</InvertedButton>;
+      return <InvertedButton $disabled={disabled} onClick={onClick} style={style}>{children}</InvertedButton>;
   }
 };
 

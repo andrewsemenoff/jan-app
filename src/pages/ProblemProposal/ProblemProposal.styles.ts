@@ -1,29 +1,14 @@
-import styled, { css } from "styled-components";
-import { MainSection, TitleSection } from "../../App.style";
+import styled from "styled-components";
+import { MainSection, TitleSection, textArea } from "../../App.style";
 
-const textArea = css`
-  resize: vertical;
-  border-radius: 0.3em;
-  padding: 1em;
-  outline: none;
-  border: 0.05em solid grey;
-  box-sizing: border-box;
-  &:hover {
-    border: 0.1em solid grey;
-    padding: 1em;
-  }
-  &:focus {
-    border: 0.1em solid #0984e3;
-    padding: 1em;
-  }
-`;
+
 export const TitleTextArea = styled.textarea`
   ${textArea}
   height: 6em;
 `;
 export const DescriptionTextArea = styled.textarea`
-  height: 10em;
   ${textArea}
+  height: 10em;
 `;
 export const TitleSectionForProblemProposal = styled(TitleSection)`
   display: grid;
@@ -43,11 +28,7 @@ export const FormsWrapper = styled.div`
   gap: 2em;
   margin-right: 3em;
 `;
-export const FormWithTitleWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
+
 
 export const PreviewWrapper = styled.div`
   height: fit-content;
@@ -63,16 +44,7 @@ export const CommunitySelectorWrapper = styled.div`
 export const CommunitiesListBox = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(7em, 1fr));
-  /* gap: .5em; */
+  row-gap: .5em;
+  margin: .2em 0;
 `;
 
-export const CommunityBox = styled.div`
-  background-color: #0984e3;
-  font-size: .8em;
-  width: min-content;
-  color: white;
-  text-align: center;
-  border-radius: 5em;
-  padding: .5em;
-  margin: 1em 0;
-`;

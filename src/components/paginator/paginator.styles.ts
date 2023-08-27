@@ -5,6 +5,6 @@ export const PaginatorWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1em;
+  margin: 1em 0;
   user-select: none;
 `;

@@ -1,4 +1,22 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+export const textArea = css`
+  resize: vertical;
+  border-radius: 0.3em;
+  padding: 1em;
+  outline: none;
+  border: 0.05em solid grey;
+  box-sizing: border-box;
+  &:hover {
+    border: 0.1em solid grey;
+    background-color: #e4f1fb;
+    padding: 1em;
+  }
+  &:focus {
+    border: 0.1em solid #0984e3;
+    padding: 1em;
+  }
+`;
 
 export const MainContentBox = styled.div`
   height: 75vh;
@@ -11,7 +29,6 @@ export const TitleSection = styled.div`
   padding-bottom: 0.5em;
 `;
 export const MainSection = styled.div`
-  height: 75%;
 `;
 
 export const SmallText = styled.div`
@@ -20,4 +37,9 @@ export const SmallText = styled.div`
 
 export const Title = styled.div`
   font-weight: 700;
+`;
+export const InputWithTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;

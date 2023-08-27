@@ -7,10 +7,14 @@ import CustomButton, {
 import Paginator from "../../components/paginator/paginator.component";
 import ProblemItem from "../../components/problem-item/problem-item.component";
 import usePagination from "../../hooks/usePagination";
-import { ListWrapper, MainSectionForProblemList, TitleSectionForProblemList } from "./ProblemList.styles";
+import {
+  ListWrapper,
+  MainSectionForProblemList,
+  TitleSectionForProblemList,
+} from "./ProblemList.styles";
 
 const ProblemsList = () => {
-  const mockProblems = getMockProblems(1002);
+  const mockProblems = getMockProblems(100);
   const navigate = useNavigate();
   const {
     totalPages,
@@ -19,7 +23,7 @@ const ProblemsList = () => {
     lastIndex,
     nextPage,
     prevPage,
-    setPage,
+    // setPage,
   } = usePagination(mockProblems.length, 6);
 
   const problemsOnCurrentPage = mockProblems.slice(firstIndex, lastIndex);
@@ -28,7 +32,8 @@ const ProblemsList = () => {
       <TitleSectionForProblemList>
         <Title>Recent Problems</Title>
         <Title>Award</Title>
-        <Title>Date</Title>
+        <Title style={{ textAlign: "center" }}>Date</Title>
+        <Title style={{ textAlign: "center" }}>Rating</Title>
         <CustomButton
           fashion={ButtonType.BASE}
           onClick={() => navigate("problem-proposal")}

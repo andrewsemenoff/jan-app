@@ -4,32 +4,22 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useEffect, useState } from "react";
 
-import { Title } from "../../App.style";
+import { InputWithTitleWrapper, Title } from "../../App.style";
+import { communities } from "../../assets/mock_data";
+import CustomButton, { ButtonType } from "../../components/button/button.component";
+import { CommunityLabel } from "../../components/problem-item/problem-item.styles";
 import {
   CommunitiesListBox,
-  CommunityBox,
   CommunitySelectorWrapper,
   DescriptionTextArea,
-  FormWithTitleWrapper,
   FormsWrapper,
   MainSectionForProblemProposal,
   PreviewWrapper,
   TitleSectionForProblemProposal,
-  TitleTextArea,
+  TitleTextArea
 } from "./ProblemProposal.styles";
 
-const communities = [
-  "MathMasters",
-  "GeekSquad",
-  "ProblemSolvers",
-  "NumbersNinjas",
-  "LogicLegends",
-  "AlgebraAces",
-  "CalculationCrew",
-  "GeometryGenius",
-  "EquationExperts",
-  "MathWizards",
-];
+
 
 const MenuProps = {
   PaperProps: {
@@ -44,7 +34,7 @@ const ProblemProposal = () => {
   const defaultTitle =
     "If the sum of two numbers is 15 and their difference is 5, find the two numbers";
   const defaultDescription =
-    "When \\(a \\ne 0\\), there exists two solutions for\\(ax^2 + bx + c = 0\\) as \\[x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.\\]";
+    "When \\(a \\ne 0\\), there exists two solutions for\\(ax^2 + bx + c = 0\\) as \\[x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.\\] ";
 
   const [title, setTitle] = useState(defaultTitle);
   const [description, setDescription] = useState(defaultDescription);
@@ -76,8 +66,7 @@ const ProblemProposal = () => {
       </TitleSectionForProblemProposal>
       <MainSectionForProblemProposal>
         <FormsWrapper>
-          <FormWithTitleWrapper>
-            <div className="mathjax-equation"></div>
+          <InputWithTitleWrapper>
             <Title>Title:</Title>
             <TitleTextArea
               placeholder={defaultTitle}
@@ -87,8 +76,8 @@ const ProblemProposal = () => {
               maxLength={150}
               onChange={(e) => setTitle(e.target.value)}
             ></TitleTextArea>
-          </FormWithTitleWrapper>
-          <FormWithTitleWrapper>
+          </InputWithTitleWrapper>
+          <InputWithTitleWrapper>
             <Title>Description:</Title>
             <DescriptionTextArea
               placeholder={defaultDescription}
@@ -97,7 +86,7 @@ const ProblemProposal = () => {
               rows={8}
               onChange={(e) => setDescription(e.target.value)}
             ></DescriptionTextArea>
-          </FormWithTitleWrapper>
+          </InputWithTitleWrapper>
           <CommunitySelectorWrapper>
             <Title>Community:</Title>
             <Select
@@ -117,6 +106,7 @@ const ProblemProposal = () => {
               ))}
             </Select>
           </CommunitySelectorWrapper>
+          <CustomButton buttonType={ButtonType.BASE} >Post the problem</CustomButton>
         </FormsWrapper>
         <PreviewWrapper>
           <Title style={{ marginBottom: "2em", textAlign: "center" }}>
@@ -125,7 +115,7 @@ const ProblemProposal = () => {
           <p>{description}</p>
           <CommunitiesListBox>
             {selectedCommunities.map((communityName, index) => (
-              <CommunityBox key={index}>{communityName}</CommunityBox>
+              <CommunityLabel key={index}>{communityName}</CommunityLabel>
             ))}
           </CommunitiesListBox>
         </PreviewWrapper>

@@ -1,12 +1,27 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-interface AnimatedSvg {
+interface AnimatedSvg {}
+
+export const flash = keyframes`
+  0%, 100% {
+    opacity: orange;
+  }
+  50% {
+    fill: white; /* Orange color for the flashing effect */
+  }
+`;
+
+interface AnimatedSvgProps{
+  $fillOnHover: string
 }
-export const AnimatedSvg = styled.svg`
-  transition: fill ease 2s;
+export const AnimatedSvg = styled.svg<AnimatedSvgProps>`
+  transition: fill ease 1s;
   transition: transform ease 0.2;
-
-  &:hover {
+  &:hover{
     transform: scale(1.3);
+    fill: ${({$fillOnHover})=>$fillOnHover}
+  }
+  &:active {
+    animation: ${flash} 1s ease-out;
   }
 `;
