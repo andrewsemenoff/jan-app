@@ -168,7 +168,7 @@ const editUserPassword = createAsyncThunk(
   "account/editUserPassword",
   async (newPassword: string, thunkApi) => {
     const {
-      account: { email, roles },
+      account: { email },
     } = thunkApi.getState() as RootState;
     try {
       const headers = {
@@ -176,7 +176,7 @@ const editUserPassword = createAsyncThunk(
         "Content-Type": "application/json",
       };
       const response: boolean = await axios.put(
-        `${BASE_URL}/${roles[length - 1]}/editpassword/${email}`,
+        `${BASE_URL}/user/editpassword/${email}`,
         null,
         { headers }
       );

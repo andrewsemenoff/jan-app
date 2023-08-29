@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { SVGProps } from "react";
 import { AnimatedSvg } from "./svg-icon.styles";
 import {
   ARROW_BACK,
@@ -10,14 +10,12 @@ import {
   THUMB_UP,
 } from "./svg-paths";
 
-export interface SvgIconProps {
+export interface SvgIconProps extends SVGProps<SVGSVGElement> {
   svgPath: SVG_PATH;
   fashion?: Fashion;
   size?: string;
   fill?: string;
   fillOnHover?: string;
-  style?: CSSProperties;
-  handleOnHover?: () => void;
   handelOnClick?: () => void;
 }
 export enum Fashion {
@@ -52,7 +50,6 @@ const SvgIcon = ({
   fill = "grey",
   fillOnHover = fill,
   style,
-  handleOnHover,
   handelOnClick,
 }: SvgIconProps) => {
   const { path, viewBox } = getSvgPath(svgPath);

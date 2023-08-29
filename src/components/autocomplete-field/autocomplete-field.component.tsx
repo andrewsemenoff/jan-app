@@ -1,10 +1,8 @@
 import { Autocomplete, Chip, TextField } from "@mui/material";
 import { SyntheticEvent } from "react";
-import { Title } from "../../App.style";
 import { AutocompleteFieldWrapper } from "./authocomplete-field.style";
 
 interface AutocompleteFieldProps {
-  fieldName: string;
   items: string[];
   selectedItems: string[];
   handleChange: (
@@ -14,14 +12,12 @@ interface AutocompleteFieldProps {
 }
 
 const AutocompleteField = ({
-  fieldName,
   items,
   selectedItems,
   handleChange,
 }: AutocompleteFieldProps) => {
   return (
     <AutocompleteFieldWrapper>
-      <Title style={{ color: "white" }}>{fieldName}:</Title>
       <Autocomplete
         onChange={handleChange}
         multiple
@@ -40,6 +36,7 @@ const AutocompleteField = ({
             placeholder="set your interests"
           />
         )}
+        style={{ width: "17em" }}
         sx={{
           p: ".1em",
           "& .MuiChip-label": {
@@ -54,7 +51,8 @@ const AutocompleteField = ({
           fontSize: "1em",
           fontWeight: 400,
           fontFamily: "Ubuntu",
-          width: "30em",
+          maxWidth: "100%",
+          minWidth: "5em",
           height: "fit-content",
           borderRadius: "0.3em",
           border: "0.05em solid white",

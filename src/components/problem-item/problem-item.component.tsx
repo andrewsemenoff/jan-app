@@ -37,7 +37,7 @@ const ProblemItem = ({ problem }: ProblemItemProps) => {
       <VotesAndSolutionsLabel>{`${votes} votes, ${solutions} solutions`}</VotesAndSolutionsLabel>
       <CommunitiesDeck>
         {communities.map((c, index) => (
-          <CommunityLabel isDynamic={true} $offset={index * 2} $index={index} key={index}>
+          <CommunityLabel $isDynamic $offset={index * 2} $index={index} key={index}>
             {c}
           </CommunityLabel>
         ))}

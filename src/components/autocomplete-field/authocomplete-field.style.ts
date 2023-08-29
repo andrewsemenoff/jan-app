@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Wrapper } from "../input-field/input-field.style";
+import { Wrapper } from "../field/field.style";
 
 export const AutocompleteFieldWrapper = styled(Wrapper)`
   flex-direction: column;

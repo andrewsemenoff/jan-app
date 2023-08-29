@@ -23,7 +23,7 @@ const EyeToggler = ({ handleEyeClick }: EyeTogglerProps) => {
       fashion={Fashion.ANIMATED}
       size="1.2em"
       fill={isShown ? "#0984e3" : "gray"}
-      style={{ position: "absolute", right: 10 }}
+      style={{ position: "absolute", right: 10, top: '.5em' ,  }}
     />
   );
 };

@@ -28,8 +28,7 @@ export const TitleSection = styled.div`
   border-bottom: 0.05em solid grey;
   padding-bottom: 0.5em;
 `;
-export const MainSection = styled.div`
-`;
+export const MainSection = styled.div``;
 
 export const SmallText = styled.div`
   font-size: 0.9em;
@@ -42,4 +41,15 @@ export const InputWithTitleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+export const FormBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  min-width: 10em;
+  height: fit-content;
+  border-radius: 0.3em;
+  padding: 1em;
+  background-color: #0984e3;
 `;

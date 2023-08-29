@@ -38,14 +38,14 @@ export const forDynamicLabel = css<{ $offset?: number; $index?: number }>`
 interface CommunityLabelProps {
   $offset?: number;
   $index?: number;
-  isDynamic?: boolean;
+  $isDynamic?: boolean;
 }
 export const CommunityLabel = styled.div<CommunityLabelProps>`
   width: max-content;
 
   background-color: #d2e8fa;
   ${label};
-  ${({ isDynamic }) => isDynamic && forDynamicLabel}
+  ${({ $isDynamic }) => $isDynamic && forDynamicLabel}
 `;
 
 export const CommunitiesDeck = styled.div`

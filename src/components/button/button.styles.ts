@@ -22,7 +22,6 @@ const BaseForButton = styled.button<BaseForButtonProps>`
   gap: 0.5em;
   height: 2em;
   width: fit-content;
-  margin-bottom: 1em;
   padding: 1.3em 1em;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
