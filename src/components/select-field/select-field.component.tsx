@@ -1,26 +1,20 @@
-import {
-  Checkbox,
-  ListItemText,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 
 interface SelectFieldProps {
   items: string[];
-  selectedItems: string[];
-  handleSelectChange: (event: SelectChangeEvent<string[] | string>) => void;
+  selectedItem: string;
+  handleSelectChange: (event: SelectChangeEvent<string>) => void;
 }
 const SelectField = ({
   items,
-  selectedItems,
+  selectedItem,
   handleSelectChange,
 }: SelectFieldProps) => {
   return (
     <Select
       style={{ width: "17em" }}
       sx={{
-        paddingX: 0,
+        // paddingX: 0,
         "& fieldset": {
           border: "none",
         },
@@ -33,21 +27,19 @@ const SelectField = ({
         borderRadius: "0.3em",
         border: "0.05em solid white",
         outline: "none",
-        backgroundColor: selectedItems?.length ? "white" : "lightgrey",
+        backgroundColor: selectedItem.length ? "white" : "lightgrey",
         "&:hover": {
           border: "0.1em solid #032845",
           backgroundColor: "white",
         },
       }}
-      multiple
-      value={selectedItems}
+      value={selectedItem}
       onChange={handleSelectChange}
-      renderValue={(selected) => selected.join(", ")}
     >
+      <MenuItem sx={{ padding: "0.5em" }} value=''>n/a</MenuItem>
       {items.map((name, index) => (
-        <MenuItem sx={{ padding: "0" }} key={index} value={name}>
-          <Checkbox checked={selectedItems.indexOf(name) > -1} />
-          <ListItemText primary={name} />
+        <MenuItem sx={{ padding: "0.5em" }} key={index} value={name}>
+          {name}
         </MenuItem>
       ))}
     </Select>

@@ -18,10 +18,12 @@ import Problem from "./pages/Problem/Problem.tsx";
 import ProblemsList from "./pages/ProblemList/ProblemsList.tsx";
 import ProblemProposal from "./pages/ProblemProposal/ProblemProposal.tsx";
 import { store } from "./app/store.ts";
+import Profile from "./pages/Profile/profile.component.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<App />} path="/" errorElement={<Error />}>
+      <Route path="profile" element={<Profile/>}/>
       <Route element={<About />} path="about" errorElement={<Error />} />
       <Route
         element={<Communities />}

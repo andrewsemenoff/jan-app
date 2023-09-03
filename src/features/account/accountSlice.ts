@@ -1,7 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store";
+import { BASE_HOST_URL } from "../../assets/hostConfig";
 
+export enum STATUS {
+  IDLE = "idle",
+  PENDING = "pending",
+  FAILED = "failed",
+  SUCCEEDED = "succeeded",
+}
 interface Location {
   country: string;
   city: string;
@@ -26,59 +33,59 @@ interface User extends InitialUserData {
   activities: {};
   wallet: number;
 }
+interface Profile {
+  token: string;
+  user: User;
+}
 
-const initialState: User = {
-  username: "Firstname Lastname",
-  email: "JsOTQMORw7Z4OMO-wofDusOVZcO5w4XDpV7Dt8OOw49_DXIAwqUMw5tNIFLCslIN",
-  educationLevel: "OTHER",
-  communities: ["Algebra", "Probability", "Calculus"],
-  location: {
-    country: "Israel",
-    city: "Tel-Aviv",
+const initialState: Profile = {
+  token: "",
+  user: {
+    username: "Firstname Lastname",
+    email: "JsOTQMORw7Z4OMO-wofDusOVZcO5w4XDpV7Dt8OOw49_DXIAwqUMw5tNIFLCslIN",
+    educationLevel: "OTHER",
+    communities: ["Algebra", "Probability", "Calculus"],
+    location: {
+      country: "Israel",
+      city: "Tel-Aviv",
+    },
+    password: "$2a$10$eo9g73se/QFbO8vzND9.3euPT234NNC0bPxpE6z3S2Cp5l/mjmPMa",
+    roles: ["USER"],
+    avatar: "",
+    stats: {
+      solvedProblems: 0,
+      checkedSolutions: 0,
+      formulatedProblems: 0,
+      rating: 0,
+    },
+    activities: {},
+    wallet: 0.0,
   },
-  password: "$2a$10$eo9g73se/QFbO8vzND9.3euPT234NNC0bPxpE6z3S2Cp5l/mjmPMa",
-  roles: ["USER"],
-  avatar: "",
-  stats: {
-    solvedProblems: 0,
-    checkedSolutions: 0,
-    formulatedProblems: 0,
-    rating: 0,
-  },
-  activities: {},
-  wallet: 0.0,
 };
-const BASE_URL = "localhost:8080";
+const BASE_URL = BASE_HOST_URL;
 const ACCOUNT_URL = `${BASE_URL}/user`;
 
-const signUp = createAsyncThunk(
+export const signUp = createAsyncThunk(
   "account/signUp",
   async (data: InitialUserData) => {
-    try {
-      const response: User = await axios.post(
-        `${ACCOUNT_URL}/registration`,
-        data
-      );
-      return response;
-    } catch (error: any) {
-      console.log(error);
-    }
+    const response: User = await axios.post(
+      `${ACCOUNT_URL}/registration`,
+      data
+    );
+    return response;
   }
 );
-
-const signIn = createAsyncThunk("account/signIn", async () => {
-  try {
-    const response: User = await axios.post(`${ACCOUNT_URL}/login`);
-    return response;
-  } catch (error: any) {
-    console.log(error);
-  }
+export const signIn = createAsyncThunk("account/signIn", async () => {
+  const response: User = await axios.post(`${ACCOUNT_URL}/login`);
+  return response;
 });
-const editUserName = createAsyncThunk(
+export const editUserName = createAsyncThunk(
   "account/editUserName",
   async (newName: string, thunkApi) => {
     const {
-      account: { email },
+      account: {
+        user: { email },
+      },
     } = thunkApi.getState() as RootState;
     try {
       const response: User = await axios.put(
@@ -93,11 +100,13 @@ const editUserName = createAsyncThunk(
     }
   }
 );
-const editUserEducation = createAsyncThunk(
+export const editUserEducation = createAsyncThunk(
   "account/editEducation",
   async (education: string, thunkApi) => {
     const {
-      account: { email },
+      account: {
+        user: { email }, token
+      },
     } = thunkApi.getState() as RootState;
     try {
       const response: User = await axios.put(
@@ -109,7 +118,7 @@ const editUserEducation = createAsyncThunk(
     }
   }
 );
-const editUserCommunities = createAsyncThunk(
+export const editUserCommunities = createAsyncThunk(
   "account/editUserCommunities",
   async (scientificInterests: string[], thunkApi) => {
     const {
@@ -128,7 +137,7 @@ const editUserCommunities = createAsyncThunk(
     }
   }
 );
-const editUserLocation = createAsyncThunk(
+export const editUserLocation = createAsyncThunk(
   "account/editUserLocation",
   async ({ country, city }: Location, thunkApi) => {
     const {
@@ -148,7 +157,7 @@ const editUserLocation = createAsyncThunk(
     }
   }
 );
-const editUserAvatar = createAsyncThunk(
+export const editUserAvatar = createAsyncThunk(
   "account/editUserAvatar",
   async (avatar, thunkApi) => {
     const {
@@ -164,14 +173,17 @@ const editUserAvatar = createAsyncThunk(
     }
   }
 );
-const editUserPassword = createAsyncThunk(
+export const editUserPassword = createAsyncThunk(
   "account/editUserPassword",
   async (newPassword: string, thunkApi) => {
     const {
-      account: { email },
+      account: {
+        user: { email }, token
+      },
     } = thunkApi.getState() as RootState;
     try {
       const headers = {
+        Authorization: `Bearer ${token}`,
         "X-Password": newPassword,
         "Content-Type": "application/json",
       };

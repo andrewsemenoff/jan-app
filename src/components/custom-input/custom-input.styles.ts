@@ -29,3 +29,5 @@ export const CustomInput = styled.input<BaseInputProps>`
     ${({ $withIcon }) => ($withIcon ? withSpaceForIcon : withoutSpaceForIcon)}
   }
 `;
+
+
