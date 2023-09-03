@@ -18,7 +18,7 @@ import Problem from "./pages/Problem/Problem.tsx";
 import ProblemsList from "./pages/ProblemList/ProblemsList.tsx";
 import ProblemProposal from "./pages/ProblemProposal/ProblemProposal.tsx";
 import { store } from "./app/store.ts";
-import Profile from "./pages/Profile/profile.component.tsx";
+import Profile from "./pages/Profile/Profile.component.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

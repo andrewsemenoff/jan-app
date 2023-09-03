@@ -70,7 +70,7 @@ export const signUp = createAsyncThunk(
   async (data: InitialUserData) => {
     const response: User = await axios.post(
       `${ACCOUNT_URL}/registration`,
-      data
+      data,
     );
     return response;
   }
@@ -105,7 +105,8 @@ export const editUserEducation = createAsyncThunk(
   async (education: string, thunkApi) => {
     const {
       account: {
-        user: { email }, token
+        user: { email },
+        token,
       },
     } = thunkApi.getState() as RootState;
     try {
@@ -178,7 +179,8 @@ export const editUserPassword = createAsyncThunk(
   async (newPassword: string, thunkApi) => {
     const {
       account: {
-        user: { email }, token
+        user: { email },
+        token,
       },
     } = thunkApi.getState() as RootState;
     try {

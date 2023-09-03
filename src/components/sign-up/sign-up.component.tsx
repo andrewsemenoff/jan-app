@@ -67,12 +67,12 @@ const SignUp = () => {
   const [city, setCity] = useState("");
   const [requestStatus, setRequestStatus] = useState(STATUS.IDLE);
   const isPassConfirmed = password === passwordConfirmation;
-  const canSubmit =
-    [email, password, passwordConfirmation].every(Boolean) &&
-    isMailValid &&
-    isPassValid &&
-    isPassConfirmed &&
-    STATUS.IDLE === requestStatus;
+  const canSubmit = true;
+    // [email, password, passwordConfirmation].every(Boolean) &&
+    // isMailValid &&
+    // isPassValid &&
+    // isPassConfirmed &&
+    // STATUS.IDLE === requestStatus;
 
   const handleCountyChange = (e: ChangeEvent<HTMLInputElement>) =>
     setCountry(e.target.value);
