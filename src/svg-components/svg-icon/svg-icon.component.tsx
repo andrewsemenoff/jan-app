@@ -8,6 +8,9 @@ import {
   SEND_MESSAGE,
   THUMB_DOWN,
   THUMB_UP,
+  PENCIL,
+  SAVE, 
+  CANCEL
 } from "./svg-paths";
 
 export interface SvgIconProps extends SVGProps<SVGSVGElement> {
@@ -16,7 +19,6 @@ export interface SvgIconProps extends SVGProps<SVGSVGElement> {
   size?: string;
   fill?: string;
   fillOnHover?: string;
-  handelOnClick?: () => void;
 }
 export enum Fashion {
   ANIMATED,
@@ -30,6 +32,9 @@ export enum SVG_PATH {
   ARROW_BACK,
   SEND_MESSAGE,
   EYE,
+  PENCIL,
+  SAVE,
+  CANCEL
 }
 
 const getSvgPath = (path: SVG_PATH) =>
@@ -41,6 +46,9 @@ const getSvgPath = (path: SVG_PATH) =>
     [SVG_PATH.ARROW_BACK]: ARROW_BACK,
     [SVG_PATH.SEND_MESSAGE]: SEND_MESSAGE,
     [SVG_PATH.EYE]: EYE,
+    [SVG_PATH.PENCIL]: PENCIL,
+    [SVG_PATH.SAVE]: SAVE,
+    [SVG_PATH.CANCEL]: CANCEL,
   }[path]);
 
 const SvgIcon = ({
@@ -50,7 +58,7 @@ const SvgIcon = ({
   fill = "grey",
   fillOnHover = fill,
   style,
-  handelOnClick,
+  ...other
 }: SvgIconProps) => {
   const { path, viewBox } = getSvgPath(svgPath);
 
@@ -69,7 +77,7 @@ const SvgIcon = ({
   switch (fashion) {
     case Fashion.ANIMATED:
       return (
-        <AnimatedSvg onClick={handelOnClick} {...svgAttributes}>
+        <AnimatedSvg {...svgAttributes} {...other}>
           {path}
         </AnimatedSvg>
       );

@@ -1,56 +1,40 @@
 import { SelectChangeEvent } from "@mui/material";
-import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { Title } from "../../App.style";
-import { useAppDispatch } from "../../app/hooks";
-import { STATUS, signUp } from "../../features/account/accountSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  STATUS,
+  getEductionLevels,
+  selectEductionLevels,
+  signUp,
+} from "../../features/account/accountSlice";
+import {
+  getCommunitiesNames,
+  selectCommunitiesNames,
+} from "../../features/communities/communitiesSlice";
 import useEmailValidation from "../../hooks/useEmailValidation";
+import usePassValidation from "../../hooks/usePassValidation";
 import AutocompleteField from "../autocomplete-field/autocomplete-field.component";
 import CustomButton, { ButtonType } from "../button/button.component";
 import { CustomInput } from "../custom-input/custom-input.styles";
 import EyeToggler from "../eye-toggler/eye-toggler.component";
 import Field from "../field/field.component";
+import { Tooltip } from "../field/field.style";
 import SelectField from "../select-field/select-field.component";
 import { DoubleInputWrapper, SignUpForm } from "./sign-up.styles";
-import usePassValidation from "../../hooks/usePassValidation";
-import { Tooltip } from "../field/field.style";
+import { useNavigate } from "react-router-dom";
 
-const scientificInterests = [
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "Astronomy",
-  "Computer Science",
-  "Mathematics",
-  "Engineering",
-  "Environmental Science",
-  "Psychology",
-  "Medicine",
-  "Geology",
-  "Social Sciences",
-  "Political Science",
-  "Economics",
-  "Linguistics",
-  "Anthropology",
-  "History",
-  "Artificial Intelligence",
-  "Robotics",
-  "Neuroscience",
-];
-const educationLevels = [
-  "Primary School",
-  "Middle School",
-  "High School",
-  "Diploma",
-  "Associate's Degree",
-  "Bachelor's Degree",
-  "Master's Degree",
-  "Doctorate",
-  "Other",
-];
 const minLengthOfPass = 5;
-
 const SignUp = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const scientificInterests = useAppSelector(selectCommunitiesNames);
+  const educationLevels = useAppSelector(selectEductionLevels);
+  useEffect(() => {
+    dispatch(getEductionLevels());
+    dispatch(getCommunitiesNames());
+  }, []);
+
   const { isMailValid, checkIsMailValid } = useEmailValidation();
   const { isPassValid, checkIsPassValid } = usePassValidation(minLengthOfPass);
 
@@ -68,11 +52,11 @@ const SignUp = () => {
   const [requestStatus, setRequestStatus] = useState(STATUS.IDLE);
   const isPassConfirmed = password === passwordConfirmation;
   const canSubmit = true;
-    // [email, password, passwordConfirmation].every(Boolean) &&
-    // isMailValid &&
-    // isPassValid &&
-    // isPassConfirmed &&
-    // STATUS.IDLE === requestStatus;
+  // [email, password, passwordConfirmation].every(Boolean) &&
+  // isMailValid &&
+  // isPassValid &&
+  // isPassConfirmed &&
+  // STATUS.IDLE === requestStatus;
 
   const handleCountyChange = (e: ChangeEvent<HTMLInputElement>) =>
     setCountry(e.target.value);
@@ -97,22 +81,11 @@ const SignUp = () => {
     setInterests(newValue);
   };
   const handleEducationLevelChange = (e: SelectChangeEvent<string>) => {
-    const {
-      target: { value },
-    } = e;
-    setEducationLevel(value);
+    setEducationLevel(e.target.value);
   };
   const handleSignUpClicked = async () => {
     if (canSubmit) {
       try {
-        let timeout: any;
-        const myPromise = new Promise((resolve) => {
-          timeout = setTimeout(() => {
-            console.log("timeout");
-            resolve(timeout);
-          }, 1000);
-        });
-        await myPromise.then((timeout: any) => clearTimeout(timeout));
         await dispatch(
           signUp({
             username: displayName,
@@ -124,15 +97,8 @@ const SignUp = () => {
           })
         ).unwrap();
         setRequestStatus(STATUS.PENDING);
+        navigate("/profile");
       } catch (error: any) {
-        if (error.name === "AxiosError") {
-          console.log(error);
-          alert(error.message);
-        } else {
-          console.log("typeof error:", typeof error);
-
-          console.log("unknown error:", error);
-        }
       } finally {
         setRequestStatus(STATUS.IDLE);
       }
@@ -153,7 +119,9 @@ const SignUp = () => {
             caretColor: "black",
           }}
         />
-        <Tooltip  $isShown={!isMailValid}>{`Please enter a valid email address.`}</Tooltip>
+        <Tooltip
+          $isShown={!isMailValid}
+        >{`Please enter a valid email address.`}</Tooltip>
       </Field>
       <Field fieldName="Highest education level">
         <SelectField

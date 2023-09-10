@@ -27,17 +27,7 @@ const SignIn = () => {
     if (canSubmit) {
       try {
         setRequestStatus(STATUS.PENDING);
-        let timeout: any;
-        const myPromise = new Promise((resolve) => {
-          timeout = setTimeout(() => {
-            console.log("interval");
-            resolve(timeout);
-          }, 1000);
-        });
-        await myPromise.then((timeout: any) => clearTimeout(timeout));
-        console.log("kuku");
-
-        await dispatch(signIn()).unwrap();
+        await dispatch(signIn({ email, password })).unwrap();
         setEmail("");
         setPassword("");
         navigate("/profile");

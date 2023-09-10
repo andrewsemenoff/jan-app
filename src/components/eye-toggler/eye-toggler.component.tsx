@@ -10,7 +10,7 @@ interface EyeTogglerProps {
 
 const EyeToggler = ({ handleEyeClick }: EyeTogglerProps) => {
   const [isShown, setIsShown] = useState(false);
-  const handleOnClik = () => {
+  const handleOnClick = () => {
     setIsShown((state: boolean) => {
       handleEyeClick(!state);
       return !state;
@@ -18,7 +18,7 @@ const EyeToggler = ({ handleEyeClick }: EyeTogglerProps) => {
   };
   return (
     <SvgIcon
-      handelOnClick={handleOnClik}
+      onClick={handleOnClick}
       svgPath={SVG_PATH.EYE}
       fashion={Fashion.ANIMATED}
       size="1.2em"

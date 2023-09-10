@@ -19,11 +19,12 @@ import ProblemsList from "./pages/ProblemList/ProblemsList.tsx";
 import ProblemProposal from "./pages/ProblemProposal/ProblemProposal.tsx";
 import { store } from "./app/store.ts";
 import Profile from "./pages/Profile/Profile.component.tsx";
+import { getUser } from "./features/account/accountSlice.ts";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<App />} path="/" errorElement={<Error />}>
-      <Route path="profile" element={<Profile/>}/>
+      <Route path="profile" element={<Profile/>} loader={()=>store.dispatch(getUser())}/>
       <Route element={<About />} path="about" errorElement={<Error />} />
       <Route
         element={<Communities />}
