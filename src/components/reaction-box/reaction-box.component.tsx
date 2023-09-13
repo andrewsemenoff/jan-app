@@ -85,7 +85,7 @@ const ReactionBox = ({ reactions: { likes, dislikes } }: ReactionBoxProps) => {
   return (
     <ReactionContainer>
       <SvgIcon
-        handelOnClick={() => handleReactionClick(REACTION.LIKE)}
+        onClick={() => handleReactionClick(REACTION.LIKE)}
         svgPath={SVG_PATH.THUMB_UP}
         fashion={Fashion.ANIMATED}
         fill={likesColor}
@@ -94,7 +94,7 @@ const ReactionBox = ({ reactions: { likes, dislikes } }: ReactionBoxProps) => {
         {totalProblemReactions.likes}
       </NumberWrapper>
       <SvgIcon
-        handelOnClick={() => handleReactionClick(REACTION.DISLIKE)}
+        onClick={() => handleReactionClick(REACTION.DISLIKE)}
         svgPath={SVG_PATH.THUMB_DOWN}
         fashion={Fashion.ANIMATED}
         fill={dislikesColor}

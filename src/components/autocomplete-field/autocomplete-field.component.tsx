@@ -1,8 +1,14 @@
-import { Autocomplete, Chip, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  AutocompleteProps,
+  Chip,
+  TextField,
+} from "@mui/material";
 import { SyntheticEvent } from "react";
 import { AutocompleteFieldWrapper } from "./authocomplete-field.style";
 
 interface AutocompleteFieldProps {
+  readonly?: boolean;
   items: string[];
   selectedItems: string[];
   handleChange: (
@@ -12,6 +18,7 @@ interface AutocompleteFieldProps {
 }
 
 const AutocompleteField = ({
+  readonly,
   items,
   selectedItems,
   handleChange,
@@ -19,6 +26,7 @@ const AutocompleteField = ({
   return (
     <AutocompleteFieldWrapper>
       <Autocomplete
+        readOnly={readonly}
         onChange={handleChange}
         multiple
         options={items}
@@ -36,7 +44,7 @@ const AutocompleteField = ({
             placeholder="set your interests"
           />
         )}
-        style={{ width: "17em" }}
+        style={{ width: "100%" }}
         sx={{
           p: ".1em",
           "& .MuiChip-label": {

@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect} from 'react';
 import { Title } from "../../App.style";
-import { getMockProblems } from "../../assets/mock_data";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import CustomButton, {
   ButtonType,
 } from "../../components/button/button.component";
 import Paginator from "../../components/paginator/paginator.component";
 import ProblemItem from "../../components/problem-item/problem-item.component";
+import { getProblems, selectAllProblems } from "../../features/problems/problemsSlice";
 import usePagination from "../../hooks/usePagination";
 import {
   ListWrapper,
@@ -14,7 +16,9 @@ import {
 } from "./ProblemList.styles";
 
 const ProblemsList = () => {
-  const mockProblems = getMockProblems(100);
+  // const mockProblems = getMockProblems(100);
+  const allProblems = useAppSelector(selectAllProblems);
+
   const navigate = useNavigate();
   const {
     totalPages,
@@ -24,9 +28,14 @@ const ProblemsList = () => {
     nextPage,
     prevPage,
     // setPage,
-  } = usePagination(mockProblems.length, 6);
+  } = usePagination(allProblems.length, 6);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getProblems());
+  }, [])
+  
 
-  const problemsOnCurrentPage = mockProblems.slice(firstIndex, lastIndex);
+  const problemsOnCurrentPage = allProblems.slice(firstIndex, lastIndex);
   return (
     <>
       <TitleSectionForProblemList>
@@ -35,7 +44,7 @@ const ProblemsList = () => {
         <Title style={{ textAlign: "center" }}>Date</Title>
         <Title style={{ textAlign: "center" }}>Rating</Title>
         <CustomButton
-          fashion={ButtonType.BASE}
+          buttonType={ButtonType.BASE}
           onClick={() => navigate("problem-proposal")}
         >
           Propose a problem

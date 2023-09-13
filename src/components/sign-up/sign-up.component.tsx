@@ -1,5 +1,6 @@
 import { SelectChangeEvent } from "@mui/material";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
@@ -22,7 +23,6 @@ import Field from "../field/field.component";
 import { Tooltip } from "../field/field.style";
 import SelectField from "../select-field/select-field.component";
 import { DoubleInputWrapper, SignUpForm } from "./sign-up.styles";
-import { useNavigate } from "react-router-dom";
 
 const minLengthOfPass = 5;
 const SignUp = () => {

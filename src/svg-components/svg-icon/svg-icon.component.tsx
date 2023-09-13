@@ -69,7 +69,7 @@ const SvgIcon = ({
     height: size,
     viewBox: viewBox,
     fill: fill,
-    $fillOnHover: fillOnHover,
+    $fill_on_hover: fillOnHover,
     cursor: "pointer",
     style: style,
   };

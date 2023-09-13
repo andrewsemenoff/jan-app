@@ -1,15 +1,22 @@
-import { format, formatDistanceToNow } from "date-fns";
-import { useEffect, useState, ChangeEvent } from "react";
+import { format, formatDistanceToNow, formatISO, parseISO } from "date-fns";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { InputWithTitleWrapper, SmallText, Title } from "../../App.style";
-import { getMockProblems } from "../../assets/mock_data";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import CustomButton, {
+  ButtonType,
+} from "../../components/button/button.component";
+import { CommunitiesListBox } from "../../components/problem-creation/problem-creation.styles";
 import { CommunityLabel } from "../../components/problem-item/problem-item.styles";
 import ReactionBox from "../../components/reaction-box/reaction-box.component";
+import {
+  getOneProblem,
+  selectCurrentProblem
+} from "../../features/problems/problemsSlice";
 import SvgIcon, {
   Fashion,
   SVG_PATH,
 } from "../../svg-components/svg-icon/svg-icon.component";
-import { CommunitiesListBox } from "../ProblemProposal/ProblemProposal.styles";
 import {
   ButtonsWrapper,
   CommentTextArea,
@@ -22,60 +29,58 @@ import {
   SponsorsWrapper,
   TitleSectionForProblemPage,
 } from "./Problem.style";
-import CustomButton, {
-  ButtonType,
-} from "../../components/button/button.component";
 
 const Problem = () => {
-  const { id } = useParams();
-  const [solutionText, setSolutionText]= useState('');
+  const { problem_id } = useParams();
+  const dispatch = useAppDispatch();
+  const problem = useAppSelector(selectCurrentProblem);
+  const {
+    title,
+    details,
+    author,
+    communityNames,
+    currentAward,
+    dateCreated,
+    interactions: {donations, totalLikes, totalDislikes },
+  } = problem;
+
+  console.log('current problem:', problem);
+  
+  const [solutionText, setSolutionText] = useState("");
+  useEffect(() => {
+    if (problem_id) {
+      dispatch(getOneProblem(problem_id));
+    }
+  }, [problem_id]);
   useEffect(() => {
     if (typeof window?.MathJax !== "undefined") {
       window?.MathJax.typesetClear();
       window?.MathJax.typeset();
     }
-  }, [solutionText]);
-  const handleSolutionTextChange = (e: ChangeEvent <HTMLTextAreaElement>) => {
-    setSolutionText(e.target.value)};  
+  }, [problem_id]);
+  const handleSolutionTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setSolutionText(e.target.value);
+  };
 
-    const isSubmitBtnDisabled = !solutionText.length;
+  const isSubmitBtnDisabled = !solutionText.length;
 
-    const randomProblem = getMockProblems(10)[id ? +id - 1 : 0];
-  console.log(randomProblem);
-
-  const {
-    title,
-    author,
-    createdAt,
-    votes,
-    currentAward,
-    communities,
-    solutions,
-    reactions,
-    details,
-  } = randomProblem;
-
-  const donates = [
-    { sponsor: "John Smith", sum: 127, date: 1690068244863 },
-    { sponsor: "Steven White", sum: 560, date: 1690468244863 },
-    { sponsor: "Tom Sawyer", sum: 490, date: 1692418244863 },
-  ];
-
-  const distanceToNow = formatDistanceToNow(createdAt);
-  const date = format(createdAt, "dd.MM.yyyy");
-  console.log("details:", details);
+  // const parsedDate = parseISO(dateCreated);
+  // const distanceToNow = formatDistanceToNow(parsedDate);
+  // const creationDate = formatISO(parsedDate);
 
   return (
     <>
       <TitleSectionForProblemPage>
         <FlexWrapper>
-          <Title>Problem #{id}</Title>
-          <ReactionBox reactions={reactions} />
+          <Title>Problem #{problem_id}</Title>
+          <ReactionBox
+            reactions={{ dislikes: totalDislikes, likes: totalLikes }}
+          />
         </FlexWrapper>
         <FlexWrapper>
           <SmallText>Posted by {author}</SmallText>
           <SmallText>
-            {distanceToNow} ago / {date}
+            {/* {distanceToNow} ago / {creationDate} */}
           </SmallText>
         </FlexWrapper>
       </TitleSectionForProblemPage>
@@ -84,7 +89,7 @@ const Problem = () => {
           <Title>{title}</Title>
           <DetailedText>{details}</DetailedText>
           <CommunitiesListBox>
-            {communities.map((c, index) => (
+            {communityNames.map((c, index) => (
               <CommunityLabel key={index}>{c}</CommunityLabel>
             ))}
           </CommunitiesListBox>
@@ -110,7 +115,11 @@ const Problem = () => {
           </InputWithTitleWrapper>
           <InputWithTitleWrapper>
             <Title>Propose your solution</Title>
-            <SolutionTextArea value={solutionText} onChange={handleSolutionTextChange} placeholder="Type your solution"/>
+            <SolutionTextArea
+              value={solutionText}
+              onChange={handleSolutionTextChange}
+              placeholder="Type your solution"
+            />
           </InputWithTitleWrapper>
           <ButtonsWrapper>
             <CustomButton
@@ -124,7 +133,12 @@ const Problem = () => {
               buttonType={ButtonType.INVERTED}
               style={{ width: "15em" }}
             >
-              <SvgIcon svgPath={SVG_PATH.BELL} fashion={Fashion.STATIC} size="1.5em" fill="#0984e3"/>
+              <SvgIcon
+                svgPath={SVG_PATH.BELL}
+                fashion={Fashion.STATIC}
+                size="1.5em"
+                fill="#0984e3"
+              />
               Subscribe
             </CustomButton>
           </ButtonsWrapper>
@@ -133,7 +147,7 @@ const Problem = () => {
           <SponsorsWrapper>
             <div>
               <Title>
-                Current award: ${donates.reduce((acc, cur) => acc + cur.sum, 0)}
+                Current award: ${currentAward}
               </Title>
               <SmallText>
                 please don't hesitate and give us all your money
@@ -142,11 +156,10 @@ const Problem = () => {
             <CustomButton buttonType={ButtonType.BASE}>Sponsor</CustomButton>
             <div>
               <Title>Top sponsors:</Title>
-              {donates.map((d, index) => {
-                const createdAt = format(d.date, "dd.MM.yyyy");
+              {donations.map((d, index) => {
                 return (
                   <SmallText key={index}>
-                    ${d.sum} by {d.sponsor} {createdAt}
+                    ${d.amount} by {d.profileName} {d.date}
                   </SmallText>
                 );
               })}

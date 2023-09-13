@@ -45,5 +45,5 @@ export const Wrapper = styled.div`
 `;
 export const FieldTitle = styled(Title)`
   display: flex;
-  min-width: 12em;
+  min-width: 2em;
 `;

@@ -16,9 +16,9 @@ const Paginator = ({
 }: PaginatorProps) => {
   return (
     <PaginatorWrapper>
-      <SvgIcon handelOnClick={handleClickPrev} svgPath={SVG_PATH.ARROW_BACK} fashion={Fashion.ANIMATED} fillOnHover="orange"/>
+      <SvgIcon onClick={handleClickPrev} svgPath={SVG_PATH.ARROW_BACK} fashion={Fashion.ANIMATED} fillOnHover="orange"/>
       {currentPage} of {totalPages}
-      <SvgIcon handelOnClick={handleClickNext} svgPath={SVG_PATH.ARROW_FORWARD} fashion={Fashion.ANIMATED}/>
+      <SvgIcon onClick={handleClickNext} svgPath={SVG_PATH.ARROW_FORWARD} fashion={Fashion.ANIMATED}/>
     </PaginatorWrapper>
   );
 };

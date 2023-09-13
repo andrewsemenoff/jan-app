@@ -22,6 +22,7 @@ export enum ACCOUNT_ACTION_TYPE {
   DELETE_USER = "account/deleteUser",
   GET_EDUCATION_LEVELS = "account/getEducationLevels",
   GET_USER = "account/getUser",
+  RESET_PASSWORD = "account/resetPassword",
 }
 interface SignInRequestData {
   email: string;
@@ -222,14 +223,14 @@ export const editUserName = createAsyncThunk(
       "Content-Type": "application/json",
     };
     try {
-      const response: User = await axios.put(
+      const { data }: { data: User } = await axios.put(
         `${ACCOUNTING_URL}/editname/${userId}`,
         {
           username: newName,
         },
         { headers }
       );
-      return response;
+      return data;
     } catch (error: any) {
       console.log(error);
     }
@@ -264,6 +265,8 @@ export const editUserEducation = createAsyncThunk(
 export const editUserCommunities = createAsyncThunk(
   ACCOUNT_ACTION_TYPE.EDIT_USER_COMMUNITIES,
   async (scientificInterests: string[], thunkApi) => {
+    console.log("interests in slice", scientificInterests);
+
     const {
       account: { userId, token },
     } = thunkApi.getState() as RootState;
@@ -272,14 +275,16 @@ export const editUserCommunities = createAsyncThunk(
       "Content-Type": "application/json",
     };
     try {
-      const response: User = await axios.put(
+      const { data }: { data: User } = await axios.put(
         `${ACCOUNTING_URL}/editscientificinterests/${userId}`,
         {
-          scientificInterests: scientificInterests,
+          communities: scientificInterests,
         },
         { headers }
       );
-      return response;
+      console.log("data after editUserCommunities:", data);
+
+      return data;
     } catch (error: any) {
       console.log(error);
     }
@@ -371,24 +376,50 @@ export const editUserAvatar = createAsyncThunk(
 );
 export const editUserPassword = createAsyncThunk(
   ACCOUNT_ACTION_TYPE.EDIT_USER_PASSWORD,
-  async (newPassword: string, thunkApi) => {
-    const {
+  async (
+    {
+      newPassword,
+      temporaryToken,
+    }: { newPassword: string; temporaryToken?: string },
+    { getState }
+  ) => {
+    let {
       account: { token, userId },
-    } = thunkApi.getState() as RootState;
+    } = getState() as RootState;
+    if (temporaryToken) {
+      userId = helperGetUserIdFromToken(temporaryToken);
+    }
+    const authString = temporaryToken
+      ? `Bearer ${temporaryToken}`
+      : `Bearer ${token}`;
     const headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: authString,
       "X-Password": newPassword,
       "Content-Type": "application/json",
     };
     try {
-      const response: boolean = await axios.put(
+      const { data }: { data: boolean } = await axios.put(
         `${ACCOUNTING_URL}/editpassword/${userId}`,
         null,
         { headers }
       );
-      return response;
+      console.log('data after editUserPassword:', data)
     } catch (error: any) {
       console.log(error);
+    }
+  }
+);
+export const resetUserPassword = createAsyncThunk(
+  ACCOUNT_ACTION_TYPE.RESET_PASSWORD,
+
+  async (email: string) => {
+    try {
+      const response = await axios.put(
+        `${ACCOUNTING_URL}/resetpassword/${email}`
+      );
+      console.log("response after resetUserPassword: ", response);
+    } catch (err: any) {
+      console.log("error after resetUserPassword: ", err);
     }
   }
 );

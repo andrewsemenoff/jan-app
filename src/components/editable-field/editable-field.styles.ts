@@ -28,10 +28,3 @@ export const FieldValue = styled.input`
   color: white;
   font-style: italic;
 `;
-
-export const EditToolsBar = styled.div`
-  width: 2.5em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;

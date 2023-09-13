@@ -1,4 +1,4 @@
-import { formatDistanceToNow, fromUnixTime } from "date-fns";
+import { formatDistanceToNow, formatISO, fromUnixTime, parseISO } from "date-fns";
 import { ProblemInstance } from "../../assets/mock_data";
 import {
   AuthorAndDateWrapper,
@@ -10,22 +10,25 @@ import {
 } from "./problem-item.styles";
 import { SmallText } from "../../App.style";
 import { useNavigate } from "react-router-dom";
+import { Problem } from "../../features/problems/problemsSlice";
 interface ProblemItemProps {
-  problem: ProblemInstance;
+  problem: Problem;
 }
 const ProblemItem = ({ problem }: ProblemItemProps) => {
   const navigate = useNavigate();
   const {
     id,
     author,
-    votes,
+    interactions: { totalLikes },
     title,
-    createdAt,
+    dateCreated,
     currentAward,
-    communities,
+    communityNames,
     solutions,
   } = problem;
-  const creationDate = formatDistanceToNow(fromUnixTime(createdAt));
+  
+  const creationDate = formatDistanceToNow(parseISO(dateCreated));
+  
   return (
     <ItemBox onClick={() => navigate(`/problem/${id}`)}>
       <TitleContainer>{title}</TitleContainer>
@@ -34,10 +37,15 @@ const ProblemItem = ({ problem }: ProblemItemProps) => {
         <SmallText>{`By ${author}`}</SmallText>
         <SmallText>{creationDate}</SmallText>
       </AuthorAndDateWrapper>
-      <VotesAndSolutionsLabel>{`${votes} votes, ${solutions} solutions`}</VotesAndSolutionsLabel>
+      <VotesAndSolutionsLabel>{`${totalLikes} votes, ${solutions.length} solutions`}</VotesAndSolutionsLabel>
       <CommunitiesDeck>
-        {communities.map((c, index) => (
-          <CommunityLabel $isDynamic $offset={index * 2} $index={index} key={index}>
+        {communityNames.map((c, index) => (
+          <CommunityLabel
+            $isDynamic
+            $offset={index * 2}
+            $index={index}
+            key={index}
+          >
             {c}
           </CommunityLabel>
         ))}

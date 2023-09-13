@@ -1,24 +1,20 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import { SelectChangeEvent } from "@mui/material";
+import { ChangeEvent, useRef, useState } from "react";
+import EditToolsBar from "../edit-toolsbar/edit-toolsbar.component";
+import SelectField from "../select-field/select-field.component";
 import {
-  EditToolsBar,
   FieldTitle,
   FieldValue,
   ValueWithEditToolBar,
   Wrapper,
 } from "./editable-field.styles";
-import SvgIcon, {
-  Fashion,
-  SVG_PATH,
-} from "../../svg-components/svg-icon/svg-icon.component";
-import SelectField from "../select-field/select-field.component";
-import { SelectChangeEvent } from "@mui/material";
 
 interface EditableFieldProps {
   title: string;
   valueFromStore: string;
   isSelectable?: boolean;
   itemsForSelect?: string[];
-  handleSaveChanges: (value: string)=>void
+  handleSaveChanges: (value: string) => void;
 }
 const EditableField = ({
   title,
@@ -29,24 +25,24 @@ const EditableField = ({
 }: EditableFieldProps) => {
   const [value, setValue] = useState(valueFromStore);
   const canSave = value !== valueFromStore;
-  const [isReadOnly, setIsReadOnly] = useState(true);
+  const [isEditModeOn, setIsEditModeOn] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
     setValue(e.target.value);
-  const handleEditClicked = () => {
-    setIsReadOnly((prev) => !prev);
-    if (isReadOnly && inputRef.current) {
+  const handleEditModeClicked = () => {
+    setIsEditModeOn((prev) => !prev);
+    if (!isEditModeOn && inputRef.current) {
       //Focus input when switching to editable mode. ReadOnly has a previous state before clicking edit icon
       inputRef.current.focus();
     }
   };
   const handleSaveClicked = () => {
-    setIsReadOnly((prev) => !prev);
+    setIsEditModeOn((prev) => !prev);
     handleSaveChanges(value);
   };
   const handleCancelClicked = () => {
     setValue(valueFromStore);
-    setIsReadOnly((prev) => !prev);
+    setIsEditModeOn((prev) => !prev);
   };
   const handleSelectChange = (e: SelectChangeEvent<string>) => {
     setValue(e.target.value);
@@ -60,14 +56,14 @@ const EditableField = ({
           <FieldValue
             ref={inputRef}
             value={value}
-            readOnly={isReadOnly}
+            readOnly={!isEditModeOn}
             onChange={handleInputChange}
           />
-        ) : isReadOnly ? (
+        ) : !isEditModeOn ? (
           <FieldValue
             ref={inputRef}
             value={value}
-            readOnly={isReadOnly}
+            readOnly={!isEditModeOn}
             onChange={handleInputChange}
           />
         ) : (
@@ -77,36 +73,13 @@ const EditableField = ({
             handleSelectChange={handleSelectChange}
           />
         )}
-
-        <EditToolsBar>
-          {isReadOnly ? (
-            <SvgIcon
-              svgPath={SVG_PATH.PENCIL}
-              fashion={Fashion.ANIMATED}
-              size="1em"
-              fill="black"
-              onClick={handleEditClicked}
-            />
-          ) : (
-            <>
-              <SvgIcon
-                svgPath={SVG_PATH.SAVE}
-                fashion={Fashion.ANIMATED}
-                size="1em"
-                fill={canSave ? "black" : "#3b3a3a"}
-                onClick={handleSaveClicked}
-                pointerEvents={canSave ? "auto" : "none"}
-              />
-              <SvgIcon
-                svgPath={SVG_PATH.CANCEL}
-                fashion={Fashion.ANIMATED}
-                size="1.1em"
-                fill="black"
-                onClick={handleCancelClicked}
-              />
-            </>
-          )}
-        </EditToolsBar>
+        <EditToolsBar
+          canSave={canSave}
+          isEditModeActive={isEditModeOn}
+          handleEditModeClicked={handleEditModeClicked}
+          handleCancelClicked={handleCancelClicked}
+          handleSaveClicked={handleSaveClicked}
+        />
       </ValueWithEditToolBar>
     </Wrapper>
   );

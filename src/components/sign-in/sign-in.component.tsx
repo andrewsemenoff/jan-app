@@ -69,7 +69,7 @@ const SignIn = () => {
       <SmallText style={{ textAlign: "center" }}>
         Forgot your password?
         <br />
-        <StyledLink to={"/"}>restore password</StyledLink>
+        <StyledLink to={"/restorepassword"}>restore password</StyledLink>
       </SmallText>
     </SignInForm>
   );
