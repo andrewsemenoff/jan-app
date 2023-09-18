@@ -35,6 +35,7 @@ export const SmallText = styled.div`
 `;
 
 export const Title = styled.div`
+  user-select: none;
   font-weight: 700;
 `;
 export const InputWithTitleWrapper = styled.div`

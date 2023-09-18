@@ -11,7 +11,8 @@ import { CommunityLabel } from "../../components/problem-item/problem-item.style
 import ReactionBox from "../../components/reaction-box/reaction-box.component";
 import {
   getOneProblem,
-  selectCurrentProblem
+  selectCurrentProblem,
+  subscribeOnProblem,
 } from "../../features/problems/problemsSlice";
 import SvgIcon, {
   Fashion,
@@ -29,23 +30,32 @@ import {
   SponsorsWrapper,
   TitleSectionForProblemPage,
 } from "./Problem.style";
+import { selectUser, selectUserId } from "../../features/account/accountSlice";
 
 const Problem = () => {
   const { problem_id } = useParams();
   const dispatch = useAppDispatch();
   const problem = useAppSelector(selectCurrentProblem);
+  const userId = useAppSelector(selectUserId);
   const {
+    id,
     title,
     details,
     author,
     communityNames,
     currentAward,
     dateCreated,
-    interactions: {donations, totalLikes, totalDislikes },
+    authorId,
+    interactions: { donations, totalLikes, totalDislikes, subscriptions },
   } = problem;
 
-  console.log('current problem:', problem);
-  
+  const canSubscribe = authorId !== userId;
+  const isSubscribed = subscriptions.some((s) => s.profileId === userId);
+  const handleSubscribe = () => {
+    dispatch(subscribeOnProblem(id));
+  };
+  console.log("current problem:", problem);
+
   const [solutionText, setSolutionText] = useState("");
   useEffect(() => {
     if (problem_id) {
@@ -79,9 +89,7 @@ const Problem = () => {
         </FlexWrapper>
         <FlexWrapper>
           <SmallText>Posted by {author}</SmallText>
-          <SmallText>
-            {/* {distanceToNow} ago / {creationDate} */}
-          </SmallText>
+          <SmallText>{/* {distanceToNow} ago / {creationDate} */}</SmallText>
         </FlexWrapper>
       </TitleSectionForProblemPage>
       <MainSectionForProblemPage>
@@ -129,26 +137,27 @@ const Problem = () => {
             >
               Submit
             </CustomButton>
-            <CustomButton
-              buttonType={ButtonType.INVERTED}
-              style={{ width: "15em" }}
-            >
-              <SvgIcon
-                svgPath={SVG_PATH.BELL}
-                fashion={Fashion.STATIC}
-                size="1.5em"
-                fill="#0984e3"
-              />
-              Subscribe
-            </CustomButton>
+            {canSubscribe && (
+              <CustomButton
+                onClick={handleSubscribe}
+                buttonType={ButtonType.INVERTED}
+                style={{ width: "15em" }}
+              >
+                <SvgIcon
+                  svgPath={SVG_PATH.BELL}
+                  fashion={Fashion.STATIC}
+                  size="1.5em"
+                  fill="#0984e3"
+                />
+                {isSubscribed ? "Unsubscribe" : "Subscribe"}
+              </CustomButton>
+            )}
           </ButtonsWrapper>
         </LeftBox>
         <RightBox>
           <SponsorsWrapper>
             <div>
-              <Title>
-                Current award: ${currentAward}
-              </Title>
+              <Title>Current award: ${currentAward}</Title>
               <SmallText>
                 please don't hesitate and give us all your money
               </SmallText>

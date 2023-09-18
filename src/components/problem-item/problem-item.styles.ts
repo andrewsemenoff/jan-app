@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const ItemBox = styled.div`
+  user-select: none;
   display: grid;
   grid-template-columns: 8fr 1fr 2fr 3fr 3fr;
   height: 4em;
@@ -43,7 +44,7 @@ interface CommunityLabelProps {
 export const CommunityLabel = styled.div<CommunityLabelProps>`
   width: max-content;
 
-  background-color: #d2e8fa;
+  background-color: #8cc4f3;
   ${label};
   ${({ $isDynamic }) => $isDynamic && forDynamicLabel}
 `;

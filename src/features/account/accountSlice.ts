@@ -12,6 +12,7 @@ export enum STATUS {
 export enum ACCOUNT_ACTION_TYPE {
   SIGN_UP = "account/signUp",
   SIGN_IN = "account/signIn",
+  SIGN_OUT = "account/signOut",
   EDIT_USER_NAME = "account/editUserName",
   EDIT_EDUCATION = "account/editEducation",
   EDIT_USER_COMMUNITIES = "account/editUserCommunities",
@@ -57,6 +58,7 @@ interface Profile {
   user: User;
   token: string;
   educationLevels: string[];
+  isSignedIn: boolean;
 }
 
 const helperGetUserIdFromToken = (token: string): string => {
@@ -92,6 +94,7 @@ const initialState: Profile = {
   token: "",
   educationLevels: [],
   userId: "",
+  isSignedIn: false,
 };
 
 export const signUp = createAsyncThunk(
@@ -165,6 +168,48 @@ export const signIn = createAsyncThunk(
         return rejectWithValue({ message, status: 0 });
       } else {
         console.log("Unknown Error during signIn process", err.message);
+      }
+    }
+  }
+);
+export const signOut = createAsyncThunk(
+  ACCOUNT_ACTION_TYPE.SIGN_OUT,
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const {
+        account: { token },
+      } = getState() as RootState;
+      const wholeToken = `Bearer ${token}`;
+      const { data }: { data: boolean } = await axios.post(
+        `${ACCOUNTING_URL}/logout`,
+        null,
+        {
+          headers: {
+            Authorization: wholeToken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("data after logOut", data);
+      return data;
+    } catch (err: any) {
+      console.log(err);
+      if (err.response) {
+        const { data } = err.response;
+        const { error, message, status } = data;
+        console.log(
+          `error in axios response during signOut process: ${message}, status: ${status}, error: ${error}`
+        );
+        return rejectWithValue({
+          message,
+          status,
+        });
+      } else if (err.request) {
+        const { message } = err;
+        console.log(`error in http request during singOut process: ${message}`);
+        return rejectWithValue({ message, status: 0 });
+      } else {
+        console.log("Unknown Error during signOut process", err.message);
       }
     }
   }
@@ -470,11 +515,16 @@ const accountSlice = createSlice({
         const userId = helperGetUserIdFromToken(action.payload ?? "");
         state.token = action.payload ?? state.token;
         state.userId = userId;
+        state.isSignedIn = true;
       })
       .addCase(signIn.fulfilled, (state, action) => {
         const userId = helperGetUserIdFromToken(action.payload ?? "");
         state.token = action.payload ?? state.token;
         state.userId = userId;
+        state.isSignedIn = true;
+      })
+      .addCase(signOut.fulfilled, (state, action) => {
+        state.isSignedIn = !action.payload ?? state.isSignedIn;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload ?? state.user;
@@ -512,3 +562,5 @@ export const selectEductionLevels = (state: RootState) =>
   state.account.educationLevels;
 
 export const selectUser = (state: RootState) => state.account.user;
+export const selectIsSignedIn = (state: RootState) => state.account.isSignedIn;
+export const selectUserId = (state: RootState) => state.account.userId;

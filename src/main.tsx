@@ -13,7 +13,7 @@ import {
 import About from "./pages/About/About.tsx";
 import Communities from "./pages/Communities/Communities.tsx";
 import Error from "./pages/Error/Error.tsx";
-import Login from "./pages/Login/Login.tsx";
+import Login from "./pages/Login/Authentication.tsx";
 import Problem from "./pages/Problem/Problem.tsx";
 import ProblemsList from "./pages/ProblemList/ProblemsList.tsx";
 import { store } from "./app/store.ts";
@@ -23,6 +23,9 @@ import RestorePassword from "./pages/RestorePassword/RestorePassword.tsx";
 import RestorePasswordForm from "./components/restore-password-form/restore-password-form.component.tsx";
 import MailConfirmation from "./components/mail-confirm/mail-confirm.component.tsx";
 import CreateOrEditProblem from "./pages/CreateOrEditProblem/CreateOrEditProblem.tsx";
+import Authentication from "./pages/Login/Authentication.tsx";
+import SignIn from "./components/sign-in/sign-in.component.tsx";
+import SignUp from "./components/sign-up/sign-up.component.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,7 +41,14 @@ const router = createBrowserRouter(
         path="communities"
         errorElement={<Error />}
       />
-      <Route element={<Login />} path="login" errorElement={<Error />} />
+      <Route
+        element={<Authentication />}
+        path="authentication"
+        errorElement={<Error />}
+      >
+        <Route element={<SignIn />} path="sign-in" />
+        <Route element={<SignUp />} path="sign-up" />
+      </Route>
       <Route element={<ProblemsList />} index errorElement={<Error />} />
       <Route
         element={<Problem />}

@@ -173,6 +173,24 @@ export const getProblems = createAsyncThunk(PROBLEMS_ACTION_TYPE.GET_PROBLEMS,as
     console.log("error after getProblems:", err);
   }
 })
+export const subscribeOnProblem = createAsyncThunk(PROBLEMS_ACTION_TYPE.GET_PROBLEMS,async (problemId: string, {getState}) => {
+  const {
+    account: { token },
+  } = getState() as RootState;
+  try{
+    const { data }:{data: boolean} = await axios.put(`${PROBLEMS_URL}/subscribeonproblem/${problemId}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    console.log('response after subscribeOnProblem:', data);
+    return data;
+  }catch(err: any){
+    console.log("error after subscribeOnProblem:", err);
+  }
+})
+
 
 const problemsSlice = createSlice({
   name: "problems",

@@ -20,7 +20,17 @@ export const Motto = styled(Title)`
   color: white;
   font-style: italic;
 `;
+export const LinksContainer = styled.div`
+  display: flex;
+  gap: 2em;
+  justify-content: space-between;
+  align-items: center;
+  min-width: fit-content;
+  height: fit-content;
+`;
+
 export const HeaderLink = styled(Link)`
+  user-select: none;
   color: white;
   font-size: 1em;
   font-family: "Ubuntu", sans-serif;
@@ -32,10 +42,10 @@ export const HeaderLink = styled(Link)`
     transform: scale(1.1);
   }
 `;
-export const LinksContainer = styled.div`
+
+export const SwitcherBox = styled.div`
   display: flex;
+  align-items: center;
+  width: 11em;
   gap: 2em;
-  justify-content: space-between;
-  min-width: fit-content;
-  height: fit-content;
 `;

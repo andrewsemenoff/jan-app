@@ -41,7 +41,7 @@ const SignIn = () => {
 
   return (
     <SignInForm>
-      <Title style={{ textAlign: "center" }}>Log In</Title>
+      <Title style={{ textAlign: "center" }}>Sign In</Title>
       <Field fieldName="Email">
         <CustomInput type="email" value={email} onChange={handleEmailChange} />
       </Field>
@@ -64,7 +64,7 @@ const SignIn = () => {
         style={{ border: "none" }}
         onClick={onLoginClicked}
       >
-        Log in
+        Sign in
       </CustomButton>
       <SmallText style={{ textAlign: "center" }}>
         Forgot your password?
