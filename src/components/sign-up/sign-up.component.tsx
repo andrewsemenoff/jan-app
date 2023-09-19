@@ -30,10 +30,6 @@ const SignUp = () => {
   const dispatch = useAppDispatch();
   const scientificInterests = useAppSelector(selectCommunitiesNames);
   const educationLevels = useAppSelector(selectEductionLevels);
-  useEffect(() => {
-    dispatch(getEductionLevels());
-    dispatch(getCommunitiesNames());
-  }, []);
 
   const { isMailValid, checkIsMailValid } = useEmailValidation();
   const { isPassValid, checkIsPassValid } = usePassValidation(minLengthOfPass);

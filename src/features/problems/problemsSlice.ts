@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { PROBLEMS_URL } from "../../assets/hostConfig";
 import { RootState } from "../../app/store";
+import { PROBLEMS_URL } from "../../assets/hostConfig";
+import { Solution } from "../solutions/solutionsSlice";
 
 export enum PROBLEMS_ACTION_TYPE {
   ADD_PROBLEM = "problems/addProblem",
@@ -16,6 +17,7 @@ export enum PROBLEMS_ACTION_TYPE {
   GET_PROBLEMS_BY_AUTHOR = "problems/getProblemsByAuthor",
   GET_PROBLEMS_BY_COMMUNITIES = "problems/getProblemsByCommunities",
   GET_CURRENT_AWARD = "problems/getCurrentAward",
+  SUBSCRIBE = "problems/subscribe",
 }
 export interface Donation {
   profileId: string;
@@ -24,7 +26,7 @@ export interface Donation {
   date: string;
 }
 
-interface actionAuthorInfo {
+export interface actionAuthorInfo {
   profileId: string;
   profileRating: number;
   dateCreated: number;
@@ -64,9 +66,9 @@ export interface Problem {
   type: string;
 }
 
-interface InitialProblems{
-  problems: Problem[],
-  currentProblem: Problem,
+interface InitialProblems {
+  problems: Problem[];
+  currentProblem: Problem;
 }
 
 const initialState: InitialProblems = {
@@ -97,7 +99,7 @@ const initialState: InitialProblems = {
     comments: [],
     solutions: [],
     type: "",
-  }
+  },
 };
 
 export const addProblem = createAsyncThunk(
@@ -107,7 +109,7 @@ export const addProblem = createAsyncThunk(
       account: { token },
     } = getState() as RootState;
     try {
-      const { data }:{data: Problem} = await axios.post(
+      const { data }: { data: Problem } = await axios.post(
         `${PROBLEMS_URL}/createproblem`,
         newProblem,
         {
@@ -117,99 +119,127 @@ export const addProblem = createAsyncThunk(
           },
         }
       );
-      console.log('response after addProblem:', data);
-      return data
+      console.log("response after addProblem:", data);
+      return data;
     } catch (err: any) {
       console.log("error after addProblem:", err);
     }
   }
 );
-export const editProblem = createAsyncThunk(PROBLEMS_ACTION_TYPE.EDIT_PROBLEM,async (updatedProblem:InitialProblem, {getState}) => {
-  const {
-    account: { token },
-  } = getState() as RootState;
-  try{
-    await axios.put(`${PROBLEMS_URL}/editproblem/`,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    } )
-  }catch(err: any){
-
+export const editProblem = createAsyncThunk(
+  PROBLEMS_ACTION_TYPE.EDIT_PROBLEM,
+  async (updatedProblem: InitialProblem, { getState }) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      await axios.put(`${PROBLEMS_URL}/editproblem/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err: any) {}
   }
-})
-export const getOneProblem = createAsyncThunk(PROBLEMS_ACTION_TYPE.GET_ONE_PROBLEM,async (problem_id:string, {getState}) => {
-  const {
-    account: { token },
-  } = getState() as RootState;
-  try{
-    const { data }:{data: Problem} = await axios.get(`${PROBLEMS_URL}/getproblem/${problem_id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-    console.log('response after getOneProblem:', data);
-    return data
-  }catch(err: any){
-    console.log("error after getOneProblem:", err);
+);
+export const getOneProblem = createAsyncThunk(
+  PROBLEMS_ACTION_TYPE.GET_ONE_PROBLEM,
+  async (problem_id: string, { getState }) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: Problem } = await axios.get(
+        `${PROBLEMS_URL}/getproblem/${problem_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response after getOneProblem:", data);
+      return data;
+    } catch (err: any) {
+      console.log("error after getOneProblem:", err);
+    }
   }
-})
-export const getProblems = createAsyncThunk(PROBLEMS_ACTION_TYPE.GET_PROBLEMS,async (_, {getState}) => {
-  const {
-    account: { token },
-  } = getState() as RootState;
-  try{
-    const { data }:{data: Problem[]} = await axios.get(`${PROBLEMS_URL}/getproblems`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-    console.log('response after getProblems:', data);
-    return data;
-  }catch(err: any){
-    console.log("error after getProblems:", err);
+);
+export const getProblems = createAsyncThunk(
+  PROBLEMS_ACTION_TYPE.GET_PROBLEMS,
+  async (_, { getState }) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: Problem[] } = await axios.get(
+        `${PROBLEMS_URL}/getproblems`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response after getProblems:", data);
+      return data;
+    } catch (err: any) {
+      console.log("error after getProblems:", err);
+    }
   }
-})
-export const subscribeOnProblem = createAsyncThunk(PROBLEMS_ACTION_TYPE.GET_PROBLEMS,async (problemId: string, {getState}) => {
-  const {
-    account: { token },
-  } = getState() as RootState;
-  try{
-    const { data }:{data: boolean} = await axios.put(`${PROBLEMS_URL}/subscribeonproblem/${problemId}`, null, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-    console.log('response after subscribeOnProblem:', data);
-    return data;
-  }catch(err: any){
-    console.log("error after subscribeOnProblem:", err);
+);
+export const subscribeOnProblem = createAsyncThunk(
+  PROBLEMS_ACTION_TYPE.SUBSCRIBE,
+  async (problemId: string, { getState }) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: boolean } = await axios.put(
+        `${PROBLEMS_URL}/subscribeonproblem/${problemId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response after subscribeOnProblem:", data);
+      return data;
+    } catch (err: any) {
+      console.log("error after subscribeOnProblem:", err);
+    }
   }
-})
-
+);
 
 const problemsSlice = createSlice({
   name: "problems",
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(addProblem.fulfilled, (state, action)=>{
-        state.currentProblem = action.payload?? state.currentProblem;
-    });
-    builder.addCase(getOneProblem.fulfilled, (state, action)=>{
-        state.currentProblem = action.payload?? state.currentProblem;
-    });
-    builder.addCase(getProblems.fulfilled, (state, action)=>{
-        state.problems = action.payload?? state.problems;
-    });
+    builder.addCase(
+      addProblem.fulfilled,
+      (state, action) => {
+        state.currentProblem = action.payload ?? state.currentProblem;
+      }
+    );
+    builder.addCase(
+      getOneProblem.fulfilled,
+      (state, action) => {
+        state.currentProblem = action.payload ?? state.currentProblem;
+      }
+    );
+    builder.addCase(
+      getProblems.fulfilled,
+      (state, action) => {
+        state.problems = action.payload ?? state.problems;
+      }
+    );
   },
 });
 
-
 export default problemsSlice.reducer;
-export const selectCurrentProblem = (state: RootState)=>state.problems.currentProblem;
-export const selectAllProblems =(state: RootState)=>state.problems.problems;
+export const selectCurrentProblem = (state: RootState) =>
+  state.problems.currentProblem;
+export const selectAllProblems = (state: RootState) => state.problems.problems;

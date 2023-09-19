@@ -14,7 +14,7 @@ const SignInSwitcher = () => {
     navigate("/");
   };
   return (
-    <Oval>
+    <Oval $isSignedIn= {isSignedIn}>
       <CustomAvatar
         onClick={() => {
           if (!isSignedIn) {
@@ -26,9 +26,9 @@ const SignInSwitcher = () => {
             setIsSignInMode((prev) => !prev);
           } else handleSignOutClicked();
         }}
-        isSignedIn={isSignedIn}
+        $isSignedIn={isSignedIn}
       />
-      <SwitcherText isSignedIn={isSignedIn}>
+      <SwitcherText $isSignedIn={isSignedIn}>
         {isSignedIn ? "sign out" : isSignInMode ? "sign in" : "sign up"}
       </SwitcherText>
     </Oval>

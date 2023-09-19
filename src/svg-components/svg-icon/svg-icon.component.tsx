@@ -10,7 +10,9 @@ import {
   THUMB_UP,
   PENCIL,
   SAVE, 
-  CANCEL
+  CANCEL,
+  COMMENTS,
+  SOLUTIONS,
 } from "./svg-paths";
 
 export interface SvgIconProps extends SVGProps<SVGSVGElement> {
@@ -34,7 +36,9 @@ export enum SVG_PATH {
   EYE,
   PENCIL,
   SAVE,
-  CANCEL
+  CANCEL,
+  COMMENTS,
+  SOLUTIONS,
 }
 
 const getSvgPath = (path: SVG_PATH) =>
@@ -49,6 +53,8 @@ const getSvgPath = (path: SVG_PATH) =>
     [SVG_PATH.PENCIL]: PENCIL,
     [SVG_PATH.SAVE]: SAVE,
     [SVG_PATH.CANCEL]: CANCEL,
+    [SVG_PATH.COMMENTS]: COMMENTS,
+    [SVG_PATH.SOLUTIONS]: SOLUTIONS,
   }[path]);
 
 const SvgIcon = ({
@@ -69,7 +75,7 @@ const SvgIcon = ({
     height: size,
     viewBox: viewBox,
     fill: fill,
-    $fill_on_hover: fillOnHover,
+    'data-fillonhover': fillOnHover,
     cursor: "pointer",
     style: style,
   };

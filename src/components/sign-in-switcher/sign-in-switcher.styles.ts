@@ -18,21 +18,26 @@ const fadeIn = keyframes`
   }
 `;
 
-export const Oval = styled.div`
+interface OvalProps {
+  $isSignedIn: boolean;
+}
+
+export const Oval = styled.div<OvalProps>`
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: grey;
+  background-color: ${({ $isSignedIn }) =>
+    $isSignedIn ? "#a4d72e" : "#d3d3d3"};
   width: 5.8em;
   height: 1.5em;
   border-radius: 1em;
 `;
 interface CustomAvatarProps {
-  isSignedIn: boolean;
+  $isSignedIn: boolean;
 }
 interface SwitcherTextProps {
-  isSignedIn: boolean;
+  $isSignedIn: boolean;
 }
 
 export const CustomAvatar = styled.div<CustomAvatarProps>`
@@ -42,14 +47,15 @@ export const CustomAvatar = styled.div<CustomAvatarProps>`
   width: 1.3em;
   aspect-ratio: 1/1;
   border-radius: 50%;
-  background-color: #0984e3;
+  background-color: ${({ $isSignedIn = false }) =>
+    $isSignedIn ? "#709220" : "#0984e3"};
   cursor: pointer;
   transition: all ease-in-out 0.5s;
   transform: translateX(
-    ${({ isSignedIn = false }) => (isSignedIn ? "4.3em" : "0%")}
+    ${({ $isSignedIn = false }) => ($isSignedIn ? "4.3em" : "0%")}
   );
   &:hover {
-    filter: brightness(1.5);
+    filter: brightness(1.4);
   }
 `;
 
@@ -61,12 +67,12 @@ export const SwitcherText = styled.div<SwitcherTextProps>`
   width: 4em;
   opacity: 1;
   text-align: center;
-  color: #b0c7d8;
+  color: ${({ $isSignedIn = false }) => ($isSignedIn ? "white" : "#0984e3")};
   font-size: 1em;
   font-family: "Ubuntu", sans-serif;
   transition: all ease-in-out 0.5s;
   transform: translateX(
-    ${({ isSignedIn = false }) => (!isSignedIn ? "1.2em" : "0%")}
+    ${({ $isSignedIn = false }) => ($isSignedIn ? "0%" : "1.2em")}
   );
   animation: ${fadeIn} 0.3s ease;
 `;

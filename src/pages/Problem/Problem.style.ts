@@ -38,15 +38,6 @@ export const RightBox = styled.div`
 `;
 export const DetailedText = styled.div``;
 
-export const CommentTextArea = styled.textarea`
-  ${textArea};
-  min-height: 3em;
-  max-height: 5em;
-`;
-export const SolutionTextArea = styled.textarea`
-  ${textArea}
-  min-height: 6em;
-`;
 export const HorizontalContainer = styled.div`
   position: relative;
   display: flex;

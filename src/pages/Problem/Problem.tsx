@@ -1,7 +1,6 @@
-import { format, formatDistanceToNow, formatISO, parseISO } from "date-fns";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { InputWithTitleWrapper, SmallText, Title } from "../../App.style";
+import { SmallText, Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import CustomButton, {
   ButtonType,
@@ -9,6 +8,8 @@ import CustomButton, {
 import { CommunitiesListBox } from "../../components/problem-creation/problem-creation.styles";
 import { CommunityLabel } from "../../components/problem-item/problem-item.styles";
 import ReactionBox from "../../components/reaction-box/reaction-box.component";
+import SolutionsAndComments from "../../components/solutions-and-comments/solutions-and-comments.component";
+import { selectUserId } from "../../features/account/accountSlice";
 import {
   getOneProblem,
   selectCurrentProblem,
@@ -20,17 +21,14 @@ import SvgIcon, {
 } from "../../svg-components/svg-icon/svg-icon.component";
 import {
   ButtonsWrapper,
-  CommentTextArea,
   DetailedText,
   FlexWrapper,
   LeftBox,
   MainSectionForProblemPage,
   RightBox,
-  SolutionTextArea,
   SponsorsWrapper,
   TitleSectionForProblemPage,
 } from "./Problem.style";
-import { selectUser, selectUserId } from "../../features/account/accountSlice";
 
 const Problem = () => {
   const { problem_id } = useParams();
@@ -47,32 +45,35 @@ const Problem = () => {
     dateCreated,
     authorId,
     interactions: { donations, totalLikes, totalDislikes, subscriptions },
+    solutions,
+    comments,
   } = problem;
 
   const canSubscribe = authorId !== userId;
-  const isSubscribed = subscriptions.some((s) => s.profileId === userId);
-  const handleSubscribe = () => {
-    dispatch(subscribeOnProblem(id));
+  const isSubscribed = subscriptions.some((s) => {
+    console.log("profileId:", s.profileId);
+    console.log("userId:", userId);
+    return s.profileId === userId;
+  });
+  const handleSubscribe = async () => {
+    await dispatch(subscribeOnProblem(id));
+    await dispatch(getOneProblem(id));
   };
+
   console.log("current problem:", problem);
 
-  const [solutionText, setSolutionText] = useState("");
   useEffect(() => {
     if (problem_id) {
       dispatch(getOneProblem(problem_id));
     }
   }, [problem_id]);
+
   useEffect(() => {
     if (typeof window?.MathJax !== "undefined") {
       window?.MathJax.typesetClear();
       window?.MathJax.typeset();
     }
   }, [problem_id]);
-  const handleSolutionTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setSolutionText(e.target.value);
-  };
-
-  const isSubmitBtnDisabled = !solutionText.length;
 
   // const parsedDate = parseISO(dateCreated);
   // const distanceToNow = formatDistanceToNow(parsedDate);
@@ -101,42 +102,7 @@ const Problem = () => {
               <CommunityLabel key={index}>{c}</CommunityLabel>
             ))}
           </CommunitiesListBox>
-          <InputWithTitleWrapper style={{ position: "relative" }}>
-            <Title>Comment: </Title>
-            <CommentTextArea
-              placeholder="Type your comment here"
-              maxLength={200}
-              rows={3}
-            />
-            <CustomButton
-              buttonType={ButtonType.ROUND_BUTTON}
-              size="2.5em"
-              style={{ position: "absolute", right: ".2em", bottom: ".2em" }}
-            >
-              <SvgIcon
-                svgPath={SVG_PATH.SEND_MESSAGE}
-                style={{ position: "relative", left: "5%" }}
-                fill="white"
-                size="60%"
-              />
-            </CustomButton>
-          </InputWithTitleWrapper>
-          <InputWithTitleWrapper>
-            <Title>Propose your solution</Title>
-            <SolutionTextArea
-              value={solutionText}
-              onChange={handleSolutionTextChange}
-              placeholder="Type your solution"
-            />
-          </InputWithTitleWrapper>
           <ButtonsWrapper>
-            <CustomButton
-              disabled={isSubmitBtnDisabled}
-              buttonType={ButtonType.BASE}
-              style={{ width: "15em" }}
-            >
-              Submit
-            </CustomButton>
             {canSubscribe && (
               <CustomButton
                 onClick={handleSubscribe}
@@ -153,6 +119,7 @@ const Problem = () => {
               </CustomButton>
             )}
           </ButtonsWrapper>
+          <SolutionsAndComments solutions={solutions} comments={comments} problemId={id}/>
         </LeftBox>
         <RightBox>
           <SponsorsWrapper>

@@ -12,14 +12,14 @@ export const flash = keyframes`
 `;
 
 interface AnimatedSvgProps{
-  $fill_on_hover: string
+  'data-fillonhover': string
 }
 export const AnimatedSvg = styled.svg<AnimatedSvgProps>`
   transition: fill ease 1s;
   transition: transform ease 0.2;
   &:hover{
     transform: scale(1.3);
-    fill: ${({$fill_on_hover})=>$fill_on_hover}
+    fill: ${({'data-fillonhover': fillOnHover})=>fillOnHover}
   }
   &:active {
     animation: ${flash} 1s ease-out;

@@ -13,13 +13,13 @@ import {
   selectEductionLevels,
   selectUser,
 } from "../../features/account/accountSlice";
+import { selectCommunitiesNames } from "../../features/communities/communitiesSlice";
 import {
   AdditionalInfo,
   MainInfo,
   ProfileCard,
   ProfilePageWrapper,
 } from "./Profile.styles";
-import { selectCommunitiesNames } from "../../features/communities/communitiesSlice";
 
 const Profile = () => {
   const allCommunities = useAppSelector(selectCommunitiesNames);
@@ -39,6 +39,8 @@ const Profile = () => {
     wallet,
   } = useAppSelector(selectUser);
   const [education, setEducation] = useState(educationLevel);
+  
+
   return (
     <ProfilePageWrapper>
       <ProfileCard>
