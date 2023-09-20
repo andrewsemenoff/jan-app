@@ -1,31 +1,55 @@
-import { useState, ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { InputWithTitleWrapper, Title } from "../../App.style";
-import { SolutionTextArea, SolutionsBox } from "./solutions.styles";
-import CustomButton, { ButtonType } from "../button/button.component";
-import { useAppDispatch } from "../../app/hooks";
-import { Solution, addSolution } from "../../features/solutions/solutionsSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  addSolution,
+  getSolutions,
+  selectSolutions,
+} from "../../features/solutions/solutionsSlice";
 import SvgIcon, {
   SVG_PATH,
 } from "../../svg-components/svg-icon/svg-icon.component";
+import CustomButton, { ButtonType } from "../button/button.component";
+import SingleSolution from "../solution/solution.component";
+import { SolutionTextArea, SolutionsBox } from "./solutions.styles";
 
 interface SolutionsProps {
-  solutions: Solution[];
   problemId: string;
 }
-const Solutions = ({ problemId, solutions }: SolutionsProps) => {
+const Solutions = ({ problemId }: SolutionsProps) => {
   const dispatch = useAppDispatch();
+  const solutions = useAppSelector(selectSolutions);
   const [solutionText, setSolutionText] = useState("");
-  const canBeSend = !!solutionText.length;
+  const [isPending, setIsPending] = useState(false);
+  const canBeSend = !!solutionText.length && !isPending;
+
+  useEffect(() => {
+    dispatch(getSolutions({ problemId }));
+  }, []);
+
   const handleSolutionTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setSolutionText(e.target.value);
   };
   const handleSendClicked = async () => {
-    await dispatch(
-      addSolution({ problemId: problemId, details: solutionText })
-    );
+    if (canBeSend) {
+      try {
+        setIsPending(true);
+        await dispatch(
+          addSolution({ problemId: problemId, details: solutionText })
+        ).unwrap();
+        setSolutionText("");
+      } catch (err: any) {
+        console.log("error during addSolution");
+      } finally {
+        setIsPending(false);
+      }
+    }
   };
   return (
     <SolutionsBox>
+      {
+        solutions.map((s,index)=><SingleSolution solution={s} key={index}/>)
+      }
       <InputWithTitleWrapper style={{ position: "relative" }}>
         <Title>Propose your solution:</Title>
         <SolutionTextArea

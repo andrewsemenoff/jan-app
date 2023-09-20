@@ -45,8 +45,6 @@ const Problem = () => {
     dateCreated,
     authorId,
     interactions: { donations, totalLikes, totalDislikes, subscriptions },
-    solutions,
-    comments,
   } = problem;
 
   const canSubscribe = authorId !== userId;
@@ -119,7 +117,7 @@ const Problem = () => {
               </CustomButton>
             )}
           </ButtonsWrapper>
-          <SolutionsAndComments solutions={solutions} comments={comments} problemId={id}/>
+          <SolutionsAndComments problemId={id}/>
         </LeftBox>
         <RightBox>
           <SponsorsWrapper>

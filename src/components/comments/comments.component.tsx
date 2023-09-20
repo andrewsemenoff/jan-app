@@ -1,19 +1,18 @@
-import { useState, ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { InputWithTitleWrapper, Title } from "../../App.style";
-import CustomButton, { ButtonType } from "../button/button.component";
+import { useAppDispatch } from "../../app/hooks";
+import { addComment } from "../../features/comments/commentsSlice";
 import SvgIcon, {
   SVG_PATH,
 } from "../../svg-components/svg-icon/svg-icon.component";
+import CustomButton, { ButtonType } from "../button/button.component";
 import { CommentTextArea, CommentsBox } from "./comments.styles";
-import { useAppDispatch } from "../../app/hooks";
-import { addComment } from "../../features/comments/commentsSlice";
 
 interface CommentsProps{
-  comments: Comment[],
   problemId: string,
 }
 
-const Comments = ({comments, problemId}: CommentsProps) => {
+const Comments = ({problemId}: CommentsProps) => {
 
   const dispatch = useAppDispatch();
   const [newComment, setNewComment] = useState("");

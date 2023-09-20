@@ -13,14 +13,10 @@ import Comments from "../comments/comments.component";
 import Solutions from "../solutions/solutions.component";
 
 interface SolutionsAndCommentsProps {
-  solutions: Solution[];
-  comments: Comment[];
   problemId: string;
 }
 
 const SolutionsAndComments = ({
-  solutions,
-  comments,
   problemId
 }: SolutionsAndCommentsProps) => {
   const [swiper, setSwiper] = useState<any>();
@@ -60,10 +56,10 @@ const SolutionsAndComments = ({
         onSlideChange={(swiper) => setActiveTab(swiper.activeIndex)}
       >
         <SwiperSlide>
-          <Solutions solutions= {solutions} problemId={problemId} />
+          <Solutions problemId={problemId} />
         </SwiperSlide>
         <SwiperSlide>
-          <Comments comments={comments} problemId={problemId} />
+          <Comments problemId={problemId} />
         </SwiperSlide>
       </Swiper>
     </div>
