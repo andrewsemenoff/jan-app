@@ -117,7 +117,7 @@ const Problem = () => {
               </CustomButton>
             )}
           </ButtonsWrapper>
-          <SolutionsAndComments problemId={id}/>
+          {problem_id&&<SolutionsAndComments problemId={problem_id}/>}
         </LeftBox>
         <RightBox>
           <SponsorsWrapper>

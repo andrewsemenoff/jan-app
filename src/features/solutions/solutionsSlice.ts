@@ -4,13 +4,10 @@ import axios from "axios";
 import { SOLUTIONS_URL } from "../../assets/hostConfig";
 
 export enum SOLUTIONS_ACTION_TYPE {
-  ADD_SOLUTION = "problems/addSolution",
-  GET_SOLUTIONS = "problems/getSolutions",
+  ADD_SOLUTION = "solutions/addSolution",
+  GET_SOLUTIONS = "solutions/getSolutions",
 }
 
-interface InitialSolution {
-  details: string;
-}
 export interface Solution {
   id: string;
   author: string;

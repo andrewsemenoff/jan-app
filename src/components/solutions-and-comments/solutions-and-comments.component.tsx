@@ -5,7 +5,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Solution } from "../../features/solutions/solutionsSlice";
 import SvgIcon, {
   SVG_PATH,
 } from "../../svg-components/svg-icon/svg-icon.component";
