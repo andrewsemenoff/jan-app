@@ -1,6 +1,12 @@
 import styled from "styled-components";
 import { MainSection, TitleSection, textArea } from "../../App.style";
 
+
+export const EditButtonsBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const FlexWrapper = styled.div`
   display: flex;
   justify-content: space-between;

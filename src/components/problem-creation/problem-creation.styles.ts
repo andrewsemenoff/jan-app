@@ -19,7 +19,6 @@ export const TitleSectionForProblemProposal = styled(TitleSection)`
   margin-bottom: 2em;
 `;
 
-
 export const FormsWrapper = styled.div`
   display: flex;
   flex-direction: column;

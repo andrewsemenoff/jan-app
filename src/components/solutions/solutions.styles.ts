@@ -6,7 +6,11 @@ export const SolutionTextArea = styled.textarea`
   min-height: 6em;
 `;
 
+
 export const SolutionsBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
   border-radius: 0.5em;
   padding: 1em;
   background-color: lightgray;

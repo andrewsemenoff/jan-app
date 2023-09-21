@@ -12,6 +12,7 @@ import SvgIcon, {
 import CustomButton, { ButtonType } from "../button/button.component";
 import SingleSolution from "../solution/solution.component";
 import { SolutionTextArea, SolutionsBox } from "./solutions.styles";
+import { Comment } from "react-loader-spinner";
 
 interface SolutionsProps {
   problemId: string;
@@ -35,9 +36,10 @@ const Solutions = ({ problemId }: SolutionsProps) => {
       try {
         setIsPending(true);
         await dispatch(
-          addSolution({ problemId: problemId, details: solutionText })
+          addSolution({ problemId, details: solutionText })
         ).unwrap();
         setSolutionText("");
+        await dispatch(getSolutions({ problemId }));
       } catch (err: any) {
         console.log("error during addSolution");
       } finally {
@@ -47,9 +49,9 @@ const Solutions = ({ problemId }: SolutionsProps) => {
   };
   return (
     <SolutionsBox>
-      {
-        solutions.map((s,index)=><SingleSolution solution={s} key={index}/>)
-      }
+      {solutions.map((s, index) => (
+        <SingleSolution solution={s} key={index} />
+      ))}
       <InputWithTitleWrapper style={{ position: "relative" }}>
         <Title>Propose your solution:</Title>
         <SolutionTextArea
@@ -57,6 +59,28 @@ const Solutions = ({ problemId }: SolutionsProps) => {
           value={solutionText}
           placeholder="Type your solution"
         />
+        {isPending && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+            }}
+          >
+            <Comment
+              visible={true}
+              height="5em"
+              width="5em"
+              ariaLabel="comment-loading"
+              wrapperClass="comment-wrapper"
+              color="#fff"
+              backgroundColor="#0984e3"
+            />
+          </div>
+        )}
         <CustomButton
           onClick={handleSendClicked}
           disabled={!canBeSend}
@@ -66,7 +90,6 @@ const Solutions = ({ problemId }: SolutionsProps) => {
             position: "absolute",
             right: ".2em",
             bottom: ".2em",
-            backgroundColor: canBeSend ? "#0984e3" : "grey",
           }}
         >
           <SvgIcon

@@ -1,13 +1,9 @@
-import { ReactNode, CSSProperties } from "react";
+import { ButtonHTMLAttributes } from "react";
 import { BasicButton, InvertedButton, RoundButton } from "./button.styles";
 
-interface CustomButtonProps {
+interface CustomButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>  {
   buttonType: ButtonType;
-  children: ReactNode;
-  onClick?: () => void;
-  style?: CSSProperties;
   size?: string;
-  disabled?: boolean
 }
 
 export enum ButtonType {
@@ -16,16 +12,16 @@ export enum ButtonType {
   ROUND_BUTTON,
 }
 
-const CustomButton = ({ buttonType, children, onClick, style, size, disabled }: CustomButtonProps) => {
+const CustomButton = ({ buttonType, children, size, disabled, ...props }: CustomButtonProps) => {
   switch (buttonType) {
     case ButtonType.BASE:
-      return <BasicButton $disabled={disabled} onClick={onClick} style={style}>{children}</BasicButton>;
+      return <BasicButton {...props}  $disabled={disabled} >{children}</BasicButton>;
     case ButtonType.INVERTED:
-      return <InvertedButton $disabled={disabled} onClick={onClick} style={style}>{children}</InvertedButton>;
+      return <InvertedButton {...props} $disabled={disabled} >{children}</InvertedButton>;
     case ButtonType.ROUND_BUTTON:
-      return <RoundButton $disabled={disabled} onClick={onClick} style={style} size={size}>{children}</RoundButton>;
+      return <RoundButton {...props} $disabled={disabled}  size={size}>{children}</RoundButton>;
     default:
-      return <InvertedButton $disabled={disabled} onClick={onClick} style={style}>{children}</InvertedButton>;
+      return <InvertedButton {...props} $disabled={disabled} >{children}</InvertedButton>;
   }
 };
 

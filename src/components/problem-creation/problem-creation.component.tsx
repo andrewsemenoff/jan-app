@@ -3,7 +3,7 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import { InputWithTitleWrapper, MainSection, Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectCommunitiesNames } from "../../features/communities/communitiesSlice";
-import { addProblem, editProblem } from "../../features/problems/problemsSlice";
+import { Problem, addProblem, editProblem } from "../../features/problems/problemsSlice";
 import AutocompleteField from "../autocomplete-field/autocomplete-field.component";
 import CustomButton, { ButtonType } from "../button/button.component";
 import {
@@ -60,7 +60,7 @@ const ProblemCreation = ({ creationType, problem }: ProblemCreationProps) => {
     setSelectedCommunities(newValue);
   };
 
-  const handleButtonClicked = () => {
+  const handleButtonClicked = async () => {
     const newProblem = {
       title: title,
       details: description,
@@ -68,10 +68,17 @@ const ProblemCreation = ({ creationType, problem }: ProblemCreationProps) => {
     };
     switch (creationType) {
       case CREATION_TYPE.ADD_PROBLEM:
-        dispatch(addProblem(newProblem));
+        try {
+          const {id}  = await dispatch(addProblem(newProblem)).unwrap() as Problem ;
+          console.log('new problem: ', id);
+          navigate(`/edit-problem/${id}`)
+        } catch (err: any) {
+        } finally {
+        }
+
         break;
       case CREATION_TYPE.EDIT_PROBLEM:
-        dispatch(editProblem(newProblem));
+        await dispatch(editProblem(newProblem));
         break;
     }
   };

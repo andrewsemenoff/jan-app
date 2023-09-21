@@ -12,6 +12,7 @@ const disabled = css`
   }
 `;
 
+
 interface BaseForButtonProps {
   $disabled?: boolean;
 }

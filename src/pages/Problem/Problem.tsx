@@ -1,3 +1,4 @@
+import { format, formatISO, parseISO } from "date-fns";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { SmallText, Title } from "../../App.style";
@@ -22,6 +23,7 @@ import SvgIcon, {
 import {
   ButtonsWrapper,
   DetailedText,
+  EditButtonsBar,
   FlexWrapper,
   LeftBox,
   MainSectionForProblemPage,
@@ -29,6 +31,7 @@ import {
   SponsorsWrapper,
   TitleSectionForProblemPage,
 } from "./Problem.style";
+import { formatInTimeZone, utcToZonedTime } from "date-fns-tz";
 
 const Problem = () => {
   const { problem_id } = useParams();
@@ -73,9 +76,13 @@ const Problem = () => {
     }
   }, [problem_id]);
 
-  // const parsedDate = parseISO(dateCreated);
-  // const distanceToNow = formatDistanceToNow(parsedDate);
-  // const creationDate = formatISO(parsedDate);
+  const parsedDate = parseISO(dateCreated);
+
+  const israelTimezone = 'Asia/Jerusalem';
+ 
+  const israelDate = utcToZonedTime(parsedDate, israelTimezone);
+
+const formattedDate = format(israelDate, 'dd/MM/yyyy HH:mm');
 
   return (
     <>
@@ -88,9 +95,16 @@ const Problem = () => {
         </FlexWrapper>
         <FlexWrapper>
           <SmallText>Posted by {author}</SmallText>
-          <SmallText>{/* {distanceToNow} ago / {creationDate} */}</SmallText>
+          <SmallText>{formattedDate}</SmallText>
         </FlexWrapper>
+        <EditButtonsBar>
+          <CustomButton disabled={true} buttonType={ButtonType.BASE}>
+            Edit
+          </CustomButton>
+          <CustomButton buttonType={ButtonType.BASE}>Delete</CustomButton>
+        </EditButtonsBar>
       </TitleSectionForProblemPage>
+
       <MainSectionForProblemPage>
         <LeftBox>
           <Title>{title}</Title>
@@ -100,6 +114,7 @@ const Problem = () => {
               <CommunityLabel key={index}>{c}</CommunityLabel>
             ))}
           </CommunitiesListBox>
+
           <ButtonsWrapper>
             {canSubscribe && (
               <CustomButton
@@ -117,7 +132,7 @@ const Problem = () => {
               </CustomButton>
             )}
           </ButtonsWrapper>
-          {problem_id&&<SolutionsAndComments problemId={problem_id}/>}
+          {problem_id && <SolutionsAndComments problemId={problem_id} />}
         </LeftBox>
         <RightBox>
           <SponsorsWrapper>
