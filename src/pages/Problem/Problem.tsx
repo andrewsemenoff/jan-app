@@ -77,12 +77,9 @@ const Problem = () => {
   }, [problem_id]);
 
   const parsedDate = parseISO(dateCreated);
+  console.log("parsedDate: ", parsedDate);
 
-  const israelTimezone = 'Asia/Jerusalem';
- 
-  const israelDate = utcToZonedTime(parsedDate, israelTimezone);
-
-const formattedDate = format(israelDate, 'dd/MM/yyyy HH:mm');
+const formattedDate = format(parsedDate, 'dd/MM/yyyy HH:mm');
 
   return (
     <>
