@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MainSection, TitleSection, textArea } from "../../App.style";
+import { MainSection, TitleSection } from "../../App.style";
 
 
 export const EditButtonsBar = styled.div`

@@ -1,4 +1,5 @@
-import { format, formatISO, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { SmallText, Title } from "../../App.style";
@@ -31,7 +32,6 @@ import {
   SponsorsWrapper,
   TitleSectionForProblemPage,
 } from "./Problem.style";
-import { formatInTimeZone, utcToZonedTime } from "date-fns-tz";
 
 const Problem = () => {
   const { problem_id } = useParams();

@@ -24,6 +24,7 @@ export const MainContentBox = styled.div`
   overflow: auto;
 `;
 export const TitleSection = styled.div`
+background-color: red;
   height: 15%;
   border-bottom: 0.05em solid grey;
   padding-bottom: 0.5em;
