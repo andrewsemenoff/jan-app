@@ -49,26 +49,6 @@ const Profile = () => {
 
   return (
     <ProfilePageWrapper>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: " 1em",
-          backgroundColor: "lightBlue",
-        }}
-      >
-        <div>{username}</div>
-        <div>{email}</div>
-        <div>{educationLevel}</div>
-        <div>{communities}</div>
-        <div>{avatar}</div>
-        <div>{location.city}</div>
-        <div>{location.country}</div>
-        <div>{password}</div>
-        <div>{roles}</div>
-        <div>{stats.solvedProblems}</div>
-        <div>{wallet}</div>
-      </div>
       <ProfileCard>
         <MainInfo>
           <Avatar

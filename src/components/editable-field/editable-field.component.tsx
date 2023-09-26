@@ -31,16 +31,6 @@ const EditableField = ({
     setValue(valueFromStore);
   }, [valueFromStore]);
 
-  if (title === "display name") {
-    console.log(
-      "Editable rendering ",
-      rendering,
-      " valueFromStore: ",
-      valueFromStore
-    );
-    console.log("Editable rendering ", rendering++, " value: ", value);
-  }
-
   const canSave = value !== valueFromStore;
   const [isEditModeOn, setIsEditModeOn] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
