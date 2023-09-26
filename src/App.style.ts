@@ -20,11 +20,12 @@ export const textArea = css`
 
 export const MainContentBox = styled.div`
   height: 75vh;
-  padding: 0 10%;
-  overflow: auto;
+  padding: 0 9%;
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
 `;
 export const TitleSection = styled.div`
-/* background-color: green; */
+  /* background-color: green; */
   height: 15%;
   border-bottom: 0.05em solid grey;
   padding-bottom: 0.5em;

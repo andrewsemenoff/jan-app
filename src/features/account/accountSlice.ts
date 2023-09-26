@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store";
 import { ACCOUNTING_URL } from "../../assets/hostConfig";
@@ -172,48 +172,6 @@ export const signIn = createAsyncThunk(
     }
   }
 );
-export const signOut = createAsyncThunk(
-  ACCOUNT_ACTION_TYPE.SIGN_OUT,
-  async (_, { rejectWithValue, getState }) => {
-    try {
-      const {
-        account: { token },
-      } = getState() as RootState;
-      const wholeToken = `Bearer ${token}`;
-      const { data }: { data: boolean } = await axios.post(
-        `${ACCOUNTING_URL}/logout`,
-        null,
-        {
-          headers: {
-            Authorization: wholeToken,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("data after logOut", data);
-      return data;
-    } catch (err: any) {
-      console.log(err);
-      if (err.response) {
-        const { data } = err.response;
-        const { error, message, status } = data;
-        console.log(
-          `error in axios response during signOut process: ${message}, status: ${status}, error: ${error}`
-        );
-        return rejectWithValue({
-          message,
-          status,
-        });
-      } else if (err.request) {
-        const { message } = err;
-        console.log(`error in http request during singOut process: ${message}`);
-        return rejectWithValue({ message, status: 0 });
-      } else {
-        console.log("Unknown Error during signOut process", err.message);
-      }
-    }
-  }
-);
 export const getUser = createAsyncThunk(
   ACCOUNT_ACTION_TYPE.GET_USER,
   async (_, { rejectWithValue, getState }) => {
@@ -221,12 +179,11 @@ export const getUser = createAsyncThunk(
       const {
         account: { token, userId },
       } = getState() as RootState;
-      const wholeToken = `Bearer ${token}`;
       const { data }: { data: User } = await axios.get(
         `${ACCOUNTING_URL}/getuser/${userId}`,
         {
           headers: {
-            Authorization: wholeToken,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -253,6 +210,49 @@ export const getUser = createAsyncThunk(
         return rejectWithValue({ message, status: 0 });
       } else {
         console.log("Unknown Error during getUser process", err.message);
+      }
+    }
+  }
+);
+export const signOut = createAsyncThunk(
+  ACCOUNT_ACTION_TYPE.SIGN_OUT,
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const {
+        account: { token },
+      } = getState() as RootState;
+      const wholeToken = `Bearer ${token}`;
+      const { data }: { data: boolean } = await axios.post(
+        `${ACCOUNTING_URL}/logout`,
+        null,
+        {
+          headers: {
+            Authorization: wholeToken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("data after logOut", data);
+      localStorage.setItem('token', '');
+      return data;
+    } catch (err: any) {
+      console.log(err);
+      if (err.response) {
+        const { data } = err.response;
+        const { error, message, status } = data;
+        console.log(
+          `error in axios response during signOut process: ${message}, status: ${status}, error: ${error}`
+        );
+        return rejectWithValue({
+          message,
+          status,
+        });
+      } else if (err.request) {
+        const { message } = err;
+        console.log(`error in http request during singOut process: ${message}`);
+        return rejectWithValue({ message, status: 0 });
+      } else {
+        console.log("Unknown Error during signOut process", err.message);
       }
     }
   }
@@ -448,7 +448,7 @@ export const editUserPassword = createAsyncThunk(
         null,
         { headers }
       );
-      console.log('data after editUserPassword:', data)
+      console.log("data after editUserPassword:", data);
     } catch (error: any) {
       console.log(error);
     }
@@ -508,26 +508,31 @@ export const getEductionLevels = createAsyncThunk(
 const accountSlice = createSlice({
   name: "account",
   initialState,
-  reducers: {},
+  reducers: {
+    setToken(state, action: PayloadAction<string>) {
+      state.token = action.payload ?? state.token;
+      const userId = helperGetUserIdFromToken(action.payload ?? "");
+      state.userId = userId;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(signUp.fulfilled, (state, action) => {
         const userId = helperGetUserIdFromToken(action.payload ?? "");
         state.token = action.payload ?? state.token;
         state.userId = userId;
-        state.isSignedIn = true;
       })
       .addCase(signIn.fulfilled, (state, action) => {
         const userId = helperGetUserIdFromToken(action.payload ?? "");
         state.token = action.payload ?? state.token;
         state.userId = userId;
-        state.isSignedIn = true;
       })
       .addCase(signOut.fulfilled, (state, action) => {
         state.isSignedIn = !action.payload ?? state.isSignedIn;
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload ?? state.user;
+        state.isSignedIn = true;
       })
       .addCase(editUserName.fulfilled, (state, action) => {
         state.user = action.payload ?? state.user;
@@ -557,7 +562,7 @@ const accountSlice = createSlice({
 });
 
 export default accountSlice.reducer;
-export const {} = accountSlice.actions;
+export const { setToken } = accountSlice.actions;
 export const selectEductionLevels = (state: RootState) =>
   state.account.educationLevels;
 

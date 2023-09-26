@@ -1,8 +1,7 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store";
 import { PROBLEMS_URL } from "../../assets/hostConfig";
-import { Solution } from "../solutions/solutionsSlice";
 
 export enum PROBLEMS_ACTION_TYPE {
   ADD_PROBLEM = "problems/addProblem",

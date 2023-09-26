@@ -62,9 +62,9 @@ const Solutions = ({ problemId }: SolutionsProps) => {
         {isPending && (
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
               width: "100%",
               height: "100%",
               position: "absolute",
@@ -86,23 +86,20 @@ const Solutions = ({ problemId }: SolutionsProps) => {
           disabled={!canBeSend}
           buttonType={ButtonType.ROUND_BUTTON}
           size="2.5em"
+          svgElement={{
+            svgPath: SVG_PATH.SEND_MESSAGE,
+            style: {
+              position: "relative",
+              left: "5%",
+            },
+            size: "60%",
+          }}
           style={{
             position: "absolute",
             right: ".2em",
             bottom: ".2em",
           }}
-        >
-          <SvgIcon
-            svgPath={SVG_PATH.SEND_MESSAGE}
-            style={{
-              position: "relative",
-              left: "5%",
-              cursor: canBeSend ? "pointer" : "not-allowed",
-            }}
-            fill="white"
-            size="60%"
-          />
-        </CustomButton>
+        />
       </InputWithTitleWrapper>
     </SolutionsBox>
   );

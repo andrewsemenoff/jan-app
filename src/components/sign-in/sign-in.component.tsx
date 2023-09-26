@@ -6,7 +6,7 @@ import EyeToggler from "../eye-toggler/eye-toggler.component";
 import Field from "../field/field.component";
 import { SignInForm, StyledLink } from "./sign-in.styles";
 import { useAppDispatch } from "../../app/hooks";
-import { STATUS, signIn } from "../../features/account/accountSlice";
+import { STATUS, getUser, signIn } from "../../features/account/accountSlice";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
@@ -27,7 +27,11 @@ const SignIn = () => {
     if (canSubmit) {
       try {
         setRequestStatus(STATUS.PENDING);
-        await dispatch(signIn({ email, password })).unwrap();
+        const res = await dispatch(signIn({ email, password })).unwrap();
+        await dispatch(getUser());
+        if (res) {
+          localStorage.setItem("token", res);
+        }
         setEmail("");
         setPassword("");
         navigate("/profile");

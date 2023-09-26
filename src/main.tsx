@@ -34,7 +34,7 @@ const router = createBrowserRouter(
         path="profile"
         element={<Profile />}
         loader={async () => {
-          await store.dispatch(getUser());
+          // await store.dispatch(getUser());
           await store.dispatch(getCommunitiesNames());
           return null;
         }}

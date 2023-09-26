@@ -1,5 +1,4 @@
 import Avatar from "@mui/material/Avatar";
-import { useState } from "react";
 import { Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import ChipsEditableField from "../../components/chips-editable-field/chips-editable-field";
@@ -20,6 +19,9 @@ import {
   ProfileCard,
   ProfilePageWrapper,
 } from "./Profile.styles";
+import { lightBlue } from "@mui/material/colors";
+
+let b = 0;
 
 const Profile = () => {
   const allCommunities = useAppSelector(selectCommunitiesNames);
@@ -38,11 +40,35 @@ const Profile = () => {
     stats,
     wallet,
   } = useAppSelector(selectUser);
-  const [education, setEducation] = useState(educationLevel);
-  
+  console.log(
+    "PROFILE rendering: ",
+    b++,
+    "user: ",
+    username,
+  );
 
   return (
     <ProfilePageWrapper>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: " 1em",
+          backgroundColor: "lightBlue",
+        }}
+      >
+        <div>{username}</div>
+        <div>{email}</div>
+        <div>{educationLevel}</div>
+        <div>{communities}</div>
+        <div>{avatar}</div>
+        <div>{location.city}</div>
+        <div>{location.country}</div>
+        <div>{password}</div>
+        <div>{roles}</div>
+        <div>{stats.solvedProblems}</div>
+        <div>{wallet}</div>
+      </div>
       <ProfileCard>
         <MainInfo>
           <Avatar
@@ -51,9 +77,7 @@ const Profile = () => {
             style={{ width: "5em", height: "5em" }}
           />
           <EditableField
-            handleSaveChanges={(name) =>
-              dispatch(editUserName(name))
-            }
+            handleSaveChanges={(name) => dispatch(editUserName(name))}
             title="display name"
             valueFromStore={username}
           />
@@ -84,7 +108,13 @@ const Profile = () => {
           />
           <div>
             communities:
-            <ChipsEditableField defaultItems={allCommunities} handleSaveChanges={(communities)=> dispatch(editUserCommunities(communities))} initialChips={communities} />
+            <ChipsEditableField
+              defaultItems={allCommunities}
+              handleSaveChanges={(communities) =>
+                dispatch(editUserCommunities(communities))
+              }
+              initialChips={communities}
+            />
           </div>
         </AdditionalInfo>
       </ProfileCard>

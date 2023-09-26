@@ -4,14 +4,38 @@ const disabled = css`
   background-color: gray;
   color: lightgray;
   cursor: not-allowed;
+
   &:hover {
     background-color: gray;
     color: lightgray;
     transform: translate(0, 0);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   }
+  svg {
+    fill: lightgrey;
+  }
+  &:hover svg {
+    fill: lightgrey;
+    cursor: not-allowed;
+  }
+`;
+const svgStyleForBasicBtn = css`
+  svg {
+    fill: #aad2f1;
+  }
+  &:hover svg {
+    fill: white;
+  }
 `;
 
+const svgStyleForInvertedBtn = css`
+  svg {
+    fill: #0984e3;
+  }
+  &:hover svg {
+    fill: black;
+  }
+`;
 
 interface BaseForButtonProps {
   $disabled?: boolean;
@@ -23,7 +47,7 @@ const BaseForButton = styled.button<BaseForButtonProps>`
   gap: 0.5em;
   height: 2em;
   width: fit-content;
-  padding: 1.3em 1em;
+  padding: 0.8em;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
   font-family: "Ubuntu", sans-serif;
@@ -38,6 +62,7 @@ export const BasicButton = styled(BaseForButton)`
   color: #aad2f1;
   background-color: #0984e3;
   border: 0.1em solid transparent;
+  
   &:hover {
     color: white;
   }
@@ -45,18 +70,22 @@ export const BasicButton = styled(BaseForButton)`
     transform: translate(2px, 2px);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 6px, rgba(0, 0, 0, 0.23) 0px 1px 6px;
   }
+  ${svgStyleForBasicBtn}
   ${({ $disabled }) => $disabled && disabled}
 `;
 export const InvertedButton = styled(BaseForButton)`
   color: #0984e3;
   border: 0.1em solid #0984e3;
+
   &:hover {
     color: black;
+    border: 0.1em solid black;
   }
   &:active {
     transform: translate(2px, 2px);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 6px, rgba(0, 0, 0, 0.23) 0px 1px 6px;
   }
+  ${svgStyleForInvertedBtn}
   ${({ $disabled }) => $disabled && disabled}
 `;
 

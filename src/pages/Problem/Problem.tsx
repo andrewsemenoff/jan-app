@@ -79,8 +79,6 @@ const Problem = () => {
   const parsedDate = parseISO(dateCreated);
   console.log("parsedDate: ", parsedDate);
 
-const formattedDate = format(parsedDate, 'dd/MM/yyyy HH:mm');
-
   return (
     <>
       <TitleSectionForProblemPage>
@@ -92,7 +90,7 @@ const formattedDate = format(parsedDate, 'dd/MM/yyyy HH:mm');
         </FlexWrapper>
         <FlexWrapper>
           <SmallText>Posted by {author}</SmallText>
-          <SmallText>{formattedDate}</SmallText>
+          <SmallText>{"dd/MM/YYYY hh:mm"}</SmallText>
         </FlexWrapper>
         <EditButtonsBar>
           <CustomButton disabled={true} buttonType={ButtonType.BASE}>
@@ -118,13 +116,12 @@ const formattedDate = format(parsedDate, 'dd/MM/yyyy HH:mm');
                 onClick={handleSubscribe}
                 buttonType={ButtonType.INVERTED}
                 style={{ width: "15em" }}
+                svgElement={{
+                  svgPath: SVG_PATH.BELL,
+                  fashion: Fashion.STATIC,
+                  size: "1.5em",
+                }}
               >
-                <SvgIcon
-                  svgPath={SVG_PATH.BELL}
-                  fashion={Fashion.STATIC}
-                  size="1.5em"
-                  fill="#0984e3"
-                />
                 {isSubscribed ? "Unsubscribe" : "Subscribe"}
               </CustomButton>
             )}

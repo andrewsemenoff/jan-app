@@ -13,6 +13,7 @@ import {
   CANCEL,
   COMMENTS,
   SOLUTIONS,
+  ADD_PROBLEM
 } from "./svg-paths";
 
 export interface SvgIconProps extends SVGProps<SVGSVGElement> {
@@ -39,6 +40,7 @@ export enum SVG_PATH {
   CANCEL,
   COMMENTS,
   SOLUTIONS,
+  ADD_PROBLEM,
 }
 
 const getSvgPath = (path: SVG_PATH) =>
@@ -55,6 +57,7 @@ const getSvgPath = (path: SVG_PATH) =>
     [SVG_PATH.CANCEL]: CANCEL,
     [SVG_PATH.COMMENTS]: COMMENTS,
     [SVG_PATH.SOLUTIONS]: SOLUTIONS,
+    [SVG_PATH.ADD_PROBLEM]: ADD_PROBLEM,
   }[path]);
 
 const SvgIcon = ({

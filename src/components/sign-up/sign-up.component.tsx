@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   STATUS,
   getEductionLevels,
+  getUser,
   selectEductionLevels,
   signUp,
 } from "../../features/account/accountSlice";
@@ -82,7 +83,8 @@ const SignUp = () => {
   const handleSignUpClicked = async () => {
     if (canSubmit) {
       try {
-        await dispatch(
+        setRequestStatus(STATUS.PENDING);
+        const res = await dispatch(
           signUp({
             username: displayName,
             email,
@@ -92,7 +94,10 @@ const SignUp = () => {
             password,
           })
         ).unwrap();
-        setRequestStatus(STATUS.PENDING);
+        if (res) {
+          localStorage.setItem("token", res);
+        }
+        await dispatch(getUser());
         navigate("/profile");
       } catch (error: any) {
       } finally {
