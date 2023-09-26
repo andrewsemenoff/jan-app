@@ -11,7 +11,7 @@ import { CommunitiesListBox } from "../../components/problem-creation/problem-cr
 import { CommunityLabel } from "../../components/problem-item/problem-item.styles";
 import ReactionBox from "../../components/reaction-box/reaction-box.component";
 import SolutionsAndComments from "../../components/solutions-and-comments/solutions-and-comments.component";
-import { selectUserId } from "../../features/account/accountSlice";
+import { selectIsSignedIn, selectUserId } from "../../features/account/accountSlice";
 import {
   getOneProblem,
   selectCurrentProblem,
@@ -37,6 +37,7 @@ const Problem = () => {
   const { problem_id } = useParams();
   const dispatch = useAppDispatch();
   const problem = useAppSelector(selectCurrentProblem);
+  const isSignedIn = useAppSelector(selectIsSignedIn);
   const userId = useAppSelector(selectUserId);
   const {
     id,
@@ -64,10 +65,10 @@ const Problem = () => {
   console.log("current problem:", problem);
 
   useEffect(() => {
-    if (problem_id) {
+    if (problem_id&&isSignedIn) {
       dispatch(getOneProblem(problem_id));
     }
-  }, [problem_id]);
+  }, [problem_id, isSignedIn]);
 
   useEffect(() => {
     if (typeof window?.MathJax !== "undefined") {

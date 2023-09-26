@@ -13,6 +13,7 @@ import CustomButton, { ButtonType } from "../button/button.component";
 import SingleSolution from "../solution/solution.component";
 import { SolutionTextArea, SolutionsBox } from "./solutions.styles";
 import { Comment } from "react-loader-spinner";
+import { selectIsSignedIn } from "../../features/account/accountSlice";
 
 interface SolutionsProps {
   problemId: string;
@@ -20,13 +21,16 @@ interface SolutionsProps {
 const Solutions = ({ problemId }: SolutionsProps) => {
   const dispatch = useAppDispatch();
   const solutions = useAppSelector(selectSolutions);
+  const isSignedIn = useAppSelector(selectIsSignedIn);
   const [solutionText, setSolutionText] = useState("");
   const [isPending, setIsPending] = useState(false);
   const canBeSend = !!solutionText.length && !isPending;
 
   useEffect(() => {
-    dispatch(getSolutions({ problemId }));
-  }, []);
+    if (isSignedIn) {
+      dispatch(getSolutions({ problemId }));
+    }
+  }, [isSignedIn]);
 
   const handleSolutionTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setSolutionText(e.target.value);
