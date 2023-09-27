@@ -3,7 +3,11 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import { InputWithTitleWrapper, MainSection, Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectCommunitiesNames } from "../../features/communities/communitiesSlice";
-import { Problem, addProblem, editProblem } from "../../features/problems/problemsSlice";
+import {
+  Problem,
+  addProblem,
+  editProblem,
+} from "../../features/problems/problemsSlice";
 import AutocompleteField from "../autocomplete-field/autocomplete-field.component";
 import CustomButton, { ButtonType } from "../button/button.component";
 import {
@@ -17,42 +21,65 @@ import {
   TitleTextArea,
 } from "./problem-creation.styles";
 import { useNavigate } from "react-router-dom";
+import { STATUS } from "../../features/account/accountSlice";
 
 export enum CREATION_TYPE {
   ADD_PROBLEM = "create problem",
-  EDIT_PROBLEM = "save changes",
+  EDIT_PROBLEM = "edit problem",
 }
 
 interface ProblemCreationProps {
   creationType: CREATION_TYPE;
   problem?: {
-    title: string | undefined;
-    description: string | undefined;
-    communities: string[] | undefined;
+    title: string;
+    description: string;
+    communities: string[];
+    problem_id: string;
   };
 }
+const arraysHaveSameStrings = (arr1: string[], arr2: string[]) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  return arr1.every((item) => arr2.includes(item));
+};
 
 const ProblemCreation = ({ creationType, problem }: ProblemCreationProps) => {
   const navigate = useNavigate();
-  const buttonName = creationType;
+  const dispatch = useAppDispatch();
+  const communities = useAppSelector(selectCommunitiesNames);
+
+  const buttonName =
+    creationType === CREATION_TYPE.ADD_PROBLEM
+      ? "create problem"
+      : "save changes";
   const titleSectionName =
     creationType === CREATION_TYPE.ADD_PROBLEM
       ? "Propose a problem"
       : "Edit problem";
-  const communities = useAppSelector(selectCommunitiesNames);
   const defaultTitle =
     "If the sum of two numbers is 15 and their difference is 5, find the two numbers";
   const defaultDescription =
     "When \\(a \\ne 0\\), there exists two solutions for\\(ax^2 + bx + c = 0\\) as \\[x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.\\] ";
 
-  const dispatch = useAppDispatch();
-  const [title, setTitle] = useState(problem?.title ?? defaultTitle);
-  const [description, setDescription] = useState(
-    problem?.description ?? defaultDescription
-  );
-  const [selectedCommunities, setSelectedCommunities] = useState<string[]>(
-    problem?.communities ?? []
-  );
+  const [requestStatus, setRequestStatus] = useState(STATUS.IDLE);
+
+  const initialTitle = problem?.title ?? defaultTitle;
+  const initialDescription = problem?.description ?? defaultDescription;
+  const initialCommunities = problem?.communities ?? [];
+
+  const [title, setTitle] = useState(initialTitle);
+  const [description, setDescription] = useState(initialDescription);
+  const [selectedCommunities, setSelectedCommunities] =
+    useState<string[]>(initialCommunities);
+
+  const isProblemChanged =
+    initialTitle !== title ||
+    initialDescription !== description ||
+    !arraysHaveSameStrings(initialCommunities, selectedCommunities);
+
+  const canClick = requestStatus === STATUS.IDLE && isProblemChanged;
+
   const handleCommunitiesChange = (
     event: SyntheticEvent<Element, Event>,
     newValue: string[]
@@ -69,16 +96,38 @@ const ProblemCreation = ({ creationType, problem }: ProblemCreationProps) => {
     switch (creationType) {
       case CREATION_TYPE.ADD_PROBLEM:
         try {
-          const {id}  = await dispatch(addProblem(newProblem)).unwrap() as Problem ;
-          console.log('new problem: ', id);
-          navigate(`/edit-problem/${id}`)
+          setRequestStatus(STATUS.PENDING);
+          const { id } = (await dispatch(
+            addProblem(newProblem)
+          ).unwrap()) as Problem;
+          console.log("new problem: ", id);
+          navigate(`/problem/${id}`);
         } catch (err: any) {
         } finally {
+          setRequestStatus(STATUS.IDLE);
         }
 
         break;
       case CREATION_TYPE.EDIT_PROBLEM:
-        await dispatch(editProblem(newProblem));
+        if (problem)
+          try {
+            setRequestStatus(STATUS.PENDING);
+            await dispatch(
+              editProblem({
+                updatedProblem: newProblem,
+                problem_id: problem?.problem_id,
+              })
+            ).unwrap();
+            navigate(`/problem/${problem.problem_id}`);
+          } catch (err: any) {
+          } finally {
+            setRequestStatus(STATUS.IDLE);
+          }
+        else
+          console.log(
+            "did not get problem object in problem-creation component"
+          );
+
         break;
     }
   };
@@ -148,6 +197,7 @@ const ProblemCreation = ({ creationType, problem }: ProblemCreationProps) => {
           <CustomButton
             buttonType={ButtonType.BASE}
             onClick={handleButtonClicked}
+            disabled={!canClick}
           >
             {buttonName}
           </CustomButton>

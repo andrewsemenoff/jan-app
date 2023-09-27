@@ -1,7 +1,7 @@
 import { format, parseISO } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { SmallText, Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import CustomButton, {
@@ -11,8 +11,13 @@ import { CommunitiesListBox } from "../../components/problem-creation/problem-cr
 import { CommunityLabel } from "../../components/problem-item/problem-item.styles";
 import ReactionBox from "../../components/reaction-box/reaction-box.component";
 import SolutionsAndComments from "../../components/solutions-and-comments/solutions-and-comments.component";
-import { selectIsSignedIn, selectUserId } from "../../features/account/accountSlice";
 import {
+  STATUS,
+  selectIsSignedIn,
+  selectUserId,
+} from "../../features/account/accountSlice";
+import {
+  deleteProblem,
   getOneProblem,
   selectCurrentProblem,
   subscribeOnProblem,
@@ -34,6 +39,8 @@ import {
 } from "./Problem.style";
 
 const Problem = () => {
+  const navigate = useNavigate();
+  const [deleteRequestStatus, setDeleteRequestStatus] = useState(STATUS.IDLE);
   const { problem_id } = useParams();
   const dispatch = useAppDispatch();
   const problem = useAppSelector(selectCurrentProblem);
@@ -50,22 +57,32 @@ const Problem = () => {
     authorId,
     interactions: { donations, totalLikes, totalDislikes, subscriptions },
   } = problem;
-
-  const canSubscribe = authorId !== userId;
+  const canDelete = deleteRequestStatus === STATUS.IDLE;
+  const isOwnProblem = authorId === userId;
   const isSubscribed = subscriptions.some((s) => {
-    console.log("profileId:", s.profileId);
-    console.log("userId:", userId);
     return s.profileId === userId;
   });
   const handleSubscribe = async () => {
     await dispatch(subscribeOnProblem(id));
     await dispatch(getOneProblem(id));
   };
-
-  console.log("current problem:", problem);
+  const handleDeleteClicked = async () => {
+    setDeleteRequestStatus(STATUS.PENDING);
+    try {
+      await dispatch(deleteProblem(id)).unwrap();
+      navigate("/");
+    } catch (err: any) {
+      console.log("error after delete problem was clicked");
+    } finally {
+      setDeleteRequestStatus(STATUS.IDLE);
+    }
+  };
+  const handleEditClicked = () => {
+    navigate(`/edit-problem/${id}`);
+  };
 
   useEffect(() => {
-    if (problem_id&&isSignedIn) {
+    if (problem_id && isSignedIn) {
       dispatch(getOneProblem(problem_id));
     }
   }, [problem_id, isSignedIn]);
@@ -84,7 +101,18 @@ const Problem = () => {
     <>
       <TitleSectionForProblemPage>
         <FlexWrapper>
-          <Title>Problem #{problem_id}</Title>
+          <div>
+            <SmallText style={{color: "grey"}}>{isSubscribed ? "Subscribed" : ""}</SmallText>
+            <Title>Problem #{problem_id}</Title>
+          </div>
+          <SvgIcon
+            fill={isSubscribed ? "black" : "grey"}
+            onClick={handleSubscribe}
+            svgPath={SVG_PATH.BELL}
+            fashion={Fashion.ANIMATED}
+            size="1.5em"
+          />
+
           <ReactionBox
             reactions={{ dislikes: totalDislikes, likes: totalLikes }}
           />
@@ -93,12 +121,23 @@ const Problem = () => {
           <SmallText>Posted by {author}</SmallText>
           <SmallText>{"dd/MM/YYYY hh:mm"}</SmallText>
         </FlexWrapper>
-        <EditButtonsBar>
-          <CustomButton disabled={true} buttonType={ButtonType.BASE}>
-            Edit
-          </CustomButton>
-          <CustomButton buttonType={ButtonType.BASE}>Delete</CustomButton>
-        </EditButtonsBar>
+        {isOwnProblem && (
+          <EditButtonsBar>
+            <CustomButton
+              onClick={handleEditClicked}
+              buttonType={ButtonType.INVERTED}
+            >
+              Edit
+            </CustomButton>
+            <CustomButton
+              disabled={!canDelete}
+              buttonType={ButtonType.INVERTED}
+              onClick={handleDeleteClicked}
+            >
+              Delete
+            </CustomButton>
+          </EditButtonsBar>
+        )}
       </TitleSectionForProblemPage>
 
       <MainSectionForProblemPage>
@@ -110,23 +149,6 @@ const Problem = () => {
               <CommunityLabel key={index}>{c}</CommunityLabel>
             ))}
           </CommunitiesListBox>
-
-          <ButtonsWrapper>
-            {canSubscribe && (
-              <CustomButton
-                onClick={handleSubscribe}
-                buttonType={ButtonType.INVERTED}
-                style={{ width: "15em" }}
-                svgElement={{
-                  svgPath: SVG_PATH.BELL,
-                  fashion: Fashion.STATIC,
-                  size: "1.5em",
-                }}
-              >
-                {isSubscribed ? "Unsubscribe" : "Subscribe"}
-              </CustomButton>
-            )}
-          </ButtonsWrapper>
           {problem_id && <SolutionsAndComments problemId={problem_id} />}
         </LeftBox>
         <RightBox>

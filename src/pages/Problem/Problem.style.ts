@@ -5,6 +5,8 @@ import { MainSection, TitleSection } from "../../App.style";
 export const EditButtonsBar = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: end;
+  gap: 1em;
 `;
 
 export const FlexWrapper = styled.div`
@@ -18,7 +20,7 @@ export const TitleSectionForProblemPage = styled(TitleSection)`
   display: flex;
   justify-content: space-between;
   margin-bottom: 2em;
-  padding-right: 25%;
+  /* padding-right: 25%; */
 `;
 
 export const MainSectionForProblemPage = styled(MainSection)`

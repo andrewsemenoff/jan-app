@@ -127,17 +127,27 @@ export const addProblem = createAsyncThunk(
 );
 export const editProblem = createAsyncThunk(
   PROBLEMS_ACTION_TYPE.EDIT_PROBLEM,
-  async (updatedProblem: InitialProblem, { getState }) => {
+  async (
+    {
+      updatedProblem,
+      problem_id,
+    }: { updatedProblem: InitialProblem; problem_id: string },
+    { getState }
+  ) => {
     const {
-      account: { token },
+      account: { token, userId },
     } = getState() as RootState;
     try {
-      await axios.put(`${PROBLEMS_URL}/editproblem/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      await axios.put(
+        `${PROBLEMS_URL}/editproblem/${userId}/${problem_id}`,
+        updatedProblem,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
     } catch (err: any) {}
   }
 );
@@ -148,10 +158,8 @@ export const getOneProblem = createAsyncThunk(
       account: { token },
     } = getState() as RootState;
     try {
-      console.log(
-        'token in getOneProblem: ', token
-      );
-      
+      console.log("token in getOneProblem: ", token);
+
       const { data }: { data: Problem } = await axios.get(
         `${PROBLEMS_URL}/getproblem/${problem_id}`,
         {
@@ -215,30 +223,44 @@ export const subscribeOnProblem = createAsyncThunk(
     }
   }
 );
+export const deleteProblem = createAsyncThunk(
+  PROBLEMS_ACTION_TYPE.DELETE_PROBLEM,
+  async (problemId: string, { getState }) => {
+    const {
+      account: { token, userId },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: Problem } = await axios.delete(
+        `${PROBLEMS_URL}/deleteproblem/${userId}/${problemId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response after deleteProblem:", data);
+      // return data;
+    } catch (err: any) {
+      console.log("error after deleteProblem:", err);
+    }
+  }
+);
 
 const problemsSlice = createSlice({
   name: "problems",
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(
-      addProblem.fulfilled,
-      (state, action) => {
-        state.currentProblem = action.payload ?? state.currentProblem;
-      }
-    );
-    builder.addCase(
-      getOneProblem.fulfilled,
-      (state, action) => {
-        state.currentProblem = action.payload ?? state.currentProblem;
-      }
-    );
-    builder.addCase(
-      getProblems.fulfilled,
-      (state, action) => {
-        state.problems = action.payload ?? state.problems;
-      }
-    );
+    builder.addCase(addProblem.fulfilled, (state, action) => {
+      state.currentProblem = action.payload ?? state.currentProblem;
+    });
+    builder.addCase(getOneProblem.fulfilled, (state, action) => {
+      state.currentProblem = action.payload ?? state.currentProblem;
+    });
+    builder.addCase(getProblems.fulfilled, (state, action) => {
+      state.problems = action.payload ?? state.problems;
+    });
   },
 });
 

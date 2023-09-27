@@ -9,6 +9,7 @@ import {
   getOneProblem,
   selectCurrentProblem,
 } from "../../features/problems/problemsSlice";
+import { getCommunitiesNames } from '../../features/communities/communitiesSlice';
 
 const CreateOrEditProblem = () => {
   const { problem_id } = useParams();
@@ -21,7 +22,9 @@ const CreateOrEditProblem = () => {
       dispatch(getOneProblem(problem_id));
     }
   }, [problem_id]);
-
+  useEffect(()=>{
+    dispatch(getCommunitiesNames())
+  })
   return problem_id ? (
     <ProblemCreation
       creationType={CREATION_TYPE.EDIT_PROBLEM}
@@ -29,6 +32,7 @@ const CreateOrEditProblem = () => {
         title: problem?.title,
         description: problem?.details,
         communities: problem?.communityNames,
+        problem_id: problem?.id,
       }}
     />
   ) : (
