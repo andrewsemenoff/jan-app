@@ -118,7 +118,6 @@ export const addProblem = createAsyncThunk(
           },
         }
       );
-      console.log("response after addProblem:", data);
       return data;
     } catch (err: any) {
       console.log("error after addProblem:", err);
@@ -158,8 +157,6 @@ export const getOneProblem = createAsyncThunk(
       account: { token },
     } = getState() as RootState;
     try {
-      console.log("token in getOneProblem: ", token);
-
       const { data }: { data: Problem } = await axios.get(
         `${PROBLEMS_URL}/getproblem/${problem_id}`,
         {
@@ -169,7 +166,6 @@ export const getOneProblem = createAsyncThunk(
           },
         }
       );
-      console.log("response after getOneProblem:", data);
       return data;
     } catch (err: any) {
       console.log("error after getOneProblem:", err);
@@ -192,7 +188,6 @@ export const getProblems = createAsyncThunk(
           },
         }
       );
-      console.log("response after getProblems:", data);
       return data;
     } catch (err: any) {
       console.log("error after getProblems:", err);
@@ -216,10 +211,56 @@ export const subscribeOnProblem = createAsyncThunk(
           },
         }
       );
-      console.log("response after subscribeOnProblem:", data);
       return data;
     } catch (err: any) {
       console.log("error after subscribeOnProblem:", err);
+    }
+  }
+);
+export const likeProblem = createAsyncThunk(
+  PROBLEMS_ACTION_TYPE.LIKE_PROBLEM,
+  async (problemId: string, { getState }) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: Problem } = await axios.put(
+        `${PROBLEMS_URL}/likeproblem/${problemId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response after likeProblem:", data);
+      return data;
+    } catch (err: any) {
+      console.log("error after likeProblem:", err);
+    }
+  }
+);
+export const dislikeProblem = createAsyncThunk(
+  PROBLEMS_ACTION_TYPE.DISLIKE_PROBLEM,
+  async (problemId: string, { getState }) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: Problem } = await axios.put(
+        `${PROBLEMS_URL}/dislikeproblem/${problemId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return data;
+    } catch (err: any) {
+      console.log("error after disLikeProblem:", err);
     }
   }
 );
@@ -252,15 +293,22 @@ const problemsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(addProblem.fulfilled, (state, action) => {
-      state.currentProblem = action.payload ?? state.currentProblem;
-    });
-    builder.addCase(getOneProblem.fulfilled, (state, action) => {
-      state.currentProblem = action.payload ?? state.currentProblem;
-    });
-    builder.addCase(getProblems.fulfilled, (state, action) => {
-      state.problems = action.payload ?? state.problems;
-    });
+    builder
+      .addCase(addProblem.fulfilled, (state, action) => {
+        state.currentProblem = action.payload ?? state.currentProblem;
+      })
+      .addCase(getOneProblem.fulfilled, (state, action) => {
+        state.currentProblem = action.payload ?? state.currentProblem;
+      })
+      .addCase(getProblems.fulfilled, (state, action) => {
+        state.problems = action.payload ?? state.problems;
+      })
+      .addCase(likeProblem.fulfilled, (state, action) => {
+        state.currentProblem = action.payload ?? state.currentProblem;
+      })
+      .addCase(dislikeProblem.fulfilled, (state, action) => {
+        state.currentProblem = action.payload ?? state.currentProblem;
+      });
   },
 });
 

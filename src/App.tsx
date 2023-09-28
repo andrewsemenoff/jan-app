@@ -8,10 +8,9 @@ import { useAppDispatch } from "./app/hooks";
 import Footer from "./components/footer/footer.component";
 import Header from "./components/header/header.component";
 import { STATUS, getUser, setToken } from "./features/account/accountSlice";
-let rederingApp = 0;
+
 register();
 function App() {
-  console.log("APP rendering: ", rederingApp++);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   // const [requestStatus, setRequestStatus] = useState(STATUS.IDLE);
@@ -22,11 +21,7 @@ function App() {
         dispatch(setToken(token));
         try {
           // setRequestStatus(STATUS.PENDING);
-
-          const res = await dispatch(getUser()).unwrap();
-          console.log("res in App.tsx by getting user:", res);
-        } catch (err: any) {
-          console.log("error: ", err);
+          await dispatch(getUser()).unwrap();
         } finally {
           // setRequestStatus(STATUS.IDLE);
         }

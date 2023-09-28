@@ -107,7 +107,6 @@ export const signUp = createAsyncThunk(
         `${ACCOUNTING_URL}/registration`,
         registrationData
       );
-      console.log("successful; token:", token);
       return token;
     } catch (err: any) {
       if (err.response) {
@@ -188,12 +187,9 @@ export const getUser = createAsyncThunk(
           },
         }
       );
-      console.log("data", data);
-
       data.educationLevel = helperEnumToStringAppearance(data.educationLevel);
       return data;
     } catch (err: any) {
-      console.log(err);
       if (err.response) {
         const { data } = err.response;
         const { error, message, status } = data;

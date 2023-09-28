@@ -9,7 +9,9 @@ import CustomButton, {
 } from "../../components/button/button.component";
 import { CommunitiesListBox } from "../../components/problem-creation/problem-creation.styles";
 import { CommunityLabel } from "../../components/problem-item/problem-item.styles";
-import ReactionBox from "../../components/reaction-box/reaction-box.component";
+import ReactionBox, {
+  REACTION,
+} from "../../components/reaction-box/reaction-box.component";
 import SolutionsAndComments from "../../components/solutions-and-comments/solutions-and-comments.component";
 import {
   STATUS,
@@ -18,7 +20,9 @@ import {
 } from "../../features/account/accountSlice";
 import {
   deleteProblem,
+  dislikeProblem,
   getOneProblem,
+  likeProblem,
   selectCurrentProblem,
   subscribeOnProblem,
 } from "../../features/problems/problemsSlice";
@@ -41,6 +45,9 @@ import {
 const Problem = () => {
   const navigate = useNavigate();
   const [deleteRequestStatus, setDeleteRequestStatus] = useState(STATUS.IDLE);
+  const [reactionRequestStatus, setReactionRequestStatus] = useState(
+    STATUS.IDLE
+  );
   const { problem_id } = useParams();
   const dispatch = useAppDispatch();
   const problem = useAppSelector(selectCurrentProblem);
@@ -55,8 +62,26 @@ const Problem = () => {
     currentAward,
     dateCreated,
     authorId,
-    interactions: { donations, totalLikes, totalDislikes, subscriptions },
+    interactions: {
+      donations,
+      totalLikes,
+      totalDislikes,
+      subscriptions,
+      likes,
+      dislikes,
+    },
   } = problem;
+
+  const isLikedByCurrentUser = likes.some((like) => like.profileId === userId);
+  const isDislikedByCurrentUser = dislikes.some(
+    (like) => like.profileId === userId
+  );
+  const currentUserReaction = isLikedByCurrentUser
+    ? REACTION.LIKE
+    : isDislikedByCurrentUser
+    ? REACTION.DISLIKE
+    : REACTION.NEUTRAL;
+
   const canDelete = deleteRequestStatus === STATUS.IDLE;
   const isOwnProblem = authorId === userId;
   const isSubscribed = subscriptions.some((s) => {
@@ -81,6 +106,21 @@ const Problem = () => {
     navigate(`/edit-problem/${id}`);
   };
 
+  const handleClickLike = async () => {
+    if (reactionRequestStatus === STATUS.IDLE) {
+      setReactionRequestStatus(STATUS.PENDING);
+      await dispatch(likeProblem(id));
+      setReactionRequestStatus(STATUS.IDLE);
+    }
+  };
+  const handleClickDislike = async () => {
+    if (reactionRequestStatus === STATUS.IDLE) {
+      setReactionRequestStatus(STATUS.PENDING);
+      await dispatch(dislikeProblem(id)).unwrap();
+      setReactionRequestStatus(STATUS.IDLE);
+    }
+  };
+
   useEffect(() => {
     if (problem_id && isSignedIn) {
       dispatch(getOneProblem(problem_id));
@@ -94,15 +134,18 @@ const Problem = () => {
     }
   }, [problem_id]);
 
-  const parsedDate = parseISO(dateCreated);
-  console.log("parsedDate: ", parsedDate);
+  useEffect(() => {
+    console.log("CURRENT_INTERACTIONS:", problem.interactions);
+  }, [problem]);
 
   return (
     <>
       <TitleSectionForProblemPage>
         <FlexWrapper>
           <div>
-            <SmallText style={{color: "grey"}}>{isSubscribed ? "Subscribed" : ""}</SmallText>
+            <SmallText style={{ color: "grey" }}>
+              {isSubscribed ? "Subscribed" : ""}
+            </SmallText>
             <Title>Problem #{problem_id}</Title>
           </div>
           <SvgIcon
@@ -114,7 +157,13 @@ const Problem = () => {
           />
 
           <ReactionBox
-            reactions={{ dislikes: totalDislikes, likes: totalLikes }}
+            currentUserReaction={currentUserReaction}
+            reactions={{
+              dislikes: totalDislikes,
+              likes: totalLikes,
+            }}
+            handleClickDislike={handleClickDislike}
+            handleClickLike={handleClickLike}
           />
         </FlexWrapper>
         <FlexWrapper>

@@ -19,9 +19,6 @@ import {
   ProfileCard,
   ProfilePageWrapper,
 } from "./Profile.styles";
-import { lightBlue } from "@mui/material/colors";
-
-let b = 0;
 
 const Profile = () => {
   const allCommunities = useAppSelector(selectCommunitiesNames);
@@ -40,12 +37,6 @@ const Profile = () => {
     stats,
     wallet,
   } = useAppSelector(selectUser);
-  console.log(
-    "PROFILE rendering: ",
-    b++,
-    "user: ",
-    username,
-  );
 
   return (
     <ProfilePageWrapper>

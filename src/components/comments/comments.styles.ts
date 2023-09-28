@@ -8,7 +8,10 @@ export const CommentTextArea = styled.textarea`
 `;
 
 export const CommentsBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
   border-radius: 0.5em;
   padding: 1em;
-  background-color: lightgray;
+  background-color: #f0efef;
 `;

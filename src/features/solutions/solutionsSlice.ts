@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
 import { SOLUTIONS_URL } from "../../assets/hostConfig";
+import { actionAuthorInfo } from "../problems/problemsSlice";
 
 export enum SOLUTIONS_ACTION_TYPE {
   ADD_SOLUTION = "solutions/addSolution",
@@ -15,8 +16,10 @@ export interface Solution {
   details: string;
   dateCreated: string;
   reactions: {
-    likes: number;
-    dislikes: number;
+    totalLikes: number;
+    totalDislikes: number;
+    likes: actionAuthorInfo[];
+    dislikes: actionAuthorInfo[];
   };
   type: string;
 }
@@ -35,8 +38,10 @@ const initialState: initialSolutions = {
     details: "",
     dateCreated: "",
     reactions: {
-      likes: 0,
-      dislikes: 0,
+      totalLikes: 0,
+      totalDislikes: 0,
+      likes: [],
+      dislikes: [],
     },
     type: "",
   },
@@ -62,7 +67,6 @@ export const addSolution = createAsyncThunk(
           },
         }
       );
-      console.log("response after addSolution:", data);
       return data;
     } catch (err: any) {
       console.log("error after addSolution:", err);
@@ -85,7 +89,6 @@ export const getSolutions = createAsyncThunk(
           },
         }
       );
-      console.log("response after getSolutions:", data);
       return data;
     } catch (err: any) {
       console.log("error after getSolutions:", err);

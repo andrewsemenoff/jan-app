@@ -9,7 +9,6 @@ import {
   Wrapper,
 } from "./editable-field.styles";
 
-let rendering = 0;
 
 interface EditableFieldProps {
   title: string;

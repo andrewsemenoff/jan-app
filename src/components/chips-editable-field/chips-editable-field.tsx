@@ -22,7 +22,6 @@ function ChipsEditableField({
   };
   const handleSaveClicked = () => {
     setIsEditModeOn((prev) => !prev);
-    console.log("current chips:", chips);
     handleSaveChanges(chips);
   };
   const handleCancelClicked = () => {

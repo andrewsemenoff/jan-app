@@ -66,9 +66,11 @@ export const addComment = createAsyncThunk(
       account: { token },
     } = getState() as RootState;
     try {
-      const { data }: { data: Comment } = await axios.post(
+      const { data }: { data: Comment } = await axios.put(
         `${COMMENTS_URL}/addcomment/${problemId}`,
-        newComment,
+        {
+          details: newComment,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -76,10 +78,32 @@ export const addComment = createAsyncThunk(
           },
         }
       );
-      console.log("response after addComment:", data);
       return data;
     } catch (err: any) {
       console.log("error after addComment:", err);
+    }
+  }
+);
+
+export const getComments = createAsyncThunk(
+  COMMENTS_ACTION_TYPE.GET_COMMENTS,
+  async (problemId: string, { getState }) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: Comment[] } = await axios.get(
+        `${COMMENTS_URL}/getcomments/${problemId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return data;
+    } catch (err: any) {
+      console.log("error after getComments:", err);
     }
   }
 );
@@ -89,11 +113,15 @@ export const CommentsSlice = createSlice({
   initialState: initialComments,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(addComment.fulfilled, (state, action) => {
-      state.currentComment = action.payload ?? state.currentComment;
-    });
+    builder
+      .addCase(addComment.fulfilled, (state, action) => {
+        state.currentComment = action.payload ?? state.currentComment;
+      })
+      .addCase(getComments.fulfilled, (state, action) => {
+        state.comments = action.payload ?? state.comments;
+      });
   },
 });
 
-
 export default CommentsSlice.reducer;
+export const selectComments = (state: RootState) => state.comments.comments;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SvgIcon, {
   Fashion,
   SVG_PATH,
@@ -7,100 +7,85 @@ import {
   NumberWrapper,
   ReactionContainer,
 } from "./reaction-box.style.component";
-interface ReactionBoxProps {
-  reactions: { likes: number; dislikes: number };
-}
-enum REACTION {
-  LIKE,
-  DISLIKE,
-  NEUTRAL,
+
+export enum REACTION {
+  LIKE = "like",
+  DISLIKE = "dislike",
+  NEUTRAL = "neutral",
 }
 
-const ReactionBox = ({ reactions: { likes, dislikes } }: ReactionBoxProps) => {
-  const [personalReaction, setPersonalReaction] = useState(REACTION.NEUTRAL);
-  const [totalProblemReactions, setTotalProblemReactions] = useState({
+interface ReactionBoxProps {
+  currentUserReaction: REACTION;
+  reactions: {
+    likes: number;
+    dislikes: number;
+  };
+  handleClickLike: () => void;
+  handleClickDislike: () => void;
+}
+
+const ReactionBox = ({
+  reactions: { likes, dislikes },
+  currentUserReaction,
+  handleClickLike,
+  handleClickDislike,
+}: ReactionBoxProps) => {
+  const [reaction, setReaction] = useState(currentUserReaction);
+  const [totalReactions, setTotalReactions] = useState({
     likes: likes,
     dislikes: dislikes,
   });
-  const changeTotalProblemReactions = (
-    newReaction: REACTION,
-    currentReaction: REACTION
-  ) => {
-    if (newReaction === REACTION.LIKE) {
-      switch (currentReaction) {
-        case REACTION.LIKE:
-          setTotalProblemReactions((state) => ({
-            ...state,
-            likes: state.likes - 1,
-          }));
-          return;
-        case REACTION.NEUTRAL:
-          setTotalProblemReactions((state) => ({
-            ...state,
-            likes: state.likes + 1,
-          }));
-          return;
-        case REACTION.DISLIKE:
-          setTotalProblemReactions(({ likes, dislikes }) => ({
-            dislikes: dislikes - 1,
-            likes: likes + 1,
-          }));
-          return;
-      }
-    } else if (newReaction === REACTION.DISLIKE) {
-      switch (currentReaction) {
-        case REACTION.DISLIKE:
-          setTotalProblemReactions((state) => ({
-            ...state,
-            dislikes: state.dislikes - 1,
-          }));
-          return;
-        case REACTION.NEUTRAL:
-          setTotalProblemReactions((state) => ({
-            ...state,
-            dislikes: state.dislikes + 1,
-          }));
-          return;
-        case REACTION.LIKE:
-          setTotalProblemReactions(({ likes, dislikes }) => ({
-            likes: likes - 1,
-            dislikes: dislikes + 1,
-          }));
-          return;
-      }
-    } else return;
-  };
+
+  useEffect(() => {
+    setTotalReactions({ likes, dislikes });
+  }, [likes, dislikes]);
+  useEffect(() => {
+    setReaction(currentUserReaction);
+  }, [currentUserReaction]);
+
+  let temp = 0;
+  useEffect(() => {
+    console.log(
+      `ReactionBox rendered ${temp++} times; likes: ${likes} dislikes: ${dislikes} currentUserReaction: ${currentUserReaction}`
+    );
+  });
 
   const handleReactionClick = (reaction: REACTION) => {
-    setPersonalReaction((state) => {
+    setReaction((state) => {
       if (state !== reaction) {
         return reaction;
       } else return REACTION.NEUTRAL;
     });
-    changeTotalProblemReactions(reaction, personalReaction);
   };
-  const likesColor = personalReaction === REACTION.LIKE ? "#054a7f" : "#93cefb";
-  const dislikesColor =
-    personalReaction === REACTION.DISLIKE ? "#e23408" : "#f8c6b9";
+
+  const handleLikeClicked = () => {
+    handleReactionClick(REACTION.LIKE);
+    handleClickLike();
+  };
+  const handleDislikeClicked = () => {
+    handleReactionClick(REACTION.DISLIKE);
+    handleClickDislike();
+  };
+
+  const likesColor = reaction === REACTION.LIKE ? "#054a7f" : "#93cefb";
+  const dislikesColor = reaction === REACTION.DISLIKE ? "#e23408" : "#f8c6b9";
   return (
     <ReactionContainer>
       <SvgIcon
-        onClick={() => handleReactionClick(REACTION.LIKE)}
+        onClick={handleLikeClicked}
         svgPath={SVG_PATH.THUMB_UP}
         fashion={Fashion.ANIMATED}
         fill={likesColor}
       />
-      <NumberWrapper color={likesColor}>
-        {totalProblemReactions.likes}
-      </NumberWrapper>
+      <NumberWrapper color={likesColor}>{totalReactions.likes}</NumberWrapper>
       <SvgIcon
-        onClick={() => handleReactionClick(REACTION.DISLIKE)}
+        onClick={handleDislikeClicked}
         svgPath={SVG_PATH.THUMB_DOWN}
         fashion={Fashion.ANIMATED}
         fill={dislikesColor}
       />
       <NumberWrapper color={dislikesColor}>
-        {totalProblemReactions.dislikes}
+        {totalReactions.dislikes}
       </NumberWrapper>
     </ReactionContainer>
   );
