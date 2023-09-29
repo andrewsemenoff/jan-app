@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { CSSProperties, HTMLAttributes, StyleHTMLAttributes, useEffect, useState } from "react";
 import SvgIcon, {
   Fashion,
   SVG_PATH,
@@ -7,6 +7,14 @@ import {
   NumberWrapper,
   ReactionContainer,
 } from "./reaction-box.style.component";
+import { actionAuthorInfo } from "../../features/problems/problemsSlice";
+import { useAppSelector } from "../../app/hooks";
+import { selectUserId } from "../../features/account/accountSlice";
+
+const myLikeDefaultColor = "#054a7f";
+const likeDefaultColor = "#93cefb";
+const myDislikeDefaultColor = "#e23408";
+const dislikeDefaultColor = "#f8c6b9";
 
 export enum REACTION {
   LIKE = "like",
@@ -15,78 +23,73 @@ export enum REACTION {
 }
 
 interface ReactionBoxProps {
-  currentUserReaction: REACTION;
+  style?: CSSProperties
+  colors?: {
+    myLikeColor: string;
+    likeColor: string;
+    myDislikeColor: string;
+    dislikeColor: string;
+  };
   reactions: {
-    likes: number;
-    dislikes: number;
+    totalDislikes: number;
+    totalLikes: number;
+    likes: actionAuthorInfo[];
+    dislikes: actionAuthorInfo[];
   };
   handleClickLike: () => void;
   handleClickDislike: () => void;
 }
 
 const ReactionBox = ({
-  reactions: { likes, dislikes },
-  currentUserReaction,
+  style,
+  colors,
+  reactions: { totalDislikes, totalLikes, likes, dislikes },
   handleClickLike,
   handleClickDislike,
 }: ReactionBoxProps) => {
-  const [reaction, setReaction] = useState(currentUserReaction);
-  const [totalReactions, setTotalReactions] = useState({
-    likes: likes,
-    dislikes: dislikes,
-  });
+  const userId = useAppSelector(selectUserId);
+  const isLikedByCurrentUser = likes.some((like) => like.profileId === userId);
+  const isDislikedByCurrentUser = dislikes.some(
+    (like) => like.profileId === userId
+  );
 
-  useEffect(() => {
-    setTotalReactions({ likes, dislikes });
-  }, [likes, dislikes]);
-  useEffect(() => {
-    setReaction(currentUserReaction);
-  }, [currentUserReaction]);
-
-  let temp = 0;
-  useEffect(() => {
-    console.log(
-      `ReactionBox rendered ${temp++} times; likes: ${likes} dislikes: ${dislikes} currentUserReaction: ${currentUserReaction}`
-    );
-  });
-
-  const handleReactionClick = (reaction: REACTION) => {
-    setReaction((state) => {
-      if (state !== reaction) {
-        return reaction;
-      } else return REACTION.NEUTRAL;
-    });
-  };
+  const currentUserReaction = isLikedByCurrentUser
+    ? REACTION.LIKE
+    : isDislikedByCurrentUser
+    ? REACTION.DISLIKE
+    : REACTION.NEUTRAL;
 
   const handleLikeClicked = () => {
-    handleReactionClick(REACTION.LIKE);
     handleClickLike();
   };
   const handleDislikeClicked = () => {
-    handleReactionClick(REACTION.DISLIKE);
     handleClickDislike();
   };
 
-  const likesColor = reaction === REACTION.LIKE ? "#054a7f" : "#93cefb";
-  const dislikesColor = reaction === REACTION.DISLIKE ? "#e23408" : "#f8c6b9";
+  const likesColor =
+    currentUserReaction === REACTION.LIKE
+      ? colors?.myLikeColor ?? myLikeDefaultColor
+      : colors?.likeColor ?? likeDefaultColor;
+  const dislikesColor =
+    currentUserReaction === REACTION.DISLIKE
+      ? colors?.myDislikeColor ?? myDislikeDefaultColor
+      : colors?.dislikeColor ?? dislikeDefaultColor;
   return (
-    <ReactionContainer>
+    <ReactionContainer style={{...style}}>
       <SvgIcon
         onClick={handleLikeClicked}
         svgPath={SVG_PATH.THUMB_UP}
         fashion={Fashion.ANIMATED}
         fill={likesColor}
       />
-      <NumberWrapper color={likesColor}>{totalReactions.likes}</NumberWrapper>
+      <NumberWrapper color={likesColor}>{totalLikes}</NumberWrapper>
       <SvgIcon
         onClick={handleDislikeClicked}
         svgPath={SVG_PATH.THUMB_DOWN}
         fashion={Fashion.ANIMATED}
         fill={dislikesColor}
       />
-      <NumberWrapper color={dislikesColor}>
-        {totalReactions.dislikes}
-      </NumberWrapper>
+      <NumberWrapper color={dislikesColor}>{totalDislikes}</NumberWrapper>
     </ReactionContainer>
   );
 };

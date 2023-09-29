@@ -72,16 +72,6 @@ const Problem = () => {
     },
   } = problem;
 
-  const isLikedByCurrentUser = likes.some((like) => like.profileId === userId);
-  const isDislikedByCurrentUser = dislikes.some(
-    (like) => like.profileId === userId
-  );
-  const currentUserReaction = isLikedByCurrentUser
-    ? REACTION.LIKE
-    : isDislikedByCurrentUser
-    ? REACTION.DISLIKE
-    : REACTION.NEUTRAL;
-
   const canDelete = deleteRequestStatus === STATUS.IDLE;
   const isOwnProblem = authorId === userId;
   const isSubscribed = subscriptions.some((s) => {
@@ -157,10 +147,11 @@ const Problem = () => {
           />
 
           <ReactionBox
-            currentUserReaction={currentUserReaction}
             reactions={{
-              dislikes: totalDislikes,
-              likes: totalLikes,
+              totalDislikes,
+              totalLikes,
+              likes,
+              dislikes,
             }}
             handleClickDislike={handleClickDislike}
             handleClickLike={handleClickLike}

@@ -13,7 +13,9 @@ import {
   CANCEL,
   COMMENTS,
   SOLUTIONS,
-  ADD_PROBLEM
+  ADD_PROBLEM,
+  DELETE,
+  MENU
 } from "./svg-paths";
 
 export interface SvgIconProps extends SVGProps<SVGSVGElement> {
@@ -41,6 +43,8 @@ export enum SVG_PATH {
   COMMENTS,
   SOLUTIONS,
   ADD_PROBLEM,
+  DELETE, 
+  MENU,
 }
 
 const getSvgPath = (path: SVG_PATH) =>
@@ -58,9 +62,11 @@ const getSvgPath = (path: SVG_PATH) =>
     [SVG_PATH.COMMENTS]: COMMENTS,
     [SVG_PATH.SOLUTIONS]: SOLUTIONS,
     [SVG_PATH.ADD_PROBLEM]: ADD_PROBLEM,
+    [SVG_PATH.DELETE]: DELETE,
+    [SVG_PATH.MENU]: MENU,
   }[path]);
 
-const SvgIcon = ({
+const SvgIcon  = ({
   svgPath,
   fashion = Fashion.STATIC,
   size = "1.5em",

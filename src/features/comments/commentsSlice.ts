@@ -84,7 +84,58 @@ export const addComment = createAsyncThunk(
     }
   }
 );
-
+export const likeComment = createAsyncThunk(
+  COMMENTS_ACTION_TYPE.LIKE_COMMENT,
+  async (
+    { commentId, problemId }: { commentId: string; problemId: string },
+    { getState }
+  ) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: Comment } = await axios.put(
+        `${COMMENTS_URL}/likecomment/${problemId}/${commentId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("data after like comment: ", data);
+    } catch (err: any) {
+      console.log("error after addComment:", err);
+    }
+  }
+);
+export const dislikeComment = createAsyncThunk(
+  COMMENTS_ACTION_TYPE.DISLIKE_COMMENT,
+  async (
+    { commentId, problemId }: { commentId: string; problemId: string },
+    { getState }
+  ) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { status }: { status: number } = await axios.put(
+        `${COMMENTS_URL}/dislikecomment/${problemId}/${commentId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return status;
+    } catch (err: any) {
+      console.log("error after addComment:", err);
+    }
+  }
+);
 export const getComments = createAsyncThunk(
   COMMENTS_ACTION_TYPE.GET_COMMENTS,
   async (problemId: string, { getState }) => {
@@ -104,6 +155,29 @@ export const getComments = createAsyncThunk(
       return data;
     } catch (err: any) {
       console.log("error after getComments:", err);
+    }
+  }
+);
+export const deleteComment = createAsyncThunk(
+  COMMENTS_ACTION_TYPE.DELETE_COMMENT,
+  async (commentId: string, { getState }) => {
+    const {
+      account: { token, userId },
+      problems: { currentProblem },
+    } = getState() as RootState;
+    try {
+      const { status }: { status: number } = await axios.delete(
+        `${COMMENTS_URL}/deletecomment/${userId}/${currentProblem.id}/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return status;
+    } catch (err: any) {
+      console.log("error after deleteComment:", err);
     }
   }
 );
