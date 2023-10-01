@@ -2,18 +2,22 @@ import { ButtonHTMLAttributes } from "react";
 import SvgIcon, {
   SvgIconProps
 } from "../../svg-components/svg-icon/svg-icon.component";
-import { BasicButton, InvertedButton, RoundButton } from "./button.styles";
+import { BasicButton, InvertedButton, RoundButton, RoundSmallButton } from "./button.styles";
 
 interface CustomButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonType: ButtonType;
   size?: string;
   svgElement?: SvgIconProps;
+  background?: string;
+  svgFill?: string;
+  svgFillOnHover?: string;
 }
 
 export enum ButtonType {
   INVERTED,
   BASE,
   ROUND_BUTTON,
+  ROUND_SMALL_BUTTON,
 }
 
 const CustomButton = ({
@@ -22,9 +26,14 @@ const CustomButton = ({
   size,
   disabled,
   svgElement,
+  background,
+  svgFill,
+  svgFillOnHover,
   ...props
 }: CustomButtonProps) => {
-  const svgEl = svgElement && <SvgIcon {...svgElement} />;
+  console.log("svgElement:", svgElement);
+  
+  const svgEl = svgElement && <SvgIcon {...svgElement}/>;
   switch (buttonType) {
     case ButtonType.BASE:
       return (
@@ -46,6 +55,13 @@ const CustomButton = ({
           {svgEl}
           {children}
         </RoundButton>
+      );
+    case ButtonType.ROUND_SMALL_BUTTON:
+      return (
+        <RoundSmallButton {...props} $disabled={disabled} size={size} svgFill={svgFill} svgFillOnHover={svgFillOnHover} background={background}>
+          {svgEl}
+          {children}
+        </RoundSmallButton>
       );
     default:
       return (

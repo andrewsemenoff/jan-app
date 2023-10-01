@@ -22,6 +22,7 @@ export interface Comment {
   problemId: string;
   details: string;
   dateCreated: string;
+  dateEdited: string;
   reactions: {
     totalLikes: number;
     totalDislikes: number;
@@ -42,6 +43,7 @@ export const initialComment: Comment = {
   problemId: "",
   details: "",
   dateCreated: "",
+  dateEdited: "",
   reactions: {
     totalLikes: 0,
     totalDislikes: 0,
@@ -155,6 +157,35 @@ export const getComments = createAsyncThunk(
       return data;
     } catch (err: any) {
       console.log("error after getComments:", err);
+    }
+  }
+);
+export const editComment = createAsyncThunk(
+  COMMENTS_ACTION_TYPE.EDIT_COMMENT,
+  async (
+    { commentId, editedComment }: { commentId: string; editedComment: string },
+    { getState }
+  ) => {
+    const {
+      account: { token, userId },
+      problems: { currentProblem },
+    } = getState() as RootState;
+    try {
+      const { status }: { status: number } = await axios.put(
+        `${COMMENTS_URL}/editcoment/${userId}/${currentProblem.id}/${commentId}`,
+        {
+          details: editedComment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return status;
+    } catch (err: any) {
+      console.log("error after editComment:", err);
     }
   }
 );

@@ -44,6 +44,7 @@ export interface Problem {
   title: string;
   details: string;
   dateCreated: string;
+  dateEdited: string;
   status: string;
   currentAward: number;
   rating: number;
@@ -79,6 +80,7 @@ const initialState: InitialProblems = {
     title: "",
     details: "",
     dateCreated: "",
+    dateEdited: "",
     status: "",
     currentAward: 0,
     rating: 0,

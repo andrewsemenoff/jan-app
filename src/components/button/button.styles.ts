@@ -62,7 +62,7 @@ export const BasicButton = styled(BaseForButton)`
   color: #aad2f1;
   background-color: #0984e3;
   border: 0.1em solid transparent;
-  
+
   &:hover {
     color: white;
   }
@@ -99,4 +99,39 @@ export const RoundButton = styled(BasicButton)<RoundButtonProps>`
   height: ${({ size }) => (size ? size : "3em")};
   padding: 0.2em;
   margin: 0;
+`;
+
+interface RoundSmallButtonProps {
+  size?: string;
+  background?: string;
+  svgFill?: string;
+  svgFillOnHover?: string;
+  $disabled?: boolean;
+}
+export const RoundSmallButton = styled(BaseForButton)<RoundSmallButtonProps>`
+  background-color: ${({ background, $disabled }) =>
+    $disabled ? "grey" : background};
+  border-radius: 50%;
+  border: none;
+  width: ${({ size }) => (size ? size : "3em")};
+  height: ${({ size }) => (size ? size : "3em")};
+  padding: 0.2em;
+  margin: 0;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 6px, rgba(0, 0, 0, 0.23) 0px 1px 6px;
+  }
+  svg {
+    fill: ${({ svgFill, $disabled }) =>
+      $disabled ? "lightgrey" : svgFill ? svgFill : "#0984e3"};
+  }
+  &:hover svg {
+    fill: ${({ svgFillOnHover, $disabled }) =>
+      $disabled ? "lightgrey" : svgFillOnHover ? svgFillOnHover : "black"};
+  }
+  ${({ $disabled }) => $disabled && disabled}
 `;

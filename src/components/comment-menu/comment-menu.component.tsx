@@ -12,8 +12,9 @@ import { MenuElement } from "./commment-menu.styles";
 interface CommentMenuProps{
     commentId: string,
     problemId: string,
+    handleClickEdit: ()=>void,
 }
-const CommentMenu = ({commentId, problemId}: CommentMenuProps) => {
+const CommentMenu = ({commentId, problemId, handleClickEdit}: CommentMenuProps) => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -31,6 +32,7 @@ const CommentMenu = ({commentId, problemId}: CommentMenuProps) => {
     setAnchorEl(null);
   };
   const handleEdit = async () => {
+    handleClickEdit();
     setAnchorEl(null);
   };
 

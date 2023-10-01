@@ -13,3 +13,21 @@ export const CommentBox = styled.div<CommentBoxProps>`
   border-radius: 0.5em;
   padding: 0.5em;
 `;
+
+export const EditTextArea = styled.textarea`
+  box-sizing: border-box;
+  resize: vertical;
+  border-radius: 0.3em;
+  padding: 1em;
+  outline: none;
+  border: 0.05em solid grey;
+  width: 100%;
+`;
+
+export const ButtonsBar = styled.div`
+  display: flex;
+  gap: 0.3em;
+  position: absolute;
+  right: 1em;
+  bottom: .5em;
+`;

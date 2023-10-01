@@ -1,5 +1,5 @@
 import { SVGProps } from "react";
-import { AnimatedSvg } from "./svg-icon.styles";
+import { AnimatedSvg, StaticSvg } from "./svg-icon.styles";
 import {
   ARROW_BACK,
   ARROW_FORWARD,
@@ -15,7 +15,9 @@ import {
   SOLUTIONS,
   ADD_PROBLEM,
   DELETE,
-  MENU
+  MENU, 
+  CROSS,
+  CHECK_MARK,
 } from "./svg-paths";
 
 export interface SvgIconProps extends SVGProps<SVGSVGElement> {
@@ -45,6 +47,8 @@ export enum SVG_PATH {
   ADD_PROBLEM,
   DELETE, 
   MENU,
+  CROSS,
+  CHECK_MARK
 }
 
 const getSvgPath = (path: SVG_PATH) =>
@@ -64,6 +68,8 @@ const getSvgPath = (path: SVG_PATH) =>
     [SVG_PATH.ADD_PROBLEM]: ADD_PROBLEM,
     [SVG_PATH.DELETE]: DELETE,
     [SVG_PATH.MENU]: MENU,
+    [SVG_PATH.CROSS]: CROSS,
+    [SVG_PATH.CHECK_MARK]: CHECK_MARK,
   }[path]);
 
 const SvgIcon  = ({
@@ -76,6 +82,7 @@ const SvgIcon  = ({
   ...other
 }: SvgIconProps) => {
   const { path, viewBox } = getSvgPath(svgPath);
+
 
   const svgAttributes = {
     version: "1.1",
@@ -97,7 +104,7 @@ const SvgIcon  = ({
         </AnimatedSvg>
       );
     case Fashion.STATIC:
-      return <svg {...svgAttributes}>{path}</svg>;
+      return <StaticSvg {...svgAttributes}>{path}</StaticSvg>;
   }
 };
 

@@ -36,8 +36,8 @@ const Comments = ({ problemId }: CommentsProps) => {
         await dispatch(
           addComment({ newComment: newComment, problemId: problemId })
         ).unwrap();
-        setNewComment("");
         await dispatch(getComments(problemId));
+        setNewComment("");
       } finally {
         setIsPending(false);
       }
@@ -58,6 +58,7 @@ const Comments = ({ problemId }: CommentsProps) => {
       <InputWithTitleWrapper style={{ position: "relative" }}>
         <Title>New Comment: </Title>
         <CommentTextArea
+          value={newComment}
           onChange={handleCommentTextChange}
           placeholder="Type your comment here"
           maxLength={200}

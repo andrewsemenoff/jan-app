@@ -15,6 +15,7 @@ export interface Solution {
   authorId: string;
   details: string;
   dateCreated: string;
+  dateEdited: string;
   reactions: {
     totalLikes: number;
     totalDislikes: number;
@@ -37,6 +38,7 @@ const initialState: initialSolutions = {
     authorId: "",
     details: "",
     dateCreated: "",
+    dateEdited: "",
     reactions: {
       totalLikes: 0,
       totalDislikes: 0,
