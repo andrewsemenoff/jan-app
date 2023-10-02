@@ -31,7 +31,6 @@ const CustomButton = ({
   svgFillOnHover,
   ...props
 }: CustomButtonProps) => {
-  console.log("svgElement:", svgElement);
   
   const svgEl = svgElement && <SvgIcon {...svgElement}/>;
   switch (buttonType) {
@@ -58,7 +57,7 @@ const CustomButton = ({
       );
     case ButtonType.ROUND_SMALL_BUTTON:
       return (
-        <RoundSmallButton {...props} $disabled={disabled} size={size} svgFill={svgFill} svgFillOnHover={svgFillOnHover} background={background}>
+        <RoundSmallButton {...props} $disabled={disabled} size={size} $svgFill={svgFill} $svgFillOnHover={svgFillOnHover} $background={background}>
           {svgEl}
           {children}
         </RoundSmallButton>

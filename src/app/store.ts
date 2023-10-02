@@ -20,7 +20,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
-      // ToastErrorMessagesMiddleware,
+      ToastErrorMessagesMiddleware,
       ToastSuccessMessagesMiddleware
     ),
 });

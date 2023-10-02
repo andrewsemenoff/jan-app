@@ -83,6 +83,7 @@ const SingleComment = ({ comment }: CommentProps) => {
     }
   };
   const handleCancelChanges = () => {
+    setEditedValue(details);
     setIsEditMode(false);
   };
 

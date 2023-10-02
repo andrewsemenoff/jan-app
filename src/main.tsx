@@ -29,7 +29,8 @@ import RestorePassword from "./pages/RestorePassword/RestorePassword.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<App />} path="/" errorElement={<Error />}>
+    <Route element={<App />} path="/" >
+      <Route element={<ProblemsList />} index  />
       <Route
         path="profile"
         element={<Profile />}
@@ -57,7 +58,6 @@ const router = createBrowserRouter(
         <Route element={<SignIn />} path="sign-in" />
         <Route element={<SignUp />} path="sign-up" />
       </Route>
-      <Route element={<ProblemsList />} index errorElement={<Error />} />
       <Route
         element={<Problem />}
         path="problem/:problem_id"

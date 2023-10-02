@@ -21,7 +21,13 @@ function App() {
         dispatch(setToken(token));
         try {
           // setRequestStatus(STATUS.PENDING);
+          console.log("kuku");
+
           await dispatch(getUser()).unwrap();
+        } catch (err: any) {
+          if (err?.status !== 200) {
+            navigate("authentication/sign-in");
+          }
         } finally {
           // setRequestStatus(STATUS.IDLE);
         }
@@ -29,7 +35,7 @@ function App() {
         navigate("authentication/sign-in");
       }
     })();
-  }, []);
+  },[]);
 
   return (
     <>

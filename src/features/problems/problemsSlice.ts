@@ -183,12 +183,6 @@ export const getProblems = createAsyncThunk(
     try {
       const { data }: { data: Problem[] } = await axios.get(
         `${PROBLEMS_URL}/getproblems`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
       );
       return data;
     } catch (err: any) {

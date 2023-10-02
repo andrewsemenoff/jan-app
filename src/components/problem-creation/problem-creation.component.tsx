@@ -100,7 +100,6 @@ const ProblemCreation = ({ creationType, problem }: ProblemCreationProps) => {
           const { id } = (await dispatch(
             addProblem(newProblem)
           ).unwrap()) as Problem;
-          console.log("new problem: ", id);
           navigate(`/problem/${id}`);
         } catch (err: any) {
         } finally {

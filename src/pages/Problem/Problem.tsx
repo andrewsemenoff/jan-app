@@ -124,10 +124,6 @@ const Problem = () => {
     }
   }, [problem_id]);
 
-  useEffect(() => {
-    console.log("CURRENT_INTERACTIONS:", problem.interactions);
-  }, [problem]);
-
   return (
     <>
       <TitleSectionForProblemPage>

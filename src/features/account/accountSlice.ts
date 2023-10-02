@@ -191,11 +191,10 @@ export const getUser = createAsyncThunk(
       return data;
     } catch (err: any) {
       if (err.response) {
+        console.log('error in response during getUser()');
+        
         const { data } = err.response;
-        const { error, message, status } = data;
-        console.log(
-          `error in axios response during getUser process: ${message}, status: ${status}, error: ${error}`
-        );
+        const { message, status } = data;
         return rejectWithValue({
           message,
           status,

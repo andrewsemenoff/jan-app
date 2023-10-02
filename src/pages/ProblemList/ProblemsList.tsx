@@ -24,7 +24,7 @@ import {
 const ProblemsList = () => {
   // const mockProblems = getMockProblems(100);
   const allProblems = useAppSelector(selectAllProblems);
-
+  
   const navigate = useNavigate();
   const {
     totalPages,
