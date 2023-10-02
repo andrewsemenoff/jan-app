@@ -85,7 +85,7 @@ const Problem = () => {
     setDeleteRequestStatus(STATUS.PENDING);
     try {
       await dispatch(deleteProblem(id)).unwrap();
-      navigate("/");
+      navigate("/problems");
     } catch (err: any) {
       console.log("error after delete problem was clicked");
     } finally {

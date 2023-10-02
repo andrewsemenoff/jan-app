@@ -35,8 +35,8 @@ const SignIn = () => {
         setEmail("");
         setPassword("");
         navigate("/profile");
-      } catch (e: any) {
-        alert(`you failed to login, try again. Error: ${e.message} ${e.code}`);
+      } catch (error: any) {
+        console.log(`failed to sign in. Error: ${error.message} ${error.code}`);
       } finally {
         setRequestStatus(STATUS.IDLE);
       }

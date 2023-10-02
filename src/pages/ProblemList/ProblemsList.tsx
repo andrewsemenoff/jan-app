@@ -47,7 +47,7 @@ const ProblemsList = () => {
         <div style={{ display: "flex", gridArea: 'btn' }}>
           <CustomButton
             buttonType={ButtonType.BASE}
-            onClick={() => navigate("problem-proposal")}
+            onClick={() => navigate("/problem-proposal")}
             svgElement={{svgPath: SVG_PATH.ADD_PROBLEM, fill:"#aad2f1", size:"1em"}}
           > 
             propose

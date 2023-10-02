@@ -9,16 +9,18 @@ import {
   editUserCountry,
   editUserEducation,
   editUserName,
+  getEductionLevels,
   selectEductionLevels,
   selectUser,
 } from "../../features/account/accountSlice";
-import { selectCommunitiesNames } from "../../features/communities/communitiesSlice";
+import { getCommunitiesNames, selectCommunitiesNames } from "../../features/communities/communitiesSlice";
 import {
   AdditionalInfo,
   MainInfo,
   ProfileCard,
   ProfilePageWrapper,
 } from "./Profile.styles";
+import { useEffect } from "react";
 
 const Profile = () => {
   const allCommunities = useAppSelector(selectCommunitiesNames);
@@ -37,6 +39,10 @@ const Profile = () => {
     stats,
     wallet,
   } = useAppSelector(selectUser);
+  useEffect(()=>{
+    if(educationLevels.length<2){dispatch(getEductionLevels())}
+    dispatch(getCommunitiesNames())
+  },[])
 
   return (
     <ProfilePageWrapper>

@@ -1,6 +1,12 @@
 import { loremIpsum } from "react-lorem-ipsum";
 import photo_Erdos from "./images/Pal_Erdos.jpg";
 
+
+export async function fakeFetch(data: string, delay: number) {
+  await new Promise(resolve => setTimeout(resolve, delay));
+  return data;
+}
+
 export const avatarErdos = {
   url: photo_Erdos,
   alt: "Paul Erdos",

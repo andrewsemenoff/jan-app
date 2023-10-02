@@ -30,14 +30,10 @@ import RestorePassword from "./pages/RestorePassword/RestorePassword.tsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<App />} path="/" >
-      <Route element={<ProblemsList />} index  />
+      <Route element={<ProblemsList />} path="problems"  />
       <Route
         path="profile"
         element={<Profile />}
-        loader={async () => {
-          await store.dispatch(getCommunitiesNames());
-          return null;
-        }}
       />
       <Route element={<About />} path="about" errorElement={<Error />} />
       <Route
@@ -49,11 +45,6 @@ const router = createBrowserRouter(
         element={<Authentication />}
         path="authentication"
         errorElement={<Error />}
-        loader={async () => {
-          await store.dispatch(getEductionLevels());
-          await store.dispatch(getCommunitiesNames());
-          return null;
-        }}
       >
         <Route element={<SignIn />} path="sign-in" />
         <Route element={<SignUp />} path="sign-up" />
@@ -67,10 +58,6 @@ const router = createBrowserRouter(
         element={<CreateOrEditProblem />}
         path="problem-proposal"
         errorElement={<Error />}
-        loader={async () => {
-          await store.dispatch(getCommunitiesNames());
-          return null;
-        }}
       />
       <Route
         element={<CreateOrEditProblem />}

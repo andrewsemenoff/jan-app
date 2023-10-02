@@ -3,8 +3,9 @@ import { AnimatedSvg } from "./svg-logo.styles";
 
 interface SvgLogoProps{
     size: string,
+    to: string,
 }
-const SvgLogo = ({size='8em'}:SvgLogoProps) => {
+const SvgLogo = ({size='8em', to}:SvgLogoProps) => {
   const navigate = useNavigate();
   return (
     <AnimatedSvg
@@ -12,7 +13,7 @@ const SvgLogo = ({size='8em'}:SvgLogoProps) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 114 36"
       width={size}
-      onClick={()=>navigate('/')}
+      onClick={()=>navigate(to)}
     >
       <defs>
         <clipPath clipPathUnits="userSpaceOnUse" id="cp1">

@@ -1,7 +1,7 @@
-import { Avatar, Chip } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectIsSignedIn, signOut } from "../../features/account/accountSlice";
 import SvgLogo from "../../svg-components/svg-logo/svg-logo.component";
+import SignInSwitcher from "../sign-in-switcher/sign-in-switcher.component";
 import {
   HeaderBox,
   HeaderLink,
@@ -10,7 +10,6 @@ import {
   Motto,
   SwitcherBox,
 } from "./header.styles";
-import SignInSwitcher from "../sign-in-switcher/sign-in-switcher.component";
 
 const Header = () => {
   const isSignedIn = useAppSelector(selectIsSignedIn);
@@ -21,7 +20,7 @@ const Header = () => {
   return (
     <HeaderBox>
       <LogoMottoWrapper>
-        <SvgLogo size="6em" />
+        <SvgLogo to='problems' size="6em" />
         <Motto>Empowering Curiosity, Inspiring Excellence</Motto>
       </LogoMottoWrapper>
       <LinksContainer>

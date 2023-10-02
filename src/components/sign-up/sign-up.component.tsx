@@ -100,11 +100,16 @@ const SignUp = () => {
         await dispatch(getUser());
         navigate("/profile");
       } catch (error: any) {
+        console.log(`failed to sign in. Error: ${error.message} ${error.code}`);
       } finally {
         setRequestStatus(STATUS.IDLE);
       }
     }
   };
+  useEffect(()=>{
+    if(educationLevels.length<2){dispatch(getEductionLevels())}
+    dispatch(getCommunitiesNames())
+  },[])
   return (
     <SignUpForm>
       <Title style={{ textAlign: "center" }}>Sign Up</Title>

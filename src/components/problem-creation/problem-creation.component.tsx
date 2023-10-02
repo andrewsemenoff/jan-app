@@ -2,7 +2,7 @@ import { Chip } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { InputWithTitleWrapper, MainSection, Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectCommunitiesNames } from "../../features/communities/communitiesSlice";
+import { getCommunitiesNames, selectCommunitiesNames } from "../../features/communities/communitiesSlice";
 import {
   Problem,
   addProblem,
@@ -137,6 +137,9 @@ const ProblemCreation = ({ creationType, problem }: ProblemCreationProps) => {
       window?.MathJax.typeset();
     }
   }, [title, description]);
+  useEffect(()=>{
+    dispatch(getCommunitiesNames())
+  },[])
   return (
     <>
       <TitleSectionForProblemProposal>

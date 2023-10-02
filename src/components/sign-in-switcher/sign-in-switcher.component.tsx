@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const SignInSwitcher = () => {
   const navigate = useNavigate();
   const isSignedIn = useAppSelector(selectIsSignedIn);
-  const [isSignInMode, setIsSignInMode] = useState(true);
+  const [isSignInMode, setIsSignInMode] = useState(false);
   const dispatch = useAppDispatch();
   const handleSignOutClicked = async () => {
     await dispatch(signOut()).unwrap();

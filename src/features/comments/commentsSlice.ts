@@ -106,7 +106,7 @@ export const likeComment = createAsyncThunk(
           },
         }
       );
-      console.log("data after like comment: ", data);
+      return data
     } catch (err: any) {
       console.log("error after addComment:", err);
     }
