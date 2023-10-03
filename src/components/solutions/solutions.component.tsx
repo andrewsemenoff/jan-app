@@ -38,7 +38,7 @@ const Solutions = ({ problemId }: SolutionsProps) => {
           addSolution({ problemId, details: solutionText })
         ).unwrap();
         setSolutionText("");
-        await dispatch(getSolutions({ problemId }));
+        await dispatch(getSolutions( problemId ));
       } catch (err: any) {
         console.log("error during addSolution");
       } finally {
@@ -46,12 +46,6 @@ const Solutions = ({ problemId }: SolutionsProps) => {
       }
     }
   };
-
-  useEffect(() => {
-    if (isSignedIn) {
-      dispatch(getSolutions({ problemId }));
-    }
-  }, [isSignedIn]);
 
   return (
     <SolutionsBox>

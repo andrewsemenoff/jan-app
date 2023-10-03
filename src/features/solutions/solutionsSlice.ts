@@ -77,7 +77,7 @@ export const addSolution = createAsyncThunk(
 );
 export const getSolutions = createAsyncThunk(
   SOLUTIONS_ACTION_TYPE.GET_SOLUTIONS,
-  async ({ problemId }: { problemId: string }, { getState }) => {
+  async ( problemId : string , { getState }) => {
     const {
       account: { token },
     } = getState() as RootState;

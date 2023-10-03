@@ -7,9 +7,11 @@ import Field from "../field/field.component";
 import { SignInForm, StyledLink } from "./sign-in.styles";
 import { useAppDispatch } from "../../app/hooks";
 import { STATUS, getUser, signIn } from "../../features/account/accountSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { fakeFetch } from "../../assets/mock_data";
 
 const SignIn = () => {
+  const { state } = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [requestStatus, setRequestStatus] = useState(STATUS.IDLE);
@@ -28,13 +30,15 @@ const SignIn = () => {
       try {
         setRequestStatus(STATUS.PENDING);
         const res = await dispatch(signIn({ email, password })).unwrap();
-        await dispatch(getUser());
+
+        // await fakeFetch("", 2000); //REFACTOR if there is a method that inform if the new generated token is valid or not for all services 
+        dispatch(getUser()).unwrap;
         if (res) {
           localStorage.setItem("token", res);
         }
         setEmail("");
         setPassword("");
-        navigate("/profile");
+        state?.from ? navigate(state.from) : navigate("/profile");
       } catch (error: any) {
         console.log(`failed to sign in. Error: ${error.message} ${error.code}`);
       } finally {

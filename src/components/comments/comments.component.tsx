@@ -44,12 +44,6 @@ const Comments = ({ problemId }: CommentsProps) => {
     }
   };
 
-  useEffect(() => {
-    if (isSignedIn) {
-      dispatch(getComments(problemId));
-    }
-  }, [isSignedIn]);
-
   return (
     <CommentsBox>
       {comments.map((c, index) => (

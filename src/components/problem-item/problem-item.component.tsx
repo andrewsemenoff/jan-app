@@ -19,7 +19,7 @@ const ProblemItem = ({ problem }: ProblemItemProps) => {
   const {
     id,
     author,
-    interactions: { totalLikes },
+    interactions: { totalLikes, totalDislikes },
     title,
     dateCreated,
     currentAward,
@@ -27,6 +27,7 @@ const ProblemItem = ({ problem }: ProblemItemProps) => {
     solutions,
   } = problem;
   
+  const votes = totalLikes-totalDislikes;
   const creationDate = formatDistanceToNow(parseISO(dateCreated));
   
   return (
@@ -37,7 +38,7 @@ const ProblemItem = ({ problem }: ProblemItemProps) => {
         <SmallText>{`By ${author}`}</SmallText>
         <SmallText>{creationDate}</SmallText>
       </AuthorAndDateWrapper>
-      <VotesAndSolutionsLabel>{`${totalLikes} votes, ${solutions.length} solutions`}</VotesAndSolutionsLabel>
+      <VotesAndSolutionsLabel>{`${votes} votes, ${solutions.length} solutions`}</VotesAndSolutionsLabel>
       <CommunitiesDeck>
         {communityNames.map((c, index) => (
           <CommunityLabel

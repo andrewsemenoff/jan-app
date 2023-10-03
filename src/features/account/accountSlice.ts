@@ -59,6 +59,7 @@ interface Profile {
   token: string;
   educationLevels: string[];
   isSignedIn: boolean;
+  status: STATUS;
 }
 
 const helperGetUserIdFromToken = (token: string): string => {
@@ -95,6 +96,7 @@ const initialState: Profile = {
   educationLevels: [],
   userId: "",
   isSignedIn: false,
+  status: STATUS.IDLE
 };
 
 export const signUp = createAsyncThunk(
@@ -528,6 +530,10 @@ const accountSlice = createSlice({
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload ?? state.user;
         state.isSignedIn = true;
+        state.status = STATUS.SUCCEEDED;
+      })
+      .addCase(getUser.pending, (state, action) => {
+        state.status = STATUS.PENDING;
       })
       .addCase(editUserName.fulfilled, (state, action) => {
         state.user = action.payload ?? state.user;
@@ -564,3 +570,4 @@ export const selectEductionLevels = (state: RootState) =>
 export const selectUser = (state: RootState) => state.account.user;
 export const selectIsSignedIn = (state: RootState) => state.account.isSignedIn;
 export const selectUserId = (state: RootState) => state.account.userId;
+export const selectAuthStatus = (state: RootState) => state.account.status;

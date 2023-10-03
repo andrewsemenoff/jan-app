@@ -16,6 +16,7 @@ import SolutionsAndComments from "../../components/solutions-and-comments/soluti
 import {
   STATUS,
   selectIsSignedIn,
+  selectUser,
   selectUserId,
 } from "../../features/account/accountSlice";
 import {
@@ -41,6 +42,8 @@ import {
   SponsorsWrapper,
   TitleSectionForProblemPage,
 } from "./Problem.style";
+import { getSolutions } from "../../features/solutions/solutionsSlice";
+import { getComments } from "../../features/comments/commentsSlice";
 
 const Problem = () => {
   const navigate = useNavigate();
@@ -53,6 +56,7 @@ const Problem = () => {
   const problem = useAppSelector(selectCurrentProblem);
   const isSignedIn = useAppSelector(selectIsSignedIn);
   const userId = useAppSelector(selectUserId);
+  const user = useAppSelector(selectUser);
   const {
     id,
     title,
@@ -112,10 +116,18 @@ const Problem = () => {
   };
 
   useEffect(() => {
-    if (problem_id && isSignedIn) {
-      dispatch(getOneProblem(problem_id));
-    }
-  }, [problem_id, isSignedIn]);
+    (async () => {
+      if (problem_id && isSignedIn) {
+        console.log("start fetching");
+        console.log("user:", user);
+        console.log("problem_id:", problem_id);
+
+        await dispatch(getOneProblem(problem_id)).unwrap();
+        await dispatch(getSolutions(problem_id)).unwrap();
+        await dispatch(getComments(problem_id)).unwrap();
+      }
+    })();
+  }, [problem_id]);
 
   useEffect(() => {
     if (typeof window?.MathJax !== "undefined") {

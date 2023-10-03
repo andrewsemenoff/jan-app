@@ -26,20 +26,21 @@ import Problem from "./pages/Problem/Problem.tsx";
 import ProblemsList from "./pages/ProblemList/ProblemsList.tsx";
 import Profile from "./pages/Profile/Profile.component.tsx";
 import RestorePassword from "./pages/RestorePassword/RestorePassword.tsx";
+import PrivateRoute from "./utils/PrivateRoute.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<App />} path="/" >
-      <Route element={<ProblemsList />} path="problems"  />
-      <Route
-        path="profile"
-        element={<Profile />}
-      />
+    <Route element={<App />} path="/">
+      <Route element={<ProblemsList />} path="problems" />
+      <Route path="profile" element={<Profile />} />
       <Route element={<About />} path="about" errorElement={<Error />} />
       <Route
-        element={<Communities />}
         path="communities"
-        errorElement={<Error />}
+        element={
+          <PrivateRoute>
+            <Communities />
+          </PrivateRoute>
+        }
       />
       <Route
         element={<Authentication />}
@@ -50,12 +51,20 @@ const router = createBrowserRouter(
         <Route element={<SignUp />} path="sign-up" />
       </Route>
       <Route
-        element={<Problem />}
+        element={
+          <PrivateRoute>
+            <Problem />
+          </PrivateRoute>
+        }
         path="problem/:problem_id"
         errorElement={<Error />}
       />
       <Route
-        element={<CreateOrEditProblem />}
+        element={
+          <PrivateRoute>
+            <CreateOrEditProblem />
+          </PrivateRoute>
+        }
         path="problem-proposal"
         errorElement={<Error />}
       />

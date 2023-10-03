@@ -158,6 +158,8 @@ export const getOneProblem = createAsyncThunk(
     const {
       account: { token },
     } = getState() as RootState;
+    console.log('token in getOneProblem', token);
+    
     try {
       const { data }: { data: Problem } = await axios.get(
         `${PROBLEMS_URL}/getproblem/${problem_id}`,
