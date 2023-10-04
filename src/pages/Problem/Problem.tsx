@@ -1,6 +1,7 @@
-import { format, parseISO } from "date-fns";
+import { addHours, format, formatRelative, parseISO } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import { useEffect, useState } from "react";
+import { he } from "date-fns/locale";
 import { useNavigate, useParams } from "react-router-dom";
 import { SmallText, Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -44,6 +45,7 @@ import {
 } from "./Problem.style";
 import { getSolutions } from "../../features/solutions/solutionsSlice";
 import { getComments } from "../../features/comments/commentsSlice";
+import { toLocalTime } from "../../utils/timeHandling";
 
 const Problem = () => {
   const navigate = useNavigate();
@@ -75,6 +77,10 @@ const Problem = () => {
       dislikes,
     },
   } = problem;
+
+  const localDate = toLocalTime(dateCreated);
+  // const date = format(localDate, "MM/dd/yyyy hh:mm");
+  const dateInWords = `created ${formatRelative(localDate, new Date())}`
 
   const canDelete = deleteRequestStatus === STATUS.IDLE;
   const isOwnProblem = authorId === userId;
@@ -167,7 +173,9 @@ const Problem = () => {
         </FlexWrapper>
         <FlexWrapper>
           <SmallText>Posted by {author}</SmallText>
-          <SmallText>{"dd/MM/YYYY hh:mm"}</SmallText>
+          <SmallText>
+            {dateInWords}
+          </SmallText>
         </FlexWrapper>
         {isOwnProblem && (
           <EditButtonsBar>

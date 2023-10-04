@@ -1,5 +1,10 @@
-import { formatDistanceToNow, formatISO, fromUnixTime, parseISO } from "date-fns";
-import { ProblemInstance } from "../../assets/mock_data";
+import {
+  formatDistanceToNow
+} from "date-fns";
+import { useNavigate } from "react-router-dom";
+import { SmallText } from "../../App.style";
+import { Problem } from "../../features/problems/problemsSlice";
+import { toLocalTime } from "../../utils/timeHandling";
 import {
   AuthorAndDateWrapper,
   CommunitiesDeck,
@@ -8,9 +13,6 @@ import {
   TitleContainer,
   VotesAndSolutionsLabel,
 } from "./problem-item.styles";
-import { SmallText } from "../../App.style";
-import { useNavigate } from "react-router-dom";
-import { Problem } from "../../features/problems/problemsSlice";
 interface ProblemItemProps {
   problem: Problem;
 }
@@ -26,17 +28,19 @@ const ProblemItem = ({ problem }: ProblemItemProps) => {
     communityNames,
     solutions,
   } = problem;
-  
-  const votes = totalLikes-totalDislikes;
-  const creationDate = formatDistanceToNow(parseISO(dateCreated));
-  
+
+  const votes = totalLikes - totalDislikes;
+
+  const localDate = toLocalTime(dateCreated);
+  const createdTimeAgo = `${formatDistanceToNow(localDate)} ago`;
+
   return (
     <ItemBox onClick={() => navigate(`/problem/${id}`)}>
       <TitleContainer>{title}</TitleContainer>
       <div>{currentAward}$</div>
       <AuthorAndDateWrapper>
         <SmallText>{`By ${author}`}</SmallText>
-        <SmallText>{creationDate}</SmallText>
+        <SmallText>{createdTimeAgo}</SmallText>
       </AuthorAndDateWrapper>
       <VotesAndSolutionsLabel>{`${votes} votes, ${solutions.length} solutions`}</VotesAndSolutionsLabel>
       <CommunitiesDeck>

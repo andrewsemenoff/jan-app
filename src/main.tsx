@@ -30,8 +30,8 @@ import PrivateRoute from "./utils/PrivateRoute.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<App />} path="/">
-      <Route element={<ProblemsList />} path="problems" />
+    <Route element={<App />}>
+      <Route element={<ProblemsList />} path="problems" index />
       <Route path="profile" element={<Profile />} />
       <Route element={<About />} path="about" errorElement={<Error />} />
       <Route

@@ -15,6 +15,8 @@ import { ButtonsBar, CommentBox, EditTextArea } from "./comment.styles";
 import CustomButton, { ButtonType } from "../button/button.component";
 import { Fashion, SVG_PATH } from "../../svg-components/svg-icon/svg-icon.component";
 import { grey } from "@mui/material/colors";
+import { addHours, formatDistanceToNow, parseISO } from "date-fns";
+import { toLocalTime } from "../../utils/timeHandling";
 
 interface CommentProps {
   comment: Comment;
@@ -40,6 +42,9 @@ const SingleComment = ({ comment }: CommentProps) => {
   const [reactionRequestStatus, setReactionRequestStatus] = useState(
     STATUS.IDLE
   );
+  const localDate = toLocalTime(dateCreated);
+  const createdTimeAgo = `created ${formatDistanceToNow(localDate)} ago`;
+
   const [editRequestStatus, setEditRequestStatus] = useState(STATUS.IDLE);
   const canSaveChanges =
     editRequestStatus === STATUS.IDLE && details !== editedValue;
@@ -125,7 +130,7 @@ const SingleComment = ({ comment }: CommentProps) => {
         </div>
       )}
 
-      <h3>created at {dateCreated}</h3>
+      <h3>{createdTimeAgo}</h3>
       {dateEdited && <h3>edited at {dateEdited}</h3>}
       <h3>by {author}</h3>
       <div style={{ display: "flex", justifyContent: "end", gap: "1em" }}>

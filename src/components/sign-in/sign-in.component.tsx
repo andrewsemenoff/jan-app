@@ -31,7 +31,7 @@ const SignIn = () => {
         setRequestStatus(STATUS.PENDING);
         const res = await dispatch(signIn({ email, password })).unwrap();
 
-        // await fakeFetch("", 2000); //REFACTOR if there is a method that inform if the new generated token is valid or not for all services 
+        await fakeFetch("", 2000); //REFACTOR if there is a method that inform if the new generated token is valid or not for all services 
         dispatch(getUser()).unwrap;
         if (res) {
           localStorage.setItem("token", res);
