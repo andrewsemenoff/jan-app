@@ -1,18 +1,18 @@
-import {
-  formatDistanceToNow
-} from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { SmallText } from "../../App.style";
 import { Problem } from "../../features/problems/problemsSlice";
-import { toLocalTime } from "../../utils/timeHandling";
+import { getStandardLocalDate } from "../../utils/timeHandling";
 import {
   AuthorAndDateWrapper,
-  CommunitiesDeck,
-  CommunityLabel,
+  CommunitiesListBox,
   ItemBox,
+  Spot,
+  TimeWrapper,
   TitleContainer,
   VotesAndSolutionsLabel,
 } from "./problem-item.styles";
+import UserChip from "../user-chip/user-chip.component";
+import CommunityChip from "../community-chip/community-chip.component";
 interface ProblemItemProps {
   problem: Problem;
 }
@@ -21,40 +21,41 @@ const ProblemItem = ({ problem }: ProblemItemProps) => {
   const {
     id,
     author,
+    authorId,
     interactions: { totalLikes, totalDislikes },
     title,
     dateCreated,
     currentAward,
     communityNames,
     solutions,
+    rating,
   } = problem;
 
   const votes = totalLikes - totalDislikes;
-
-  const localDate = toLocalTime(dateCreated);
-  const createdTimeAgo = `${formatDistanceToNow(localDate)} ago`;
+  const createdTimeAgo = getStandardLocalDate(dateCreated);
 
   return (
     <ItemBox onClick={() => navigate(`/problem/${id}`)}>
       <TitleContainer>{title}</TitleContainer>
       <div>{currentAward}$</div>
       <AuthorAndDateWrapper>
-        <SmallText>{`By ${author}`}</SmallText>
-        <SmallText>{createdTimeAgo}</SmallText>
+        <UserChip userName={author} userId={authorId} />
+        <TimeWrapper>{createdTimeAgo}</TimeWrapper>
       </AuthorAndDateWrapper>
-      <VotesAndSolutionsLabel>{`${votes} votes, ${solutions.length} solutions`}</VotesAndSolutionsLabel>
-      <CommunitiesDeck>
-        {communityNames.map((c, index) => (
-          <CommunityLabel
-            $isDynamic
-            $offset={index * 2}
-            $index={index}
-            key={index}
-          >
-            {c}
-          </CommunityLabel>
-        ))}
-      </CommunitiesDeck>
+      <VotesAndSolutionsLabel>
+        <Spot>{`${rating} `}</Spot>
+        <div>
+          <SmallText>{`${votes} votes`}</SmallText>
+          <SmallText>{`${solutions.length} solutions`}</SmallText>
+        </div>
+      </VotesAndSolutionsLabel>
+      <div  style={{overflow: 'auto', height: '100%'}}>
+        <CommunitiesListBox>
+          {communityNames.map((c, index) => (
+            <CommunityChip key={index} communityName={c}/>
+          ))}
+        </CommunitiesListBox>
+      </div>
     </ItemBox>
   );
 };

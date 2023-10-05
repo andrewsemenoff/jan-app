@@ -55,7 +55,7 @@ const ProblemsList = () => {
         </div>
         <Title>Recent Problems</Title>
         <Title>Award</Title>
-        <Title style={{ textAlign: "center" }}>Date</Title>
+        <Title style={{ textAlign: "center" }}>Author / Date</Title>
         <Title style={{ textAlign: "center" }}>Rating</Title>
         <Title style={{ textAlign: "center" }}>Communities</Title>
       </TitleSectionForProblemList>

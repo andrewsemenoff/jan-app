@@ -14,8 +14,9 @@ export const TitleSectionForProblemList = styled(TitleSection)`
   grid-template-areas:
     "btn btn btn btn btn"
     "a b c d e";
-  grid-template-columns: 8fr 1fr 2fr 3fr 3fr;
-  row-gap: .5em;
+  grid-template-columns: minmax(9em, 1fr) 5em 7.5em 9em minmax(12em, 20em);
+  column-gap: 1em;
+  row-gap: 0.5em;
   grid-template-rows: 2fr 1fr;
   align-items: end;
 `;

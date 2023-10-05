@@ -23,6 +23,7 @@ export enum ACCOUNT_ACTION_TYPE {
   DELETE_USER = "account/deleteUser",
   GET_EDUCATION_LEVELS = "account/getEducationLevels",
   GET_USER = "account/getUser",
+  GET_OTHER_USER = "account/getOtherUser",
   RESET_PASSWORD = "account/resetPassword",
 }
 interface SignInRequestData {
@@ -41,7 +42,7 @@ interface InitialUserData {
   location: Location;
   password: string;
 }
-interface User extends InitialUserData {
+export interface User extends InitialUserData {
   roles: string[];
   avatar: string;
   stats: {
@@ -204,6 +205,44 @@ export const getUser = createAsyncThunk(
       } else if (err.request) {
         const { message } = err;
         console.log(`error in http request during getUser process: ${message}`);
+        return rejectWithValue({ message, status: 0 });
+      } else {
+        console.log("Unknown Error during getUser process", err.message);
+      }
+    }
+  }
+);
+export const getOtherUser = createAsyncThunk(
+  ACCOUNT_ACTION_TYPE.GET_OTHER_USER,
+  async (otherUserId: string, { rejectWithValue, getState }) => {
+    try {
+      const {
+        account: { token},
+      } = getState() as RootState;
+      const { data }: { data: User } = await axios.get(
+        `${ACCOUNTING_URL}/getuser/${otherUserId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      data.educationLevel = helperEnumToStringAppearance(data.educationLevel);
+      return data;
+    } catch (err: any) {
+      if (err.response) {
+        console.log('error in response during getOtherUser()');
+        
+        const { data } = err.response;
+        const { message, status } = data;
+        return rejectWithValue({
+          message,
+          status,
+        });
+      } else if (err.request) {
+        const { message } = err;
+        console.log(`error in http request during getOtherUser process: ${message}`);
         return rejectWithValue({ message, status: 0 });
       } else {
         console.log("Unknown Error during getUser process", err.message);

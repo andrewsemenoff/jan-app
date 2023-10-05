@@ -37,7 +37,7 @@ const initialState: initialSolutions = {
     author: "",
     authorId: "",
     details: "",
-    dateCreated: "",
+    dateCreated: "0001-01-01T00:00:00",
     dateEdited: "",
     reactions: {
       totalLikes: 0,

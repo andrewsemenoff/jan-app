@@ -1,9 +1,13 @@
 import styled, { css } from "styled-components";
+import { SmallText } from "../../App.style";
 
 export const ItemBox = styled.div`
+  grid-template-columns: minmax(9em, 1fr) 5em 7.5em 9em minmax(12em, 20em);
+  padding: 0.2em 0;
+  gap: 1em;
   user-select: none;
   display: grid;
-  grid-template-columns: 8fr 1fr 2fr 3fr 3fr;
+  row-gap: 0.5em;
   height: 4em;
   align-items: center;
   background-color: white;
@@ -16,54 +20,49 @@ export const TitleContainer = styled.div`
   padding-right: 2em;
 `;
 
-export const label = css`
-  font-size: 0.8em;
-  padding: 0.5em;
-  color: grey;
-  border-radius: 5em;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
-    rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
-`;
-
-export const forDynamicLabel = css<{ $offset?: number; $index?: number }>`
-  position: absolute;
-  z-index: ${(props) => props.$index};
-  transform: translateX(${({ $offset }) => $offset + "em"});
-  &:hover {
-    z-index: 100;
-  }
-`;
-
-interface CommunityLabelProps {
-  $offset?: number;
-  $index?: number;
-  $isDynamic?: boolean;
-}
-export const CommunityLabel = styled.div<CommunityLabelProps>`
-  width: max-content;
-
-  background-color: #8cc4f3;
-  ${label};
-  ${({ $isDynamic }) => $isDynamic && forDynamicLabel}
-`;
-
-export const CommunitiesDeck = styled.div`
-  position: relative;
+export const CommunitiesListBox = styled.div`
+  padding: 0 0.3em;
   display: flex;
-  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  margin-bottom: .35em;
 `;
 
 export const VotesAndSolutionsLabel = styled.div`
+  display: flex;
+  gap: 0.5em;
   justify-self: center;
-  width: 70%;
-  background-color: #fce8e4;
-  ${label};
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: lightgray;
+  padding: 0.3em;
+  border-radius: 0.5em;
+  overflow: hidden;
+`;
+export const Spot = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1/1;
+  font-size: 0.8em;
+  align-items: center;
+  color: white;
+  width: 2em;
+  min-width: max-content;
+  height: 3em;
+  border-radius: 50%;
+  background-color: #0984e3;
+  padding: 0.2em;
 `;
 
 export const AuthorAndDateWrapper = styled.div`
+  height: 100%;
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   align-items: center;
+`;
+export const TimeWrapper = styled(SmallText)`
+  white-space: nowrap;
 `;

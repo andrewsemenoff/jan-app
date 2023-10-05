@@ -9,14 +9,12 @@ import {
   getComments,
   likeComment,
 } from "../../features/comments/commentsSlice";
+import { Fashion, SVG_PATH } from "../../svg-components/svg-icon/svg-icon.component";
+import { getLocalDateDistance } from "../../utils/timeHandling";
+import CustomButton, { ButtonType } from "../button/button.component";
 import CommentMenu from "../comment-menu/comment-menu.component";
 import ReactionBox from "../reaction-box/reaction-box.component";
 import { ButtonsBar, CommentBox, EditTextArea } from "./comment.styles";
-import CustomButton, { ButtonType } from "../button/button.component";
-import { Fashion, SVG_PATH } from "../../svg-components/svg-icon/svg-icon.component";
-import { grey } from "@mui/material/colors";
-import { addHours, formatDistanceToNow, parseISO } from "date-fns";
-import { toLocalTime } from "../../utils/timeHandling";
 
 interface CommentProps {
   comment: Comment;
@@ -42,8 +40,8 @@ const SingleComment = ({ comment }: CommentProps) => {
   const [reactionRequestStatus, setReactionRequestStatus] = useState(
     STATUS.IDLE
   );
-  const localDate = toLocalTime(dateCreated);
-  const createdTimeAgo = `created ${formatDistanceToNow(localDate)} ago`;
+
+  const createdTimeAgo = getLocalDateDistance(dateCreated);
 
   const [editRequestStatus, setEditRequestStatus] = useState(STATUS.IDLE);
   const canSaveChanges =
@@ -78,12 +76,14 @@ const SingleComment = ({ comment }: CommentProps) => {
   };
   const handleSaveChanges = async () => {
     if (canSaveChanges) {
+      setEditRequestStatus(STATUS.PENDING)
       const status = await dispatch(
         editComment({ commentId: id, editedComment: editedValue })
       ).unwrap();
       if (status === 200) {
         await dispatch(getComments(problemId));
       }
+      setEditRequestStatus(STATUS.IDLE)
       setIsEditMode(false);
     }
   };

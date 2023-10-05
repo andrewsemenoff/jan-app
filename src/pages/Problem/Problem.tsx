@@ -1,18 +1,12 @@
-import { addHours, format, formatRelative, parseISO } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
 import { useEffect, useState } from "react";
-import { he } from "date-fns/locale";
 import { useNavigate, useParams } from "react-router-dom";
 import { SmallText, Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import CustomButton, {
   ButtonType,
 } from "../../components/button/button.component";
-import { CommunitiesListBox } from "../../components/problem-creation/problem-creation.styles";
-import { CommunityLabel } from "../../components/problem-item/problem-item.styles";
-import ReactionBox, {
-  REACTION,
-} from "../../components/reaction-box/reaction-box.component";
+import { CommunitiesListBox } from "../../components/problem-item/problem-item.styles";
+import ReactionBox from "../../components/reaction-box/reaction-box.component";
 import SolutionsAndComments from "../../components/solutions-and-comments/solutions-and-comments.component";
 import {
   STATUS,
@@ -20,6 +14,7 @@ import {
   selectUser,
   selectUserId,
 } from "../../features/account/accountSlice";
+import { getComments } from "../../features/comments/commentsSlice";
 import {
   deleteProblem,
   dislikeProblem,
@@ -28,12 +23,13 @@ import {
   selectCurrentProblem,
   subscribeOnProblem,
 } from "../../features/problems/problemsSlice";
+import { getSolutions } from "../../features/solutions/solutionsSlice";
 import SvgIcon, {
   Fashion,
   SVG_PATH,
 } from "../../svg-components/svg-icon/svg-icon.component";
+import { getLocalDateInWords } from "../../utils/timeHandling";
 import {
-  ButtonsWrapper,
   DetailedText,
   EditButtonsBar,
   FlexWrapper,
@@ -43,9 +39,7 @@ import {
   SponsorsWrapper,
   TitleSectionForProblemPage,
 } from "./Problem.style";
-import { getSolutions } from "../../features/solutions/solutionsSlice";
-import { getComments } from "../../features/comments/commentsSlice";
-import { toLocalTime } from "../../utils/timeHandling";
+import CommunityChip from "../../components/community-chip/community-chip.component";
 
 const Problem = () => {
   const navigate = useNavigate();
@@ -78,9 +72,7 @@ const Problem = () => {
     },
   } = problem;
 
-  const localDate = toLocalTime(dateCreated);
-  // const date = format(localDate, "MM/dd/yyyy hh:mm");
-  const dateInWords = `created ${formatRelative(localDate, new Date())}`
+  const dateInWords = getLocalDateInWords(dateCreated);
 
   const canDelete = deleteRequestStatus === STATUS.IDLE;
   const isOwnProblem = authorId === userId;
@@ -173,9 +165,7 @@ const Problem = () => {
         </FlexWrapper>
         <FlexWrapper>
           <SmallText>Posted by {author}</SmallText>
-          <SmallText>
-            {dateInWords}
-          </SmallText>
+          <SmallText>{dateInWords}</SmallText>
         </FlexWrapper>
         {isOwnProblem && (
           <EditButtonsBar>
@@ -202,7 +192,7 @@ const Problem = () => {
           <DetailedText>{details}</DetailedText>
           <CommunitiesListBox>
             {communityNames.map((c, index) => (
-              <CommunityLabel key={index}>{c}</CommunityLabel>
+              <CommunityChip key={index} communityName={c} />
             ))}
           </CommunitiesListBox>
           {problem_id && <SolutionsAndComments problemId={problem_id} />}

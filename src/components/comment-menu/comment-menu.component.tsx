@@ -12,9 +12,10 @@ import { MenuElement } from "./commment-menu.styles";
 interface CommentMenuProps{
     commentId: string,
     problemId: string,
+    disabled?: boolean,
     handleClickEdit: ()=>void,
 }
-const CommentMenu = ({commentId, problemId, handleClickEdit}: CommentMenuProps) => {
+const CommentMenu = ({commentId, problemId, disabled, handleClickEdit}: CommentMenuProps) => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);

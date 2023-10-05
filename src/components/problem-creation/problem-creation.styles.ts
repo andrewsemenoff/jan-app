@@ -31,12 +31,7 @@ export const PreviewWrapper = styled.div`
   overflow-x: auto;
 `;
 
-export const CommunitiesListBox = styled.div`
-  display: flex;
-  gap: 0.5em;
-  margin: 0.2em 0;
-  flex-wrap: wrap;
-`;
+
 export const DescriptionTextArea = styled.textarea`
   ${textArea}
   height: 10em;

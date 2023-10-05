@@ -12,7 +12,6 @@ import AutocompleteField from "../autocomplete-field/autocomplete-field.componen
 import CustomButton, { ButtonType } from "../button/button.component";
 import {
   ButtonsBar,
-  CommunitiesListBox,
   DescriptionTextArea,
   FormsWrapper,
   GridBox,
@@ -22,6 +21,7 @@ import {
 } from "./problem-creation.styles";
 import { useNavigate } from "react-router-dom";
 import { STATUS } from "../../features/account/accountSlice";
+import { CommunitiesListBox } from "../problem-item/problem-item.styles";
 
 export enum CREATION_TYPE {
   ADD_PROBLEM = "create problem",
