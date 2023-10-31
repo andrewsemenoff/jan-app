@@ -96,7 +96,7 @@ export const likeComment = createAsyncThunk(
       account: { token },
     } = getState() as RootState;
     try {
-      const { data }: { data: Comment } = await axios.put(
+      const { status }: { status: number } = await axios.put(
         `${COMMENTS_URL}/likecomment/${problemId}/${commentId}`,
         null,
         {
@@ -106,7 +106,7 @@ export const likeComment = createAsyncThunk(
           },
         }
       );
-      return data
+      return status
     } catch (err: any) {
       console.log("error after addComment:", err);
     }

@@ -36,8 +36,8 @@ interface ReactionBoxProps {
     likes: actionAuthorInfo[];
     dislikes: actionAuthorInfo[];
   };
-  handleClickLike: () => void;
-  handleClickDislike: () => void;
+  handleClickLike: (event: React.MouseEvent< SVGSVGElement>) => void;
+  handleClickDislike: (event: React.MouseEvent< SVGSVGElement>) => void;
 }
 
 const ReactionBox = ({
@@ -59,11 +59,11 @@ const ReactionBox = ({
     ? REACTION.DISLIKE
     : REACTION.NEUTRAL;
 
-  const handleLikeClicked = () => {
-    handleClickLike();
+  const handleLikeClicked = (event: React.MouseEvent< SVGSVGElement>) => {
+    handleClickLike(event);
   };
-  const handleDislikeClicked = () => {
-    handleClickDislike();
+  const handleDislikeClicked = (event: React.MouseEvent< SVGSVGElement>) => {
+    handleClickDislike(event);
   };
 
   const likesColor =

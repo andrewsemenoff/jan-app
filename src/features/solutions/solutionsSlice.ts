@@ -7,6 +7,9 @@ import { actionAuthorInfo } from "../problems/problemsSlice";
 export enum SOLUTIONS_ACTION_TYPE {
   ADD_SOLUTION = "solutions/addSolution",
   GET_SOLUTIONS = "solutions/getSolutions",
+  LIKE_SOLUTION = "solutions/likeSolution",
+  DISLIKE_SOLUTION = "solutions/dislikeSolution",
+  EDIT_SOLUTION = "solutions/editSolution",
 }
 
 export interface Solution {
@@ -16,6 +19,7 @@ export interface Solution {
   details: string;
   dateCreated: string;
   dateEdited: string;
+  problemId: string;
   reactions: {
     totalLikes: number;
     totalDislikes: number;
@@ -39,6 +43,7 @@ const initialState: initialSolutions = {
     details: "",
     dateCreated: "0001-01-01T00:00:00",
     dateEdited: "",
+    problemId: "",
     reactions: {
       totalLikes: 0,
       totalDislikes: 0,
@@ -77,7 +82,7 @@ export const addSolution = createAsyncThunk(
 );
 export const getSolutions = createAsyncThunk(
   SOLUTIONS_ACTION_TYPE.GET_SOLUTIONS,
-  async ( problemId : string , { getState }) => {
+  async (problemId: string, { getState }) => {
     const {
       account: { token },
     } = getState() as RootState;
@@ -94,6 +99,91 @@ export const getSolutions = createAsyncThunk(
       return data;
     } catch (err: any) {
       console.log("error after getSolutions:", err);
+    }
+  }
+);
+export const likeSolution = createAsyncThunk(
+  SOLUTIONS_ACTION_TYPE.LIKE_SOLUTION,
+  async (
+    { problemId, solutionId }: { problemId: string; solutionId: string },
+    { getState }
+  ) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { status }: { status: number } = await axios.put(
+        `${SOLUTIONS_URL}/likesolution/${problemId}/${solutionId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return status;
+    } catch (err: any) {
+      console.log("error after likeSolution:", err);
+    }
+  }
+);
+export const dislikeSolution = createAsyncThunk(
+  SOLUTIONS_ACTION_TYPE.DISLIKE_SOLUTION,
+  async (
+    { problemId, solutionId }: { problemId: string; solutionId: string },
+    { getState }
+  ) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { status }: { status: number } = await axios.put(
+        `${SOLUTIONS_URL}/dislikesolution/${problemId}/${solutionId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return status;
+    } catch (err: any) {
+      console.log("error after dislikeSolution:", err);
+    }
+  }
+);
+export const editSolution = createAsyncThunk(
+  SOLUTIONS_ACTION_TYPE.EDIT_SOLUTION,
+  async (
+    {
+      problemId,
+      solutionId,
+      editedSolution,
+    }: { problemId: string; solutionId: string; editedSolution: string },
+    { getState }
+  ) => {
+    const {
+      account: { token, userId },
+    } = getState() as RootState;
+    try {
+      const { status }: { status: number } = await axios.put(
+        `${SOLUTIONS_URL}/editsolution/${userId}/${problemId}/${solutionId}`,
+        {
+          title: "",
+          details: editedSolution,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return status;
+    } catch (err: any) {
+      console.log("error after editSolution:", err);
     }
   }
 );

@@ -1,6 +1,6 @@
-import Avatar from "@mui/material/Avatar";
 import { Title } from "../../App.style";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import Avatar from "../../components/avatar/avatar.component";
 import ChipsEditableField from "../../components/chips-editable-field/chips-editable-field";
 import EditableField from "../../components/editable-field/editable-field.component";
 import {
@@ -13,7 +13,10 @@ import {
   selectEductionLevels,
   selectUser,
 } from "../../features/account/accountSlice";
-import { getCommunitiesNames, selectCommunitiesNames } from "../../features/communities/communitiesSlice";
+import {
+  getCommunitiesNames,
+  selectCommunitiesNames,
+} from "../../features/communities/communitiesSlice";
 import {
   AdditionalInfo,
   MainInfo,
@@ -39,20 +42,18 @@ const Profile = () => {
     stats,
     wallet,
   } = useAppSelector(selectUser);
-  useEffect(()=>{
-    if(educationLevels.length<2){dispatch(getEductionLevels())}
-    dispatch(getCommunitiesNames())
-  },[])
+  useEffect(() => {
+    if (educationLevels.length < 2) {
+      dispatch(getEductionLevels());
+    }
+    dispatch(getCommunitiesNames());
+  }, []);
 
   return (
     <ProfilePageWrapper>
       <ProfileCard>
         <MainInfo>
-          <Avatar
-            alt={username}
-            src={avatar}
-            style={{ width: "5em", height: "5em" }}
-          />
+          <Avatar alt={username} width="5em" url={avatar}/>
           <EditableField
             handleSaveChanges={(name) => dispatch(editUserName(name))}
             title="display name"

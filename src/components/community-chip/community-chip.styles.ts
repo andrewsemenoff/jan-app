@@ -10,6 +10,9 @@ export const CommunityChipBox = styled.div`
   cursor: pointer;
   text-align: center;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 4px, rgba(0, 0, 0, 0.5) 0px 3px 4px;
+  &:hover{
+    background-color:#0f91f5;
+  }
   &:active {
     transform: translateY(0.16em);
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px, rgba(0, 0, 0, 0.2) 0px 2px 3px;

@@ -58,9 +58,6 @@ const SingleComment = ({ comment }: CommentProps) => {
       setReactionRequestStatus(STATUS.IDLE);
     }
   };
-  const handleCommentTextEdit = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setEditedValue(e.target.value);
-  };
   const handleClickDislike = async () => {
     if (reactionRequestStatus === STATUS.IDLE) {
       setReactionRequestStatus(STATUS.PENDING);
@@ -74,6 +71,10 @@ const SingleComment = ({ comment }: CommentProps) => {
       setReactionRequestStatus(STATUS.IDLE);
     }
   };
+  const handleCommentTextEdit = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setEditedValue(e.target.value);
+  };
+ 
   const handleSaveChanges = async () => {
     if (canSaveChanges) {
       setEditRequestStatus(STATUS.PENDING)

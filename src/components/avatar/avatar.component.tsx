@@ -1,16 +1,16 @@
-import { Circle, RoundPhoto } from "./avatar.style";
+import { RoundPhoto } from "./avatar.style";
 
 interface AvatarProps {
   url: string;
-  alt: string;
   width: string;
+  alt?: string;
+  border?: string
 }
 
-const Avatar = ({ url, alt, width }: AvatarProps) => {
+const Avatar = ({ url, alt, width, border }: AvatarProps) => {
   return (
-    <div style={{ width: width, overflow: "hidden", position: "relative" }}>
+    <div style={{ width: width, overflow: "hidden", border }}>
       <RoundPhoto src={url} alt={alt} />
-      <Circle />
     </div>
   );
 };

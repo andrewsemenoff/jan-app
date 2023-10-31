@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import CustomButton, {
   ButtonType,
 } from "../../components/button/button.component";
+import CommunityChip from "../../components/community-chip/community-chip.component";
 import { CommunitiesListBox } from "../../components/problem-item/problem-item.styles";
 import ReactionBox from "../../components/reaction-box/reaction-box.component";
 import SolutionsAndComments from "../../components/solutions-and-comments/solutions-and-comments.component";
@@ -39,7 +40,6 @@ import {
   SponsorsWrapper,
   TitleSectionForProblemPage,
 } from "./Problem.style";
-import CommunityChip from "../../components/community-chip/community-chip.component";
 
 const Problem = () => {
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ const Problem = () => {
     setDeleteRequestStatus(STATUS.PENDING);
     try {
       await dispatch(deleteProblem(id)).unwrap();
-      navigate("/problems");
+      navigate("/");
     } catch (err: any) {
       console.log("error after delete problem was clicked");
     } finally {
