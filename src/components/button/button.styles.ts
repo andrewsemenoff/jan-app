@@ -19,26 +19,10 @@ const disabled = css`
     cursor: not-allowed;
   }
 `;
-const svgStyleForBasicBtn = css`
-  svg {
-    fill: #aad2f1;
-  }
-  &:hover svg {
-    fill: white;
-  }
-`;
-
-const svgStyleForInvertedBtn = css`
-  svg {
-    fill: #0984e3;
-  }
-  &:hover svg {
-    fill: black;
-  }
-`;
 
 interface BaseForButtonProps {
   $disabled?: boolean;
+  $svgFill?: string;
 }
 const BaseForButton = styled.button<BaseForButtonProps>`
   display: flex;
@@ -70,7 +54,12 @@ export const BasicButton = styled(BaseForButton)`
     transform: translate(2px, 2px);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 6px, rgba(0, 0, 0, 0.23) 0px 1px 6px;
   }
-  ${svgStyleForBasicBtn}
+  svg {
+    fill: ${({ $svgFill }) => $svgFill ?? "#aad2f1"};
+  }
+  &:hover svg {
+    fill: white;
+  }
   ${({ $disabled }) => $disabled && disabled}
 `;
 export const InvertedButton = styled(BaseForButton)`
@@ -85,7 +74,13 @@ export const InvertedButton = styled(BaseForButton)`
     transform: translate(2px, 2px);
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 6px, rgba(0, 0, 0, 0.23) 0px 1px 6px;
   }
-  ${svgStyleForInvertedBtn}
+  svg {
+    fill: ${({ $svgFill }) => $svgFill ?? "#0984e3"};
+  }
+  &:hover svg {
+    fill: black;
+  }
+
   ${({ $disabled }) => $disabled && disabled}
 `;
 

@@ -571,7 +571,7 @@ const accountSlice = createSlice({
         state.isSignedIn = true;
         state.status = STATUS.SUCCEEDED;
       })
-      .addCase(getUser.pending, (state, action) => {
+      .addCase(getUser.pending, (state) => {
         state.status = STATUS.PENDING;
       })
       .addCase(editUserName.fulfilled, (state, action) => {
