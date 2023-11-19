@@ -200,6 +200,8 @@ export const getProblems = createAsyncThunk(
 export const getProblemsByCommunities = createAsyncThunk(
   PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES,
   async (communitiesNames: string[], { getState }) => {
+    console.log("communities names:", communitiesNames);
+    
     const {
       account: { token },
     } = getState() as RootState;
