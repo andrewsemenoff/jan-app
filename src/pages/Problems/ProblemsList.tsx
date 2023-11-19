@@ -1,30 +1,26 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Title } from "../../App.style";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import CustomButton, {
   ButtonType,
 } from "../../components/button/button.component";
 import Paginator from "../../components/paginator/paginator.component";
 import ProblemItem from "../../components/problem-item/problem-item.component";
 import {
-  getProblems,
-  selectAllProblems,
+  Problem
 } from "../../features/problems/problemsSlice";
 import usePagination from "../../hooks/usePagination";
-import {
-  SVG_PATH,
-} from "../../svg-components/svg-icon/svg-icon.component";
+import { SVG_PATH } from "../../svg-components/svg-icon/svg-icon.component";
 import {
   ListWrapper,
   MainSectionForProblemList,
   TitleSectionForProblemList,
 } from "./ProblemList.styles";
 
-const ProblemsList = () => {
-  // const mockProblems = getMockProblems(100);
-  const allProblems = useAppSelector(selectAllProblems);
-  
+interface Props {
+  problems: Problem[];
+}
+
+const ProblemsList = ({ problems }: Props) => {
   const navigate = useNavigate();
   const {
     totalPages,
@@ -34,22 +30,22 @@ const ProblemsList = () => {
     nextPage,
     prevPage,
     // setPage,
-  } = usePagination(allProblems.length, 6);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getProblems());
-  }, []);
+  } = usePagination(problems.length, 6);
 
-  const problemsOnCurrentPage = allProblems.slice(firstIndex, lastIndex);
+  const problemsOnCurrentPage = problems.slice(firstIndex, lastIndex);
   return (
     <>
       <TitleSectionForProblemList>
-        <div style={{ display: "flex", gridArea: 'btn' }}>
+        <div style={{ display: "flex", gridArea: "btn" }}>
           <CustomButton
             buttonType={ButtonType.BASE}
-            onClick={() => navigate("/problem-proposal")}
-            svgElement={{svgPath: SVG_PATH.ADD_PROBLEM, fill:"#aad2f1", size:"1em"}}
-          > 
+            onClick={() => navigate("/problem-proposal/:id")}
+            svgElement={{
+              svgPath: SVG_PATH.ADD_PROBLEM,
+              fill: "#aad2f1",
+              size: "1em",
+            }}
+          >
             propose
           </CustomButton>
         </div>

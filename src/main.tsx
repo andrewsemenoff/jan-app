@@ -23,7 +23,7 @@ import Error from "./pages/Error/Error.tsx";
 import Authentication from "./pages/Login/Authentication.tsx";
 import OtherUser from "./pages/OtherUser/OtherUser.component.tsx";
 import Problem from "./pages/Problem/Problem.tsx";
-import ProblemsList from "./pages/ProblemList/ProblemsList.tsx";
+import AllProblems from "./pages/Problems/AllProblems.tsx";
 import Profile from "./pages/Profile/Profile.component.tsx";
 import RestorePassword from "./pages/RestorePassword/RestorePassword.tsx";
 import Solution from "./pages/Solution/Solution.tsx";
@@ -32,13 +32,11 @@ import PrivateRoute from "./utils/PrivateRoute.tsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<App />} path="/">
-      <Route element={<ProblemsList />} index />
+      <Route element={<AllProblems />} index />
       <Route path="profile" element={<Profile />} />
       <Route
         path="user/:user_id"
         element={
-
-          
           <PrivateRoute>
             <OtherUser />
           </PrivateRoute>

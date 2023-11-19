@@ -4,19 +4,18 @@ import { RootState } from "../../app/store";
 import { PROBLEMS_URL } from "../../assets/hostConfig";
 
 export enum PROBLEMS_ACTION_TYPE {
-  ADD_PROBLEM = "problems/addProblem",
-  EDIT_PROBLEM = "problems/editProblem",
-  LIKE_PROBLEM = "problems/likeProblem",
-  DISLIKE_PROBLEM = "problems/dislikeProblem",
-  UN_SUBSCRIBE_PROBLEM = "problems/unSubscribeProblem",
-  DONATE = "problems/donate",
-  DELETE_PROBLEM = "problems/deleteProblem",
-  GET_ONE_PROBLEM = "problems/getOneProblem",
-  GET_PROBLEMS = "problems/getProblems",
-  GET_PROBLEMS_BY_AUTHOR = "problems/getProblemsByAuthor",
-  GET_PROBLEMS_BY_COMMUNITIES = "problems/getProblemsByCommunities",
-  GET_CURRENT_AWARD = "problems/getCurrentAward",
-  SUBSCRIBE = "problems/subscribe",
+  ADD_PROBLEM = "problem/addProblem",
+  EDIT_PROBLEM = "problem/editProblem",
+  LIKE_PROBLEM = "problem/likeproblem",
+  DISLIKE_PROBLEM = "problem/dislikeProblem",
+  UN_SUBSCRIBE_PROBLEM = "problem/subscribeonproblem",
+  DONATE = "problem/donate",
+  DELETE_PROBLEM = "problem/deleteProblem",
+  GET_ONE_PROBLEM = "problem/getOneProblem",
+  GET_PROBLEMS = "problem/getproblems",
+  GET_PROBLEMS_BY_AUTHOR = "problem/getProblemsByAuthor",
+  GET_PROBLEMS_BY_COMMUNITIES = "problem/getcomunityproblems",
+  GET_CURRENT_AWARD = "problem/getCurrentAward",
 }
 export interface Donation {
   profileId: string;
@@ -158,8 +157,8 @@ export const getOneProblem = createAsyncThunk(
     const {
       account: { token },
     } = getState() as RootState;
-    console.log('token in getOneProblem', token);
-    
+    console.log("token in getOneProblem", token);
+
     try {
       const { data }: { data: Problem } = await axios.get(
         `${PROBLEMS_URL}/getproblem/${problem_id}`,
@@ -184,7 +183,35 @@ export const getProblems = createAsyncThunk(
     } = getState() as RootState;
     try {
       const { data }: { data: Problem[] } = await axios.get(
-        `${PROBLEMS_URL}/getproblems`,
+        `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return data;
+    } catch (err: any) {
+      console.log("error after getProblems:", err);
+    }
+  }
+);
+export const getProblemsByCommunities = createAsyncThunk(
+  PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES,
+  async (communitiesNames: string[], { getState }) => {
+    const {
+      account: { token },
+    } = getState() as RootState;
+    try {
+      const { data }: { data: Problem[] } = await axios.get(
+        `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}?problemIds=${communitiesNames[0]}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       return data;
     } catch (err: any) {
@@ -193,14 +220,14 @@ export const getProblems = createAsyncThunk(
   }
 );
 export const subscribeOnProblem = createAsyncThunk(
-  PROBLEMS_ACTION_TYPE.SUBSCRIBE,
+  PROBLEMS_ACTION_TYPE.UN_SUBSCRIBE_PROBLEM,
   async (problemId: string, { getState }) => {
     const {
       account: { token },
     } = getState() as RootState;
     try {
       const { data }: { data: boolean } = await axios.put(
-        `${PROBLEMS_URL}/subscribeonproblem/${problemId}`,
+        `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.UN_SUBSCRIBE_PROBLEM}/${problemId}`,
         null,
         {
           headers: {
@@ -223,7 +250,7 @@ export const likeProblem = createAsyncThunk(
     } = getState() as RootState;
     try {
       const { data }: { data: Problem } = await axios.put(
-        `${PROBLEMS_URL}/likeproblem/${problemId}`,
+        `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.LIKE_PROBLEM}/${problemId}`,
         null,
         {
           headers: {
