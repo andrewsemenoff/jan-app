@@ -213,7 +213,6 @@ export const getProblemsByCommunities = createAsyncThunk(
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          data: communitiesNames
         }
       );
       return data;
