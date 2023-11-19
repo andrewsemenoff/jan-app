@@ -23,7 +23,7 @@ const Community = () => {
         setProblems(res);
       }
     })();
-  }, []);
+  }, [problems]);
 
   return (
     <>

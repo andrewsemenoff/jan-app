@@ -205,12 +205,13 @@ export const getProblemsByCommunities = createAsyncThunk(
     } = getState() as RootState;
     try {
       const { data }: { data: Problem[] } = await axios.get(
-        `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}?problemIds=${communitiesNames[0]}`,
+        `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          data: communitiesNames
         }
       );
       return data;
