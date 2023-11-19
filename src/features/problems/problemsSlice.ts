@@ -11,7 +11,7 @@ export enum PROBLEMS_ACTION_TYPE {
   UN_SUBSCRIBE_PROBLEM = "problem/subscribeonproblem",
   DONATE = "problem/donate",
   DELETE_PROBLEM = "problem/deleteProblem",
-  GET_ONE_PROBLEM = "problem/getOneProblem",
+  GET_ONE_PROBLEM = "problem/getproblem",
   GET_PROBLEMS = "problem/getproblems",
   GET_PROBLEMS_BY_AUTHOR = "problem/getProblemsByAuthor",
   GET_PROBLEMS_BY_COMMUNITIES = "problem/getcomunityproblems",
@@ -161,7 +161,7 @@ export const getOneProblem = createAsyncThunk(
 
     try {
       const { data }: { data: Problem } = await axios.get(
-        `${PROBLEMS_URL}/getproblem/${problem_id}`,
+        `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_ONE_PROBLEM}/${problem_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

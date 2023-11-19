@@ -90,7 +90,7 @@ const router = createBrowserRouter(
             <CreateOrEditProblem />
           </PrivateRoute>
         }
-        path="problem-proposal"
+        path="problem-proposal/:id"
         errorElement={<Error />}
       />
       <Route

@@ -1,16 +1,14 @@
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Oval } from "react-loader-spinner";
+import { useLocation, useNavigate } from "react-router-dom";
+import { LoaderBackground } from "../App.style";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   STATUS,
   getUser,
-  selectAuthStatus,
   selectIsSignedIn,
-  setToken,
+  setToken
 } from "../features/account/accountSlice";
-import { fakeFetch } from "../assets/mock_data";
-import { useEffect, useState } from "react";
-import { LoaderBackground } from "../App.style";
-import { Oval } from "react-loader-spinner";
 
 interface PrivateRouteProps {
   redirectPath?: string;
