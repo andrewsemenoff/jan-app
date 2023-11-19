@@ -27,7 +27,7 @@ const Community = () => {
 
   return (
     <>
-      <h1 style={{ color: "red" }}>{community_name}</h1>;
+      <h1 style={{ color: "red" }}>{community_name}</h1>
       <ProblemsList problems={problems??[]} />
     </>
   );
