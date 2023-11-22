@@ -15,6 +15,7 @@ import {
   MainSectionForProblemList,
   TitleSectionForProblemList,
 } from "./ProblemList.styles";
+import { useEffect } from "react";
 
 interface Props {
   problems: Problem[];

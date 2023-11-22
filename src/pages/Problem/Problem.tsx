@@ -113,26 +113,24 @@ const Problem = () => {
     }
   };
 
+  const typesetMathJax = () => {
+    if (typeof window?.MathJax !== "undefined") {
+      window?.MathJax.typeset();
+    }
+  };
+
   useEffect(() => {
     (async () => {
       if (problem_id && isSignedIn) {
-        console.log("start fetching");
-        console.log("user:", user);
-        console.log("problem_id:", problem_id);
-
         await dispatch(getOneProblem(problem_id)).unwrap();
+        typesetMathJax();
         await dispatch(getSolutions(problem_id)).unwrap();
         await dispatch(getComments(problem_id)).unwrap();
       }
     })();
+    
   }, [problem_id]);
-
-  useEffect(() => {
-    if (typeof window?.MathJax !== "undefined") {
-      window?.MathJax.typesetClear();
-      window?.MathJax.typeset();
-    }
-  }, [problem_id]);
+  
 
   return (
     <>
