@@ -11,6 +11,8 @@ import {
 const Community = () => {
   const dispatch = useAppDispatch();
   const { community_name } = useParams();
+  console.log('community name:', community_name);
+  
   const [requestStatus, setRequestStatus] = useState<STATUS>(STATUS.IDLE);
   const [problems, setProblems] = useState<Problem[] | undefined>([]);
   useEffect(() => {
