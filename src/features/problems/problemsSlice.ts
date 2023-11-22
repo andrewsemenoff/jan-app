@@ -206,26 +206,17 @@ export const getProblemsByCommunities = createAsyncThunk(
       account: { token },
     } = getState() as RootState;
     try {
-
-
-      const { data }: { data: Problem[] } = await axios({
-        method: 'get',
-        url: `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        data: communitiesNames
-      });
-      // const { data }: { data: Problem[] } = await axios.get(
-      //   `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}`,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
+        // url: `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}/"algebra,maths,..." `,
+       
+      const { data }: { data: Problem[] } = await axios.get(
+        `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}/${communitiesNames.join(',')}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       return data;
     } catch (err: any) {
       console.log("error after getProblems:", err);
