@@ -200,14 +200,11 @@ export const getProblems = createAsyncThunk(
 export const getProblemsByCommunities = createAsyncThunk(
   PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES,
   async (communitiesNames: string[], { getState }) => {
-    console.log("communities names:", communitiesNames);
-    
+   
     const {
       account: { token },
     } = getState() as RootState;
-    try {
-        // url: `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}/"algebra,maths,..." `,
-       
+    try {       
       const { data }: { data: Problem[] } = await axios.get(
         `${PROBLEMS_URL}/${PROBLEMS_ACTION_TYPE.GET_PROBLEMS_BY_COMMUNITIES}/${communitiesNames.join(',')}`,
         {
